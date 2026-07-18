@@ -58,6 +58,7 @@ class HrThr(models.Model):
     thr_date = fields.Date(
         string='Tanggal Pembayaran THR',
         required=True,
+        default=lambda self: fields.Date.today(),
         help='Minimal 7 hari sebelum hari raya (PP 36/2021)',
     )
     tenure_months = fields.Integer(
