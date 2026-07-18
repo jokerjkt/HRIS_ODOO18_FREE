@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ================================================================
+             BPJS Rate Settings — List View
+             ================================================================ -->
+
+        <record id="view_hr_bpjs_rate_list" model="ir.ui.view">
+            <field name="name">hr.bpjs.rate.list</field>
+            <field name="model">hr.bpjs.rate</field>
+            <field name="arch" type="xml">
+                <list string="Tarif BPJS Ketenagakerjaan">
+                    <field name="name"/>
+                    <field name="jkk_rate" string="JKK (%)" widget="percentage"/>
+                    <field name="jkm_rate" string="JKM (%)" widget="percentage"/>
+                    <field name="jht_rate_employer" string="JHT employer (%)" widget="percentage"/>
+                    <field name="jht_rate_employee" string="JHT employee (%)" widget="percentage"/>
+                    <field name="jp_rate_employer" string="JP employer (%)" widget="percentage"/>
+                    <field name="jp_rate_employee" string="JP employee (%)" widget="percentage"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- ================================================================
+             BPJS Rate Settings — Form View
+             ================================================================ -->
+
+        <record id="view_hr_bpjs_rate_form" model="ir.ui.view">
+            <field name="name">hr.bpjs.rate.form</field>
+            <field name="model">hr.bpjs.rate</field>
+            <field name="arch" type="xml">
+                <form string="Tarif BPJS Ketenagakerjaan">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Kelompok Risiko"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group string="JKK &amp; JKM">
+                                <field name="jkk_rate" string="Tarif JKK (%)" widget="percentage"/>
+                                <field name="jkm_rate" string="Tarif JKM (%)" widget="percentage"/>
+                            </group>
+                            <group string="JHT">
+                                <field name="jht_rate_employer" string="JHT Perusahaan (%)" widget="percentage"/>
+                                <field name="jht_rate_employee" string="JHT Karyawan (%)" widget="percentage"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group string="JP">
+                                <field name="jp_rate_employer" string="JP Perusahaan (%)" widget="percentage"/>
+                                <field name="jp_rate_employee" string="JP Karyawan (%)" widget="percentage"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- ================================================================
+             BPJS Rate Settings — Action
+             ================================================================ -->
+
+        <record id="action_hr_bpjs_rate" model="ir.actions.act_window">
+            <field name="name">Tarif BPJS</field>
+            <field name="res_model">hr.bpjs.rate</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+    </data>
+</odoo>

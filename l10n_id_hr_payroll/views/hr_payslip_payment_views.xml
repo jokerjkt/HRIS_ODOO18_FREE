@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ================================================================
+             Bank Payment List — List View
+             ================================================================ -->
+
+        <record id="view_hr_payslip_payment_list" model="ir.ui.view">
+            <field name="name">hr.payslip.payment.list</field>
+            <field name="model">hr.payslip</field>
+            <field name="arch" type="xml">
+                    <list string="Daftar Pembayaran Gaji"
+                          decoration-success="state == 'done'"
+                          decoration-muted="state == 'cancel'"
+                          decoration-warning="state == 'computed'">
+                        <field name="name" string="No. Transaksi" readonly="1"/>
+                        <field name="employee_id" string="Karyawan"/>
+                    <field name="department_id" string="Departemen" optional="show"/>
+                    <field name="date_from" string="Periode Mulai"/>
+                    <field name="date_to" string="Periode Akhir"/>
+                    <field name="bank_name" string="Nama Bank" readonly="1"/>
+                    <field name="bank_account_number" string="No. Rekening" readonly="1"/>
+                    <field name="bank_account_name" string="Atas Nama" readonly="1"/>
+                    <field name="net_wage" widget="monetary" string="Gaji Bersih (Rp)"/>
+                    <field name="state" widget="badge"
+                           decoration-success="state == 'done'"
+                           decoration-info="state == 'computed'"
+                           decoration-danger="state == 'cancel'"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- ================================================================
+             Bank Payment List — Search View
+             ================================================================ -->
+
+        <record id="view_hr_payslip_payment_search" model="ir.ui.view">
+            <field name="name">hr.payslip.payment.search</field>
+            <field name="model">hr.payslip</field>
+            <field name="arch" type="xml">
+                <search string="Cari Pembayaran Gaji">
+                    <field name="name" string="No. Transaksi"/>
+                    <field name="employee_id"/>
+                    <field name="department_id"/>
+                    <field name="bank_name"/>
+                    <field name="bank_account_number"/>
+                    <separator/>
+                    <filter string="Sudah Dibayar" name="done"
+                            domain="[('state', '=', 'done')]"/>
+                    <filter string="Perlu Dibayar" name="computed"
+                            domain="[('state', '=', 'computed')]"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter string="Departemen" name="group_department"
+                                context="{'group_by': 'department_id'}"/>
+                        <filter string="Nama Bank" name="group_bank"
+                                context="{'group_by': 'bank_name'}"/>
+                        <filter string="Periode" name="group_period"
+                                context="{'group_by': 'date_from:month'}"/>
+                        <filter string="Status" name="group_state"
+                                context="{'group_by': 'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- ================================================================
+             Bank Payment List — Action
+             ================================================================ -->
+
+        <record id="action_hr_payslip_payment" model="ir.actions.act_window">
+            <field name="name">Daftar Pembayaran Gaji</field>
+            <field name="res_model">hr.payslip</field>
+            <field name="view_mode">list</field>
+            <field name="search_view_id" ref="view_hr_payslip_payment_search"/>
+            <field name="context">{'search_default_done': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Belum ada data pembayaran gaji
+                </p>
+                <p>
+                    Konfirmasi slip gaji terlebih dahulu, lalu filter di sini
+                    untuk melihat daftar pembayaran yang siap ditransfer ke bank.
+                </p>
+                <p>
+                    Gunakan tombol <strong>Export</strong> (icon ⬇) untuk export
+                    ke CSV/Excel yang bisa diupload ke sistem bank Anda.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ================================================================
+             THR — Form View
+             ================================================================ -->
+
+        <record id="view_hr_thr_form" model="ir.ui.view">
+            <field name="name">hr.thr.form</field>
+            <field name="model">hr.thr</field>
+            <field name="arch" type="xml">
+                <form string="Tunjangan Hari Raya (THR)">
+                    <header>
+                        <button name="action_confirm" string="Konfirmasi THR"
+                                type="object" class="btn-primary"
+                                invisible="state != 'draft'"/>
+                        <button name="action_mark_paid" string="Tandai Sudah Dibayar"
+                                type="object" class="btn-success"
+                                invisible="state != 'confirmed'"/>
+                        <button name="action_reset_draft" string="Reset ke Draft"
+                                type="object"
+                                invisible="state == 'paid'"/>
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,confirmed,paid"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1><field name="name" readonly="1"/></h1>
+                        </div>
+                        <group>
+                            <group string="Informasi Karyawan">
+                                <field name="employee_id"
+                                       readonly="state != 'draft'"/>
+                                <field name="department_id" readonly="1"/>
+                                <field name="join_date" readonly="1"/>
+                                <field name="tenure_months" readonly="1"/>
+                            </group>
+                            <group string="Detail THR">
+                                <field name="year"
+                                       readonly="state != 'draft'"/>
+                                <field name="religious_holiday"
+                                       readonly="state != 'draft'"/>
+                                <field name="thr_date"
+                                       readonly="state != 'draft'"/>
+                            </group>
+                        </group>
+                        <group string="Perhitungan THR">
+                            <group>
+                                <field name="monthly_wage" widget="monetary" readonly="1"/>
+                                <field name="thr_proportion" string="Proporsi (0.0 - 1.0)"
+                                       readonly="1"/>
+                                <field name="thr_amount" widget="monetary" readonly="1"
+                                       string="THR Kalkulasi (Rp)"/>
+                            </group>
+                            <group>
+                                <field name="thr_amount_manual" widget="monetary"
+                                       readonly="state != 'draft'"
+                                       string="Override Manual (opsional)"/>
+                                <field name="thr_final" widget="monetary" readonly="1"
+                                       string="THR Final (Rp)"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="note" placeholder="Keterangan tambahan..."/>
+                        </group>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <!-- ================================================================
+             THR — List View
+             ================================================================ -->
+
+        <record id="view_hr_thr_list" model="ir.ui.view">
+            <field name="name">hr.thr.list</field>
+            <field name="model">hr.thr</field>
+            <field name="arch" type="xml">
+                <list string="Daftar THR"
+                      decoration-success="state == 'paid'"
+                      decoration-warning="state == 'confirmed'"
+                      decoration-muted="state == 'draft'">
+                    <field name="name"/>
+                    <field name="employee_id"/>
+                    <field name="department_id" optional="show"/>
+                    <field name="year"/>
+                    <field name="religious_holiday"/>
+                    <field name="thr_date"/>
+                    <field name="tenure_months" string="Masa Kerja (bln)"/>
+                    <field name="monthly_wage" widget="monetary"/>
+                    <field name="thr_proportion" string="Proporsi"/>
+                    <field name="thr_final" widget="monetary" string="THR Final"/>
+                    <field name="state" widget="badge"
+                           decoration-success="state == 'paid'"
+                           decoration-warning="state == 'confirmed'"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- ================================================================
+             THR — Actions
+             ================================================================ -->
+
+        <record id="action_hr_thr" model="ir.actions.act_window">
+            <field name="name">Tunjangan Hari Raya (THR)</field>
+            <field name="res_model">hr.thr</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Belum ada data THR
+                </p>
+                <p>
+                    Buat perhitungan THR untuk karyawan. THR dihitung berdasarkan
+                    masa kerja dan gaji sesuai PP No. 36 Tahun 2021.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

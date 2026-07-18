@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ================================================================
+             Contract Form — Tab Tunjangan Indonesia
+             ================================================================ -->
+
+        <record id="view_hr_contract_form_indonesia" model="ir.ui.view">
+            <field name="name">hr.contract.form.indonesia</field>
+            <field name="model">hr.contract</field>
+            <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='other']" position="after">
+                    <page name="indonesia_compensation" string="Komponen Gaji Indonesia">
+                        <group>
+                            <group string="Tunjangan">
+                                <field name="x_tunjangan_tetap" widget="monetary"
+                                       placeholder="Tunjangan tetap bulanan"/>
+                                <field name="x_tunjangan_tidak_tetap" widget="monetary"
+                                       placeholder="Tunjangan tidak tetap"/>
+                            </group>
+                        </group>
+                        <p class="text-muted small mt-2">
+                            <i class="fa fa-info-circle"/>
+                            Tunjangan tetap menjadi komponen upah dasar untuk perhitungan BPJS Ketenagakerjaan (JHT, JP).
+                            Tunjangan tidak tetap merupakan komponen penghasilan lain yang mempengaruhi perhitungan PPh 21.
+                        </p>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

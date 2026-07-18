@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ================================================================
+             Payslip Form — Standalone
+             ================================================================ -->
+
+        <record id="view_hr_payslip_form" model="ir.ui.view">
+            <field name="name">hr.payslip.form</field>
+            <field name="model">hr.payslip</field>
+            <field name="arch" type="xml">
+                <form string="Slip Gaji Indonesia">
+                    <header>
+                        <button name="action_compute" string="Hitung Gaji"
+                                type="object" class="btn-primary"
+                                invisible="state != 'draft'"/>
+                        <button name="action_confirm" string="Konfirmasi"
+                                type="object" class="btn-primary"
+                                invisible="state != 'computed'"/>
+                        <button name="action_cancel" string="Batalkan"
+                                type="object" class="btn-secondary"
+                                invisible="state not in ('draft', 'computed', 'done')"/>
+                        <button name="action_reset_draft" string="Reset ke Draft"
+                                type="object"
+                                invisible="state == 'draft'"/>
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,computed,done"/>
+                    </header>
+                    <sheet>
+                        <!-- Summary Cards -->
+                        <div class="row o_kanban_no_coverage mb-3">
+                            <div class="col-lg-3 col-md-6">
+                                <div class="card border-primary text-center">
+                                    <div class="card-body py-2">
+                                        <small class="text-muted text-uppercase">Gaji Bersih</small>
+                                        <h4 class="mb-0 text-primary">
+                                            <field name="net_wage" widget="monetary"
+                                                   readonly="1" nolabel="1"/>
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="card border-danger text-center">
+                                    <div class="card-body py-2">
+                                        <small class="text-muted text-uppercase">PPh 21</small>
+                                        <h4 class="mb-0 text-danger">
+                                            <field name="pph21_amount" widget="monetary"
+                                                   readonly="1" nolabel="1"/>
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="card border-warning text-center">
+                                    <div class="card-body py-2">
+                                        <small class="text-muted text-uppercase">BPJS Potongan</small>
+                                        <h4 class="mb-0 text-warning">
+                                            <field name="bpjs_potongan_karyawan" widget="monetary"
+                                                   readonly="1" nolabel="1"/>
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="card border-info text-center">
+                                    <div class="card-body py-2">
+                                        <small class="text-muted text-uppercase">Lembur</small>
+                                        <h4 class="mb-0 text-info">
+                                            <field name="overtime_total" widget="monetary"
+                                                   readonly="1" nolabel="1"/>
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+
+                        <group>
+                            <group string="Informasi Karyawan">
+                                <field name="employee_id"/>
+                                <field name="contract_id"/>
+                                <field name="department_id" readonly="1"/>
+                            </group>
+                            <group string="Periode">
+                                <field name="date_from"/>
+                                <field name="date_to"/>
+                                <field name="include_thr"/>
+                                <field name="thr_amount" widget="monetary"
+                                       invisible="not include_thr"/>
+                            </group>
+                        </group>
+
+                        <!-- ═══════════════════════════════════════════════════════ -->
+                        <!-- TAB: Penghasilan                                         -->
+                        <!-- ═══════════════════════════════════════════════════════ -->
+                        <notebook>
+                            <page name="tab_penghasilan" string="Penghasilan">
+                                <group string="Komponen Penghasilan">
+                                    <field name="gaji_pokok" widget="monetary" readonly="1"/>
+                                    <field name="tunjangan_tetap" widget="monetary" readonly="1"/>
+                                    <field name="tunjangan_tidak_tetap" widget="monetary" readonly="1"/>
+                                    <field name="overtime_total" widget="monetary" readonly="1"
+                                           string="Upah Lembur"/>
+                                    <separator string=""/>
+                                    <field name="total_penghasilan" widget="monetary" readonly="1"
+                                           class="oe_subtotal_footer"/>
+                                </group>
+                            </page>
+
+                            <!-- ═══════════════════════════════════════════════════════ -->
+                            <!-- TAB: PPh 21                                           -->
+                            <!-- ═══════════════════════════════════════════════════════ -->
+                            <page name="tab_pph21" string="PPh 21">
+                                <field name="pph21_ids" readonly="1">
+                                    <list>
+                                        <field name="penghasilan_bruto" widget="monetary" string="Bruto Bulanan"/>
+                                        <field name="biaya_jabatan" widget="monetary" string="Biaya Jabatan"/>
+                                        <field name="ptkp_status"/>
+                                        <field name="ptkp_amount" widget="monetary" string="PTKP/tahun"/>
+                                        <field name="pkp_tahunan" widget="monetary" string="PKP/tahun"/>
+                                        <field name="pph21_bulanan" widget="monetary" string="PPh21/bulan"/>
+                                        <field name="npwp_has" string="Ada NPWP?"/>
+                                        <field name="pph21_surcharge" widget="monetary" string="Surcharge +20%"/>
+                                        <field name="pph21_final" widget="monetary" string="PPh21 Final"/>
+                                    </list>
+                                </field>
+
+                                <div class="oe_button_box mt-3" name="pph21_actions">
+                                    <button name="action_view_pph21_detail"
+                                            type="object"
+                                            string="Lihat Rincian PPh 21"
+                                            class="oe_stat_button"
+                                            icon="fa-calculator"/>
+                                    <button name="action_print_bukti_potong"
+                                            type="object"
+                                            string="Cetak Bukti Potong"
+                                            class="oe_stat_button"
+                                            icon="fa-print"/>
+                                </div>
+                            </page>
+
+                            <!-- ═══════════════════════════════════════════════════════ -->
+                            <!-- TAB: BPJS                                              -->
+                            <!-- ═══════════════════════════════════════════════════════ -->
+                            <page name="tab_bpjs" string="BPJS">
+                                <div class="row o_kanban_no_coverage mb-3">
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="card border-danger">
+                                            <div class="card-header bg-danger text-white py-2">
+                                                <strong><i class="fa fa-user"/> Potongan Karyawan</strong>
+                                            </div>
+                                            <div class="card-body py-2 text-center">
+                                                <h3 class="mb-0">
+                                                    <field name="bpjs_potongan_karyawan" widget="monetary"
+                                                           readonly="1" nolabel="1"/>
+                                                </h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="card border-success">
+                                            <div class="card-header bg-success text-white py-2">
+                                                <strong><i class="fa fa-building"/> Kontribusi Perusahaan</strong>
+                                            </div>
+                                            <div class="card-body py-2 text-center">
+                                                <h3 class="mb-0">
+                                                    <field name="bpjs_kontribusi_perusahaan" widget="monetary"
+                                                           readonly="1" nolabel="1"/>
+                                                </h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <field name="bpjs_ids" readonly="1">
+                                    <list>
+                                        <field name="upah_dasar" widget="monetary" string="Upah Dasar"/>
+                                        <field name="jht_emp" widget="monetary" string="JHT Kary (2%)"/>
+                                        <field name="jp_emp" widget="monetary" string="JP Kary (1%)"/>
+                                        <field name="bpjs_kes_emp" widget="monetary" string="BPJS Kes Kary (1%)"/>
+                                        <field name="total_potongan_karyawan" widget="monetary" string="Total Potong"/>
+                                        <field name="jkk_comp" widget="monetary" string="JKK Perush"/>
+                                        <field name="jkm_comp" widget="monetary" string="JKM (0.3%)"/>
+                                        <field name="jht_comp" widget="monetary" string="JHT Perush (3.7%)"/>
+                                        <field name="jp_comp" widget="monetary" string="JP Perush (2%)"/>
+                                        <field name="bpjs_kes_comp" widget="monetary" string="BPJS Kes Perush (4%)"/>
+                                        <field name="total_kontribusi_perusahaan" widget="monetary" string="Total Kontribusi"/>
+                                    </list>
+                                </field>
+
+                                <div class="oe_button_box mt-3" name="bpjs_actions">
+                                    <button name="action_view_bpjs_detail"
+                                            type="object"
+                                            string="Lihat Rincian BPJS"
+                                            class="oe_stat_button"
+                                            icon="fa-shield"/>
+                                </div>
+                            </page>
+
+                            <!-- ═══════════════════════════════════════════════════════ -->
+                            <!-- TAB: Lembur                                            -->
+                            <!-- ═══════════════════════════════════════════════════════ -->
+                            <page name="tab_overtime" string="Lembur">
+                                <div class="row o_kanban_no_coverage mb-3">
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="card border-info">
+                                            <div class="card-body py-2 text-center">
+                                                <small class="text-muted">JUMLAH HARI LEMBUR</small>
+                                                <h2 class="mb-0 text-info">
+                                                    <field name="overtime_count" readonly="1" nolabel="1"/>
+                                                </h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="card border-warning">
+                                            <div class="card-body py-2 text-center">
+                                                <small class="text-muted">TOTAL UPAH LEMBUR</small>
+                                                <h2 class="mb-0 text-warning">
+                                                    <field name="overtime_total" widget="monetary"
+                                                           readonly="1" nolabel="1"/>
+                                                </h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <field name="overtime_ids" readonly="1">
+                                    <list>
+                                        <field name="overtime_date"/>
+                                        <field name="start_time" widget="float_time"/>
+                                        <field name="end_time" widget="float_time"/>
+                                        <field name="duration" string="Durasi (jam)"/>
+                                        <field name="overtime_type"/>
+                                        <field name="reason"/>
+                                        <field name="activity_description"/>
+                                        <field name="overtime_pay" widget="monetary"/>
+                                        <field name="state" widget="badge"
+                                               decoration-success="state == 'approved'"
+                                               decoration-warning="state == 'submitted'"
+                                               decoration-danger="state == 'rejected'"/>
+                                    </list>
+                                </field>
+                                <div class="text-center mt-3">
+                                    <button name="action_link_overtime"
+                                            type="object"
+                                            string="Hubungkan Lembur ke Payslip Ini"
+                                            class="btn btn-outline-info"/>
+                                </div>
+                            </page>
+
+                            <!-- ═══════════════════════════════════════════════════════ -->
+                            <!-- TAB: THR                                               -->
+                            <!-- ═══════════════════════════════════════════════════════ -->
+                            <page name="tab_thr" string="THR">
+                                <div class="row o_kanban_no_coverage mb-3">
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="card border-secondary">
+                                            <div class="card-body">
+                                                <group>
+                                                    <field name="include_thr"/>
+                                                    <field name="thr_amount" widget="monetary"
+                                                           invisible="not include_thr"/>
+                                                </group>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <!-- ================================================================
+             Payslip List View
+             ================================================================ -->
+
+        <record id="view_hr_payslip_list" model="ir.ui.view">
+            <field name="name">hr.payslip.list</field>
+            <field name="model">hr.payslip</field>
+            <field name="arch" type="xml">
+                <list string="Daftar Slip Gaji"
+                      decoration-success="state == 'done'"
+                      decoration-muted="state == 'cancel'">
+                    <field name="name"/>
+                    <field name="employee_id"/>
+                    <field name="department_id" optional="show"/>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                    <field name="gaji_pokok" widget="monetary" string="Gaji Pokok" optional="show"/>
+                    <field name="pph21_amount" widget="monetary" string="PPh 21"/>
+                    <field name="bpjs_potongan_karyawan" widget="monetary" string="BPJS Pot." optional="show"/>
+                    <field name="net_wage" widget="monetary" string="Gaji Bersih"/>
+                    <field name="state" widget="badge"
+                           decoration-success="state == 'done'"
+                           decoration-info="state == 'computed'"
+                           decoration-danger="state == 'cancel'"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- ================================================================
+             Payslip Search View
+             ================================================================ -->
+
+        <record id="view_hr_payslip_search" model="ir.ui.view">
+            <field name="name">hr.payslip.search</field>
+            <field name="model">hr.payslip</field>
+            <field name="arch" type="xml">
+                <search string="Cari Slip Gaji">
+                    <field name="name" string="No. Transaksi"/>
+                    <field name="employee_id"/>
+                    <field name="department_id"/>
+                    <separator/>
+                    <filter string="Draft" name="draft"
+                            domain="[('state', '=', 'draft')]"/>
+                    <filter string="Dihitung" name="computed"
+                            domain="[('state', '=', 'computed')]"/>
+                    <filter string="Selesai" name="done"
+                            domain="[('state', '=', 'done')]"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter string="Departemen" name="group_department"
+                                context="{'group_by': 'department_id'}"/>
+                        <filter string="Periode" name="group_period"
+                                context="{'group_by': 'date_from:month'}"/>
+                        <filter string="Status" name="group_state"
+                                context="{'group_by': 'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- ================================================================
+             Payslip Action
+             ================================================================ -->
+
+        <record id="action_hr_payslip" model="ir.actions.act_window">
+            <field name="name">Slip Gaji</field>
+            <field name="res_model">hr.payslip</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="view_hr_payslip_search"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Belum ada slip gaji
+                </p>
+                <p>
+                    Buat slip gaji baru untuk karyawan, lalu klik
+                    <strong>"Hitung Gaji"</strong> untuk menghitung PPh 21 dan BPJS
+                    secara otomatis.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

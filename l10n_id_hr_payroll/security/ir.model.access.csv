@@ -1,0 +1,17 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_pph21_user,hr.pph21 User,model_hr_pph21,hr.group_hr_user,1,1,1,0
+access_hr_pph21_manager,hr.pph21 Manager,model_hr_pph21,hr.group_hr_manager,1,1,1,1
+access_hr_bpjs_user,hr.bpjs User,model_hr_bpjs,hr.group_hr_user,1,1,1,0
+access_hr_bpjs_manager,hr.bpjs Manager,model_hr_bpjs,hr.group_hr_manager,1,1,1,1
+access_hr_bpjs_rate_user,hr.bpjs.rate User,model_hr_bpjs_rate,hr.group_hr_user,1,0,0,0
+access_hr_bpjs_rate_manager,hr.bpjs.rate Manager,model_hr_bpjs_rate,hr.group_hr_manager,1,1,1,1
+access_hr_overtime_user,hr.overtime User,model_hr_overtime,l10n_id_hr_payroll.group_hr_overtime_user,1,1,1,0
+access_hr_overtime_manager,hr.overtime Manager,model_hr_overtime,l10n_id_hr_payroll.group_hr_overtime_manager,1,1,1,1
+access_hr_overtime_reject_wizard,hr.overtime.reject.wizard,model_hr_overtime_reject_wizard,l10n_id_hr_payroll.group_hr_overtime_manager,1,1,1,1
+access_hr_thr_user,hr.thr User,model_hr_thr,hr.group_hr_user,1,0,0,0
+access_hr_thr_manager,hr.thr Manager,model_hr_thr,hr.group_hr_manager,1,1,1,1
+access_hr_thr_wizard_manager,hr.thr.wizard Manager,model_hr_thr_wizard,hr.group_hr_manager,1,1,1,1
+access_hr_payslip_user,hr.payslip User,model_hr_payslip,hr.group_hr_user,1,1,1,0
+access_hr_payslip_manager,hr.payslip Manager,model_hr_payslip,hr.group_hr_manager,1,1,1,1
+access_hr_payslip_generate_wizard,hr.payslip.generate.wizard,model_hr_payslip_generate_wizard,hr.group_hr_manager,1,1,1,1
+access_hr_user_dashboard,hr.user.dashboard,model_hr_user_dashboard,hr.group_hr_user,1,1,1,1

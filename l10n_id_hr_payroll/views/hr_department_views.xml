@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ================================================================
+             Department Form — Tambah kolom Kode Divisi
+             ================================================================ -->
+
+        <record id="view_hr_department_form_inherit" model="ir.ui.view">
+            <field name="name">hr.department.form.inherit.code</field>
+            <field name="model">hr.department</field>
+            <field name="inherit_id" ref="hr.view_department_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[1]" position="inside">
+                    <group string="Penomoran Slip Gaji">
+                        <field name="code" placeholder="Contoh: SALES, HRD, ADM"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- ================================================================
+             Department List — Tambah kolom Kode Divisi
+             ================================================================ -->
+
+        <record id="view_hr_department_list_inherit" model="ir.ui.view">
+            <field name="name">hr.department.list.inherit.code</field>
+            <field name="model">hr.department</field>
+            <field name="inherit_id" ref="hr.view_department_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="before">
+                    <field name="code" string="Kode" width="80"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

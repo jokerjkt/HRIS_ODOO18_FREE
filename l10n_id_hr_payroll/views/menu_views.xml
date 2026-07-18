@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ================================================================
+             Indonesian HR — Integrated under Odoo 18 HR App
+             All menus are children of hr.menu_hr_root (Employees app)
+             ================================================================ -->
+
+        <!-- ── Dashboard Admin (HR Managers only) ──────────────────────────── -->
+
+        <menuitem id="menu_indonesia_hr_dashboard"
+                  name="Dashboard Admin"
+                  parent="hr.menu_hr_root"
+                  action="action_indonesia_hr_dashboard"
+                  sequence="45"
+                  groups="hr.group_hr_manager"/>
+
+        <!-- ── Dashboard HR User (all HR users) ───────────────────────────── -->
+
+        <menuitem id="menu_hr_user_dashboard"
+                  name="Dashboard HR"
+                  parent="hr.menu_hr_root"
+                  action="action_hr_user_dashboard"
+                  sequence="46"/>
+
+        <!-- ── Payroll ────────────────────────────────────────────────────── -->
+
+        <menuitem id="menu_indonesia_hr_payslip"
+                  name="Payroll"
+                  parent="hr.menu_hr_root"
+                  sequence="50"/>
+
+        <menuitem id="menu_hr_payslip_list"
+                  name="Daftar Slip Gaji"
+                  parent="menu_indonesia_hr_payslip"
+                  action="action_hr_payslip"
+                  sequence="10"/>
+
+        <menuitem id="menu_hr_payslip_payment"
+                  name="Daftar Pembayaran Gaji"
+                  parent="menu_indonesia_hr_payslip"
+                  action="action_hr_payslip_payment"
+                  sequence="20"/>
+
+        <menuitem id="menu_hr_payslip_generate"
+                  name="Buat Slip Gaji Massal"
+                  parent="menu_indonesia_hr_payslip"
+                  action="action_hr_payslip_generate_wizard"
+                  sequence="30"/>
+
+        <!-- ── Lembur ─────────────────────────────────────────────────────── -->
+
+        <menuitem id="menu_indonesia_hr_overtime"
+                  name="Lembur"
+                  parent="hr.menu_hr_root"
+                  sequence="55"/>
+
+        <menuitem id="menu_hr_overtime_my"
+                  name="Pengajuan Lembur Saya"
+                  parent="menu_indonesia_hr_overtime"
+                  action="action_hr_overtime"
+                  sequence="10"/>
+
+        <menuitem id="menu_hr_overtime_approval"
+                  name="Perlu Persetujuan"
+                  parent="menu_indonesia_hr_overtime"
+                  action="action_hr_overtime_to_approve"
+                  sequence="20"/>
+
+        <menuitem id="menu_hr_overtime_all"
+                  name="Semua Lembur"
+                  parent="menu_indonesia_hr_overtime"
+                  action="action_hr_overtime"
+                  sequence="30"/>
+
+        <!-- ── THR ────────────────────────────────────────────────────────── -->
+
+        <menuitem id="menu_indonesia_hr_thr"
+                  name="THR"
+                  parent="hr.menu_hr_root"
+                  sequence="60"/>
+
+        <menuitem id="menu_hr_thr_list"
+                  name="Daftar THR"
+                  parent="menu_indonesia_hr_thr"
+                  action="action_hr_thr"
+                  sequence="10"/>
+
+        <menuitem id="menu_hr_thr_generate"
+                  name="Generate THR Massal"
+                  parent="menu_indonesia_hr_thr"
+                  action="action_hr_thr_wizard"
+                  sequence="20"/>
+
+        <!-- ── Reporting (under existing HR Reporting) ─────────────────────── -->
+
+        <menuitem id="menu_hr_report_bpjs"
+                  name="Rekap Iuran BPJS"
+                  parent="hr.hr_menu_hr_reports"
+                  action="action_report_bpjs_rekap"
+                  sequence="15"/>
+
+        <!-- ── Configuration (under existing HR Configuration) ─────────────── -->
+
+        <menuitem id="menu_hr_bpjs_rate"
+                  name="Tarif BPJS"
+                  parent="hr.menu_human_resources_configuration"
+                  action="action_hr_bpjs_rate"
+                  sequence="26"/>
+
+    </data>
+</odoo>

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- ================================================================
+             Demo Data — Sample Employees, Contracts, Overtime, THR
+             Only loaded when module is installed in demo mode
+             ================================================================ -->
+
+        <!-- ── Demo Employees ─────────────────────────────────────────────── -->
+
+        <record id="demo_employee_1" model="hr.employee">
+            <field name="name">Budi Santoso</field>
+            <field name="department_id" ref="dep_sales"/>
+            <field name="job_id" ref="hr.job_sales_manager"/>
+            <field name="nik">3201234567890001</field>
+            <field name="npwp">123456789012345</field>
+            <field name="ptkp_status">K/1</field>
+            <field name="bpjs_tk_jkk_class">II</field>
+            <field name="bpjs_kes_class">1</field>
+            <field name="join_date" eval="(DateTime.today() - relativedelta(years=3)).date()"/>
+            <field name="employee_contract_type">permanent</field>
+            <field name="bank_name">Bank Central Asia (BCA)</field>
+            <field name="bank_branch">KCP Sudirman</field>
+            <field name="bank_account_number">1234567890</field>
+            <field name="bank_account_name">Budi Santoso</field>
+        </record>
+
+        <record id="demo_employee_2" model="hr.employee">
+            <field name="name">Siti Rahayu</field>
+            <field name="department_id" ref="dep_management"/>
+            <field name="job_id" ref="hr.job_hr_manager"/>
+            <field name="nik">3201234567890002</field>
+            <field name="npwp">123456789012346</field>
+            <field name="ptkp_status">K/0</field>
+            <field name="bpjs_tk_jkk_class">I</field>
+            <field name="bpjs_kes_class">1</field>
+            <field name="join_date" eval="(DateTime.today() - relativedelta(years=5)).date()"/>
+            <field name="employee_contract_type">permanent</field>
+            <field name="bank_name">Bank Mandiri</field>
+            <field name="bank_branch">KCP Thamrin</field>
+            <field name="bank_account_number">9876543210</field>
+            <field name="bank_account_name">Siti Rahayu</field>
+        </record>
+
+        <record id="demo_employee_3" model="hr.employee">
+            <field name="name">Andi Prasetyo</field>
+            <field name="department_id" ref="dep_rd"/>
+            <field name="job_id" ref="hr.job_developer"/>
+            <field name="nik">3201234567890003</field>
+            <field name="npwp">123456789012347</field>
+            <field name="ptkp_status">TK/0</field>
+            <field name="bpjs_tk_jkk_class">III</field>
+            <field name="bpjs_kes_class">2</field>
+            <field name="join_date" eval="(DateTime.today() - relativedelta(months=18)).date()"/>
+            <field name="employee_contract_type">permanent</field>
+            <field name="bank_name">Bank BNI</field>
+            <field name="bank_branch">KCP Kelapa Gading</field>
+            <field name="bank_account_number">5555666677</field>
+            <field name="bank_account_name">Andi Prasetyo</field>
+        </record>
+
+        <record id="demo_employee_4" model="hr.employee">
+            <field name="name">Dewi Lestari</field>
+            <field name="department_id" ref="dep_ps"/>
+            <field name="job_id" ref="hr.job_consultant"/>
+            <field name="nik">3201234567890004</field>
+            <field name="npwp"/>
+            <field name="ptkp_status">TK/1</field>
+            <field name="bpjs_tk_jkk_class">II</field>
+            <field name="bpjs_kes_class">1</field>
+            <field name="join_date" eval="(DateTime.today() - relativedelta(months=8)).date()"/>
+            <field name="employee_contract_type">contract</field>
+            <field name="bank_name">Bank BCA</field>
+            <field name="bank_branch">KCP Kemang</field>
+            <field name="bank_account_number">3333444455</field>
+            <field name="bank_account_name">Dewi Lestari</field>
+        </record>
+
+        <record id="demo_employee_5" model="hr.employee">
+            <field name="name">Rizki Ramadan</field>
+            <field name="department_id" ref="dep_rd"/>
+            <field name="job_id" ref="hr.job_developer"/>
+            <field name="nik">3201234567890005</field>
+            <field name="npwp">123456789012348</field>
+            <field name="ptkp_status">K/2</field>
+            <field name="bpjs_tk_jkk_class">III</field>
+            <field name="bpjs_kes_class">1</field>
+            <field name="join_date" eval="(DateTime.today() - relativedelta(years=2)).date()"/>
+            <field name="employee_contract_type">permanent</field>
+            <field name="bank_name">Bank Mandiri</field>
+            <field name="bank_branch">KCP Blok M</field>
+            <field name="bank_account_number">7777888899</field>
+            <field name="bank_account_name">Rizki Ramadan</field>
+        </record>
+
+        <!-- ── Demo Contracts ─────────────────────────────────────────────── -->
+
+        <record id="demo_contract_1" model="hr.contract">
+            <field name="name">Kontrak Budi Santoso</field>
+            <field name="employee_id" ref="demo_employee_1"/>
+            <field name="wage">8000000</field>
+            <field name="x_tunjangan_tetap">2000000</field>
+            <field name="x_tunjangan_tidak_tetap">500000</field>
+            <field name="state">open</field>
+        </record>
+
+        <record id="demo_contract_2" model="hr.contract">
+            <field name="name">Kontrak Siti Rahayu</field>
+            <field name="employee_id" ref="demo_employee_2"/>
+            <field name="wage">12000000</field>
+            <field name="x_tunjangan_tetap">3000000</field>
+            <field name="x_tunjangan_tidak_tetap">1000000</field>
+            <field name="state">open</field>
+        </record>
+
+        <record id="demo_contract_3" model="hr.contract">
+            <field name="name">Kontrak Andi Prasetyo</field>
+            <field name="employee_id" ref="demo_employee_3"/>
+            <field name="wage">6000000</field>
+            <field name="x_tunjangan_tetap">1500000</field>
+            <field name="x_tunjangan_tidak_tetap">0</field>
+            <field name="state">open</field>
+        </record>
+
+        <record id="demo_contract_4" model="hr.contract">
+            <field name="name">Kontrak Dewi Lestari</field>
+            <field name="employee_id" ref="demo_employee_4"/>
+            <field name="wage">5000000</field>
+            <field name="x_tunjangan_tetap">1000000</field>
+            <field name="x_tunjangan_tidak_tetap">0</field>
+            <field name="state">open</field>
+        </record>
+
+        <record id="demo_contract_5" model="hr.contract">
+            <field name="name">Kontrak Rizki Ramadan</field>
+            <field name="employee_id" ref="demo_employee_5"/>
+            <field name="wage">7000000</field>
+            <field name="x_tunjangan_tetap">1800000</field>
+            <field name="x_tunjangan_tidak_tetap">200000</field>
+            <field name="state">open</field>
+        </record>
+
+    </data>
+</odoo>

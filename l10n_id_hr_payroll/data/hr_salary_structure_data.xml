@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- ================================================================
+             Struktur Gaji Indonesia
+             ================================================================ -->
+
+        <record id="structure_type_id_indonesian" model="hr.payroll.structure.type">
+            <field name="name">Struktur Gaji Indonesia</field>
+            <field name="country_id" ref="base.id"/>
+            <field name="default_work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
+        </record>
+
+        <record id="structure_indonesian_employee" model="hr.payroll.structure">
+            <field name="name">Gaji Karyawan Tetap (Indonesia)</field>
+            <field name="type_id" ref="structure_type_id_indonesian"/>
+            <field name="country_id" ref="base.id"/>
+            <field name="note">
+                Struktur gaji untuk karyawan tetap Indonesia.
+                Mencakup PPh 21, BPJS Ketenagakerjaan, dan BPJS Kesehatan.
+                Formulir Bukti Potong: 1721-A1
+            </field>
+        </record>
+
+        <record id="structure_indonesian_contract" model="hr.payroll.structure">
+            <field name="name">Gaji Karyawan Kontrak/PKWT (Indonesia)</field>
+            <field name="type_id" ref="structure_type_id_indonesian"/>
+            <field name="country_id" ref="base.id"/>
+            <field name="note">
+                Struktur gaji untuk karyawan kontrak PKWT.
+                Formulir Bukti Potong: 1721-A2
+            </field>
+        </record>
+
+    </data>
+</odoo>

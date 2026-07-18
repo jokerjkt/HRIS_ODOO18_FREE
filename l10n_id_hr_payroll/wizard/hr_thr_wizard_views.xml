@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ================================================================
+             THR Wizard — Form View
+             ================================================================ -->
+
+        <record id="view_hr_thr_wizard_form" model="ir.ui.view">
+            <field name="name">hr.thr.wizard.form</field>
+            <field name="model">hr.thr.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Generate THR Massal">
+                    <group string="Konfigurasi THR">
+                        <group>
+                            <field name="year"/>
+                            <field name="religious_holiday"/>
+                            <field name="thr_date"/>
+                            <field name="min_tenure_months"/>
+                        </group>
+                        <group>
+                            <field name="department_ids" widget="many2many_tags"
+                                   placeholder="Kosongkan = semua departemen"/>
+                            <field name="employee_ids" widget="many2many_tags"
+                                   placeholder="Kosongkan = semua karyawan aktif"/>
+                        </group>
+                    </group>
+
+                    <group string="Preview">
+                        <field name="preview_count" readonly="1" string="Jumlah Karyawan Eligible"/>
+                        <field name="preview_total" widget="monetary" readonly="1"
+                               string="Estimasi Total THR (Rp)"/>
+                    </group>
+
+                    <footer>
+                        <button name="action_generate_thr" type="object"
+                                string="🎉 Generate THR" class="btn-primary"/>
+                        <button string="Batal" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action untuk wizard -->
+        <record id="action_hr_thr_wizard" model="ir.actions.act_window">
+            <field name="name">Generate THR Massal</field>
+            <field name="res_model">hr.thr.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</odoo>

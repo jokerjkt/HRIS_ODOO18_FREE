@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ================================================================
+             ACL — Dashboard TransientModel
+             (loaded after Python models are registered)
+             ================================================================ -->
+
+        <record id="access_hr_payroll_dashboard" model="ir.model.access">
+            <field name="name">hr.payroll.dashboard</field>
+            <field name="model_id" ref="model_hr_payroll_dashboard"/>
+            <field name="group_id" ref="hr.group_hr_manager"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+    </data>
+</odoo>

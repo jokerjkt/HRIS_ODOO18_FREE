@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- ================================================================
+             BPJS Rate Configuration per Kelompok Risiko JKK
+             Referensi: PP No. 44 Tahun 2015
+             ================================================================ -->
+
+        <record id="bpjs_jkk_kelompok_I" model="hr.bpjs.rate">
+            <field name="name">Kelompok I — Risiko Sangat Rendah</field>
+            <field name="code">I</field>
+            <field name="jkk_rate">0.0024</field>
+            <field name="description">
+                Perkantoran, perbankan, perdagangan umum, jasa keuangan,
+                pendidikan, kesehatan (non-medis), dll.
+            </field>
+        </record>
+
+        <record id="bpjs_jkk_kelompok_II" model="hr.bpjs.rate">
+            <field name="name">Kelompok II — Risiko Rendah</field>
+            <field name="code">II</field>
+            <field name="jkk_rate">0.0054</field>
+            <field name="description">
+                Pertanian (non-perkebunan), percetakan, peternakan,
+                perikanan darat, dll.
+            </field>
+        </record>
+
+        <record id="bpjs_jkk_kelompok_III" model="hr.bpjs.rate">
+            <field name="name">Kelompok III — Risiko Menengah</field>
+            <field name="code">III</field>
+            <field name="jkk_rate">0.0089</field>
+            <field name="description">
+                Industri makanan &amp; minuman, tekstil, kayu,
+                konstruksi skala kecil, dll.
+            </field>
+        </record>
+
+        <record id="bpjs_jkk_kelompok_IV" model="hr.bpjs.rate">
+            <field name="name">Kelompok IV — Risiko Tinggi</field>
+            <field name="code">IV</field>
+            <field name="jkk_rate">0.0127</field>
+            <field name="description">
+                Konstruksi, pertambangan, perkebunan sawit,
+                penggalian, industri besi &amp; baja, dll.
+            </field>
+        </record>
+
+        <record id="bpjs_jkk_kelompok_V" model="hr.bpjs.rate">
+            <field name="name">Kelompok V — Risiko Sangat Tinggi</field>
+            <field name="code">V</field>
+            <field name="jkk_rate">0.0174</field>
+            <field name="description">
+                Pertambangan minyak &amp; gas, petrokimia,
+                pengolahan kayu berat, penangkapan ikan laut, dll.
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ================================================================
+             Employee Form — Tab Informasi Indonesia (Modern Layout)
+             ================================================================ -->
+
+        <record id="view_employee_form_indonesia" model="ir.ui.view">
+            <field name="name">hr.employee.form.indonesia</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+
+                <!-- Tambah tab Indonesia setelah tab "Private Information" -->
+                <xpath expr="//page[@name='personal_information']" position="after">
+                    <page name="indonesia_info" string="Indonesia HR">
+
+                        <!-- ═══ Section: Identitas & Perpajakan ═══ -->
+                        <div class="o_kanban_record_body mb-3">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h5 class="mb-2">
+                                        <i class="fa fa-id-card text-primary"/> Identitas &amp; Perpajakan
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="row o_kanban_no_coverage">
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="card border-primary mb-3">
+                                        <div class="card-body py-2">
+                                            <div class="row mb-1">
+                                                <div class="col-6">
+                                                    <small class="text-muted">NIK (KTP)</small>
+                                                    <field name="nik" placeholder="16 digit NIK"
+                                                           class="mb-0"/>
+                                                </div>
+                                                <div class="col-6">
+                                                    <small class="text-muted">NPWP</small>
+                                                    <field name="npwp" placeholder="XX.XXX.XXX.X-XXX.XXX"
+                                                           class="mb-0"/>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <small class="text-muted">Status NPWP</small>
+                                                    <field name="npwp_has" readonly="1" class="mb-0"/>
+                                                </div>
+                                                <div class="col-6">
+                                                    <small class="text-muted">Tipe Kontrak</small>
+                                                    <field name="employee_contract_type" class="mb-0"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="card border-warning mb-3">
+                                        <div class="card-body py-2">
+                                            <div class="row mb-1">
+                                                <div class="col-6">
+                                                    <small class="text-muted">Status PTKP</small>
+                                                    <field name="ptkp_status" class="mb-0"/>
+                                                </div>
+                                                <div class="col-6">
+                                                    <small class="text-muted">Nilai PTKP (Rp/tahun)</small>
+                                                    <field name="ptkp_amount" widget="monetary"
+                                                           readonly="1" class="mb-0"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ═══ Section: BPJS Ketenagakerjaan ═══ -->
+                        <div class="o_kanban_record_body mb-3">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h5 class="mb-2">
+                                        <i class="fa fa-shield text-success"/> BPJS Ketenagakerjaan
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="row o_kanban_no_coverage">
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="card border-success mb-3">
+                                        <div class="card-body py-2">
+                                            <div class="row mb-1">
+                                                <div class="col-6">
+                                                    <small class="text-muted">No. Peserta BPJS TK</small>
+                                                    <field name="bpjs_tk_no"
+                                                           placeholder="Nomor Peserta BPJS TK"
+                                                           class="mb-0"/>
+                                                </div>
+                                                <div class="col-6">
+                                                    <small class="text-muted">Kelompok Risiko JKK</small>
+                                                    <field name="bpjs_tk_jkk_class" class="mb-0"/>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <small class="text-muted">Rate JKK (%)</small>
+                                                    <field name="bpjs_tk_jkk_rate" readonly="1"
+                                                           class="mb-0"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ═══ Section: BPJS Kesehatan ═══ -->
+                        <div class="o_kanban_record_body mb-3">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h5 class="mb-2">
+                                        <i class="fa fa-heartbeat text-danger"/> BPJS Kesehatan
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="row o_kanban_no_coverage">
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="card border-danger mb-3">
+                                        <div class="card-body py-2">
+                                            <div class="row mb-1">
+                                                <div class="col-6">
+                                                    <small class="text-muted">No. Peserta BPJS Kes</small>
+                                                    <field name="bpjs_kes_no" class="mb-0"/>
+                                                </div>
+                                                <div class="col-6">
+                                                    <small class="text-muted">Kelas BPJS Kesehatan</small>
+                                                    <field name="bpjs_kes_class" class="mb-0"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ═══ Section: Masa Kerja & THR ═══ -->
+                        <div class="o_kanban_record_body mb-3">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h5 class="mb-2">
+                                        <i class="fa fa-calendar text-info"/> Masa Kerja &amp; THR
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="row o_kanban_no_coverage">
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="card border-info mb-3">
+                                        <div class="card-body py-2">
+                                            <div class="row mb-1">
+                                                <div class="col-6">
+                                                    <small class="text-muted">Tanggal Bergabung</small>
+                                                    <field name="join_date" class="mb-0"/>
+                                                </div>
+                                                <div class="col-6">
+                                                    <small class="text-muted">Masa Kerja (Bulan)</small>
+                                                    <field name="tenure_months" readonly="1"
+                                                           class="mb-0"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ═══ Section: Data Bank ═══ -->
+                        <div class="o_kanban_record_body mb-3">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h5 class="mb-2">
+                                        <i class="fa fa-university text-secondary"/> Data Bank (Transfer Gaji)
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="row o_kanban_no_coverage">
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="card border-secondary mb-3">
+                                        <div class="card-body py-2">
+                                            <div class="row mb-1">
+                                                <div class="col-6">
+                                                    <small class="text-muted">Nama Bank</small>
+                                                    <field name="bank_name"
+                                                           placeholder="BCA / Mandiri / BRI / BNI"
+                                                           class="mb-0"/>
+                                                </div>
+                                                <div class="col-6">
+                                                    <small class="text-muted">Cabang</small>
+                                                    <field name="bank_branch"
+                                                           placeholder="Cabang bank"
+                                                           class="mb-0"/>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <small class="text-muted">No. Rekening</small>
+                                                    <field name="bank_account_number"
+                                                           placeholder="Nomor rekening"
+                                                           class="mb-0"/>
+                                                </div>
+                                                <div class="col-6">
+                                                    <small class="text-muted">Atas Nama</small>
+                                                    <field name="bank_account_name"
+                                                           placeholder="Nama pemegang rekening"
+                                                           class="mb-0"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </page>
+                </xpath>
+
+            </field>
+        </record>
+
+        <!-- ================================================================
+             Employee List — Tambah kolom NIK
+             ================================================================ -->
+
+        <record id="view_employee_list_indonesia" model="ir.ui.view">
+            <field name="name">hr.employee.list.indonesia</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='job_id']" position="after">
+                    <field name="nik" optional="show"/>
+                    <field name="ptkp_status" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

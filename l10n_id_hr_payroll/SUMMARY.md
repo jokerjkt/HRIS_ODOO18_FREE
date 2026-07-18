@@ -1,0 +1,234 @@
+# Indonesian HR Payroll System — Odoo 18
+
+**Modul HR Payroll Indonesia untuk Odoo 18 Community**
+Integrated HR payroll solution for Indonesian companies.
+
+---
+
+## Overview
+
+Complete HR payroll system built as a standalone module for Odoo 18 Community (no Enterprise dependencies). Fully integrated with Odoo 18's standard HR app — appears as native sub-menus under the Employees app.
+
+### Architecture
+
+```
+┌─────────────────────────────────────────────────────────┐
+│              Odoo 18 Community Core                      │
+│  hr │ hr_contract │ hr_work_entry │ hr_attendance │ ... │
+└──────────────────────┬──────────────────────────────────┘
+                       │ _inherit (extends)
+                       ▼
+┌─────────────────────────────────────────────────────────┐
+│         l10n_id_hr_payroll — Indonesian HR               │
+│                                                         │
+│  Employee Extension    │  Department Extension           │
+│  (NIK, NPWP, PTKP,    │  (Code for payslip             │
+│   BPJS, Bank info)     │   numbering)                   │
+│                        │                                │
+│  Contract Extension    │  Payslip (Standalone)           │
+│  (Allowances)          │  (GJ.MM.YYYY/DDD/NNN)          │
+│                        │                                │
+│  PPh 21 Engine  │  BPJS Engine  │  Overtime Engine      │
+│  (Progresif 5-  │  (TK + Kes)   │  (Permenaker 5/2023) │
+│   35%)          │               │                       │
+│                 │               │                       │
+│  THR Engine     │  Dashboard    │  Bank Payment List     │
+│  (Proporsional) │  (Admin+User) │  (PDF Report)          │
+│                 │               │                       │
+│  Trial Mixin    │  Demo Data    │  Reports               │
+│  (5-day,        │  (5 employees)│  (Slip Gaji, Bukti     │
+│   bypass-proof) │               │   Potong, Rekap BPJS)  │
+└─────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Features
+
+| # | Feature | Description |
+|---|---------|-------------|
+| 1 | **PPh 21** | Auto progressive tax 5%-35% (UU HPP No. 7/2021) |
+| 2 | **BPJS Ketenagakerjaan** | JKK, JKM, JHT, JP with risk-based rates |
+| 3 | **BPJS Kesehatan** | 1% employee, 4% employer (cap Rp 12M) |
+| 4 | **Payslip** | Transaction number GJ.MM.YYYY/DDD/NNN, workflow draft→computed→done |
+| 5 | **Bulk Payslip** | Wizard to generate payslips for all employees at once |
+| 6 | **Overtime** | Permenaker 5/2023 multipliers, approval workflow |
+| 7 | **THR** | Proportional calculation, bulk generation wizard |
+| 8 | **Dashboard Admin** | Full stats, quick actions for HR managers |
+| 9 | **Dashboard HR User** | Simplified view for regular HR users |
+| 10 | **Bank Payment** | List view + PDF report for bank transfer |
+| 11 | **Reports** | Slip Gaji PDF, Bukti Potong 1721, Rekap BPJS |
+| 12 | **Trial Mode** | 5-day bypass-proof trial, read-only after expiry |
+| 13 | **Demo Data** | Sample employees, contracts ready to test |
+
+---
+
+## File Structure (46 files)
+
+```
+l10n_id_hr_payroll/
+├── __manifest__.py
+├── __init__.py
+├── hooks.py                          # Post-init: trial date + dept codes
+├── models/
+│   ├── __init__.py
+│   ├── trial_mixin.py                # Bypass-proof trial logic (3-layer)
+│   ├── hr_department.py              # Extension: code field
+│   ├── hr_employee.py                # Extension: NIK, NPWP, PTKP, BPJS, Bank
+│   ├── hr_pph21.py                   # PPh 21 engine (progressive 5-35%)
+│   ├── hr_bpjs.py                    # BPJS engine (TK + Kesehatan)
+│   ├── hr_bpjs_rate.py               # BPJS rate config by risk class
+│   ├── hr_contract.py                # Extension: allowances
+│   ├── hr_overtime.py                # Overtime with approval workflow
+│   ├── hr_payslip.py                 # Payslip (standalone, GJ.MM.YYYY/DDD/NNN)
+│   ├── hr_thr.py                     # THR calculator (proportional)
+│   ├── hr_payroll_dashboard.py       # Admin dashboard (TransientModel)
+│   └── hr_user_dashboard.py          # HR User dashboard (TransientModel)
+├── wizard/
+│   ├── __init__.py
+│   ├── hr_thr_wizard.py              # Bulk THR generation
+│   ├── hr_thr_wizard_views.xml
+│   ├── hr_payslip_generate_wizard.py # Bulk payslip generation
+│   └── hr_payslip_generate_views.xml
+├── data/
+│   ├── hr_bpjs_rate_data.xml         # 5 BPJS risk groups
+│   ├── hr_leave_type_data.xml        # 8 Indonesian leave types
+│   └── hr_demo_data.xml              # Demo employees & contracts
+├── security/
+│   ├── ir.model.access.csv           # ACL for all models
+│   ├── hr_overtime_security.xml      # Overtime groups + record rules
+│   └── hr_payroll_security.xml       # Dashboard ACL
+├── views/
+│   ├── hr_employee_views.xml         # Indonesia HR tab on employee form
+│   ├── hr_department_views.xml       # Code field on department
+│   ├── hr_contract_views.xml         # Allowance fields on contract
+│   ├── hr_payslip_views.xml          # Payslip form/list/search
+│   ├── hr_payslip_payment_views.xml  # Bank payment list
+│   ├── hr_overtime_views.xml         # Overtime form/list/kanban
+│   ├── hr_thr_views.xml              # THR form/list
+│   ├── hr_bpjs_rate_views.xml        # BPJS rate list/form
+│   ├── hr_user_dashboard_views.xml   # HR User dashboard
+│   ├── dashboard_views.xml           # Admin dashboard
+│   └── menu_views.xml                # Integrated under HR app
+├── report/
+│   ├── hr_payslip_report.xml         # Slip Gaji PDF
+│   ├── hr_bukti_potong_report.xml    # Bukti Potong 1721-A1/A2
+│   ├── hr_bpjs_report.xml            # Rekap Iuran BPJS
+│   └── hr_bank_payment_report.xml    # Daftar Pembayaran Bank
+├── static/
+│   └── description/
+│       ├── icon.png
+│       └── index.html                # Module description page
+├── SUMMARY.md
+└── MODULE_DESIGN.md
+```
+
+---
+
+## Installation
+
+1. Copy `l10n_id_hr_payroll` to Odoo 18 addons directory
+2. Update Apps List (Settings → Developer Mode → Update Apps List)
+3. Install **Indonesian HR Payroll (PPh 21 & BPJS)**
+4. Dependencies: `hr`, `hr_contract`, `hr_work_entry`, `hr_attendance`, `hr_holidays`, `mail`
+
+---
+
+## Usage Guide
+
+### Setup Karyawan
+1. **Employees** → select employee → **Indonesia HR** tab
+2. Fill NIK, NPWP, PTKP status, BPJS info, bank details
+
+### Proses Payroll
+1. **Employees → Payroll → Daftar Slip Gaji** → New
+2. Select employee and period
+3. Click **Hitung Gaji** → PPh 21 & BPJS auto-calculated
+4. Review tabs: PPh 21 | BPJS | Lembur | THR
+5. **Konfirmasi** → Done
+
+### Bulk Payslip Generation
+1. **Employees → Payroll → Buat Slip Gaji Massal**
+2. Select period, filter departments/employees
+3. Preview count and estimated total
+4. Click **Buat Slip Gaji** → Auto-compute all
+
+### Lembur
+1. **Employees → Lembur → Pengajuan Lembur Saya**
+2. New → fill date, hours, activity description
+3. **Submit ke Atasan** → Manager reviews
+4. Approved overtime → auto-linked to payslip
+
+### THR
+1. **Employees → THR → Generate THR Massal**
+2. Fill year, holiday, payment date
+3. Preview eligible employees
+4. **Generate THR** → Confirm → Mark paid
+
+### Cetak Laporan
+- **Slip Gaji**: from Payslip → Print → Slip Gaji Indonesia
+- **Bukti Potong**: from Payslip → Print → Bukti Potong PPh 21
+- **Rekap BPJS**: from menu → Rekap Iuran BPJS
+
+---
+
+## Menu Integration
+
+Integrated under Odoo 18 HR app (Employees):
+
+```
+HR App (Employees)
+├── Dashboard Admin (HR Managers)
+├── Dashboard HR (All HR Users)
+├── Payroll
+│   ├── Daftar Slip Gaji
+│   ├── Daftar Pembayaran Gaji
+│   └── Buat Slip Gaji Massal
+├── Lembur
+│   ├── Pengajuan Lembur Saya
+│   ├── Perlu Persetujuan
+│   └── Semua Lembur
+├── THR
+│   ├── Daftar THR
+│   └── Generate THR Massal
+├── Reporting → Rekap Iuran BPJS
+└── Configuration → Tarif BPJS
+```
+
+---
+
+## Trial Mode
+
+- **Duration**: 5 days from installation
+- **Bypass-proof**: 3-layer verification (config + checksum + DB timestamps)
+- **After expiry**: Read-only mode (can view data, cannot create/edit/compute)
+- **Bilingual**: Indonesian + English messages
+- **Contact**: susilo.cdv@gmail.com | linkedin.com/in/susilo-raden-68a19049
+
+---
+
+## Regulatory References
+
+| Regulation | Subject |
+|------------|---------|
+| UU HPP No. 7/2021 | Progressive PPh 21 rates |
+| PMK No. 168/PMK.010/2023 | PPh 21 withholding procedures |
+| PMK No. 101/PMK.010/2016 | PTKP table |
+| PP No. 44/2015 | BPJS TK — JKK & JKM |
+| PP No. 46/2015 | BPJS TK — JHT |
+| PP No. 45/2015 | BPJS TK — JP |
+| Perpres No. 75/2019 | BPJS Kesehatan |
+| PerBPJS No. 6/2023 | Updated BPJS Kesehatan rates |
+| PP No. 36/2021 | THR (Holiday Allowance) |
+| Permenaker No. 5/2023 | Overtime pay rates |
+
+---
+
+## Contact
+
+- **Email**: susilo.cdv@gmail.com
+- **LinkedIn**: [Susilo Raden](https://www.linkedin.com/in/susilo-raden-68a19049)
+
+---
+
+*Last updated: 2026-07-18*
