@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ================================================================
+             Shift Type — Form View
+             ================================================================ -->
+
+        <record id="view_hr_shift_type_form" model="ir.ui.view">
+            <field name="name">hr.shift.type.form</field>
+            <field name="model">hr.shift.type</field>
+            <field name="arch" type="xml">
+                <form string="Tipe Shift">
+                    <sheet>
+                        <group>
+                            <group string="Informasi Shift">
+                                <field name="name"/>
+                                <field name="code"/>
+                                <field name="is_rest"/>
+                            </group>
+                            <group string="Jam Kerja">
+                                <field name="hour_from"/>
+                                <field name="hour_to"/>
+                                <field name="duration" readonly="1"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="color" widget="color_picker"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- ================================================================
+             Shift Type — List View
+             ================================================================ -->
+
+        <record id="view_hr_shift_type_list" model="ir.ui.view">
+            <field name="name">hr.shift.type.list</field>
+            <field name="model">hr.shift.type</field>
+            <field name="arch" type="xml">
+                <list string="Tipe Shift" editable="bottom">
+                    <field name="color" widget="color_picker" width="50"/>
+                    <field name="name"/>
+                    <field name="code" width="80"/>
+                    <field name="hour_from" width="100"/>
+                    <field name="hour_to" width="100"/>
+                    <field name="duration" width="100"/>
+                    <field name="is_rest" widget="boolean_toggle"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- ================================================================
+             Shift Type — Action
+             ================================================================ -->
+
+        <record id="action_hr_shift_type" model="ir.actions.act_window">
+            <field name="name">Tipe Shift</field>
+            <field name="res_model">hr.shift.type</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Belum ada tipe shift!
+                </p>
+                <p>
+                    Definisikan tipe shift (Pagi, Siang, Malam, Libur) di sini.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

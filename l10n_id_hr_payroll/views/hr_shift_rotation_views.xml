@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ================================================================
+             Rotation — Form View
+             ================================================================ -->
+
+        <record id="view_hr_shift_rotation_form" model="ir.ui.view">
+            <field name="name">hr.shift.rotation.form</field>
+            <field name="model">hr.shift.rotation</field>
+            <field name="arch" type="xml">
+                <form string="Pola Rotasi Shift">
+                    <header>
+                        <button name="action_copy_template_3shift" type="object"
+                                string="Load Template 3-Shift" class="btn-primary"
+                                invisible="line_ids"/>
+                        <button name="action_copy_template_4shift" type="object"
+                                string="Load Template 4-Shift" class="btn-primary"
+                                invisible="line_ids"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group string="Informasi Pola">
+                                <field name="name"/>
+                                <field name="rotation_type"/>
+                                <field name="cycle_length" readonly="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Detail Siklus" name="lines">
+                                <field name="line_ids" nolabel="1">
+                                    <list editable="bottom" string="Detail Siklus">
+                                        <field name="day_number" string="Hari ke-" width="80"/>
+                                        <field name="shift_type_id" string="Tipe Shift"/>
+                                        <field name="shift_code" readonly="1" width="60"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Keterangan" name="note">
+                                <field name="note" placeholder="Catatan tentang pola rotasi ini..."/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- ================================================================
+             Rotation — List View
+             ================================================================ -->
+
+        <record id="view_hr_shift_rotation_list" model="ir.ui.view">
+            <field name="name">hr.shift.rotation.list</field>
+            <field name="model">hr.shift.rotation</field>
+            <field name="arch" type="xml">
+                <list string="Pola Rotasi Shift">
+                    <field name="name"/>
+                    <field name="rotation_type"/>
+                    <field name="cycle_length" width="120"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- ================================================================
+             Rotation — Action
+             ================================================================ -->
+
+        <record id="action_hr_shift_rotation" model="ir.actions.act_window">
+            <field name="name">Pola Rotasi</field>
+            <field name="res_model">hr.shift.rotation</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Belum ada pola rotasi!
+                </p>
+                <p>
+                    Buat pola rotasi shift (3-shift weekly atau 4-shift daily) di sini.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

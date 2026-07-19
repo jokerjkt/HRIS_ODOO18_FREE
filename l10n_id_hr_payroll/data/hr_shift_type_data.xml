@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- ================================================================
+             Default Shift Types — 4 tipe standar
+             ================================================================ -->
+
+        <record id="shift_type_pagi" model="hr.shift.type">
+            <field name="name">Pagi</field>
+            <field name="code">P</field>
+            <field name="hour_from">6.0</field>
+            <field name="hour_to">14.0</field>
+            <field name="color">2</field>
+            <field name="is_rest" eval="False"/>
+        </record>
+
+        <record id="shift_type_siang" model="hr.shift.type">
+            <field name="name">Siang</field>
+            <field name="code">S</field>
+            <field name="hour_from">14.0</field>
+            <field name="hour_to">22.0</field>
+            <field name="color">6</field>
+            <field name="is_rest" eval="False"/>
+        </record>
+
+        <record id="shift_type_malam" model="hr.shift.type">
+            <field name="name">Malam</field>
+            <field name="code">M</field>
+            <field name="hour_from">22.0</field>
+            <field name="hour_to">6.0</field>
+            <field name="color">1</field>
+            <field name="is_rest" eval="False"/>
+        </record>
+
+        <record id="shift_type_libur" model="hr.shift.type">
+            <field name="name">Libur</field>
+            <field name="code">L</field>
+            <field name="hour_from">0.0</field>
+            <field name="hour_to">0.0</field>
+            <field name="color">7</field>
+            <field name="is_rest" eval="True"/>
+        </record>
+
+        <!-- ================================================================
+             Default Rotation Patterns
+             ================================================================ -->
+
+        <record id="rotation_3shift_weekly" model="hr.shift.rotation">
+            <field name="name">3-Shift Weekly (P-S-M-L-L-L-L)</field>
+            <field name="rotation_type">3_shift_weekly</field>
+        </record>
+
+        <record id="rotation_4shift_daily" model="hr.shift.rotation">
+            <field name="name">4-Shift Daily (P-S-M-L)</field>
+            <field name="rotation_type">4_shift_daily</field>
+        </record>
+
+        <!-- 3-Shift Weekly Lines: P-P-P-P-P-S-L (simplified) -->
+        <record id="rotation_3shift_line_1" model="hr.shift.rotation.line">
+            <field name="rotation_id" ref="rotation_3shift_weekly"/>
+            <field name="day_number">1</field>
+            <field name="shift_type_id" ref="shift_type_pagi"/>
+        </record>
+        <record id="rotation_3shift_line_2" model="hr.shift.rotation.line">
+            <field name="rotation_id" ref="rotation_3shift_weekly"/>
+            <field name="day_number">2</field>
+            <field name="shift_type_id" ref="shift_type_pagi"/>
+        </record>
+        <record id="rotation_3shift_line_3" model="hr.shift.rotation.line">
+            <field name="rotation_id" ref="rotation_3shift_weekly"/>
+            <field name="day_number">3</field>
+            <field name="shift_type_id" ref="shift_type_siang"/>
+        </record>
+        <record id="rotation_3shift_line_4" model="hr.shift.rotation.line">
+            <field name="rotation_id" ref="rotation_3shift_weekly"/>
+            <field name="day_number">4</field>
+            <field name="shift_type_id" ref="shift_type_siang"/>
+        </record>
+        <record id="rotation_3shift_line_5" model="hr.shift.rotation.line">
+            <field name="rotation_id" ref="rotation_3shift_weekly"/>
+            <field name="day_number">5</field>
+            <field name="shift_type_id" ref="shift_type_malam"/>
+        </record>
+        <record id="rotation_3shift_line_6" model="hr.shift.rotation.line">
+            <field name="rotation_id" ref="rotation_3shift_weekly"/>
+            <field name="day_number">6</field>
+            <field name="shift_type_id" ref="shift_type_malam"/>
+        </record>
+        <record id="rotation_3shift_line_7" model="hr.shift.rotation.line">
+            <field name="rotation_id" ref="rotation_3shift_weekly"/>
+            <field name="day_number">7</field>
+            <field name="shift_type_id" ref="shift_type_libur"/>
+        </record>
+
+        <!-- 4-Shift Daily Lines: P-S-M-L -->
+        <record id="rotation_4shift_line_1" model="hr.shift.rotation.line">
+            <field name="rotation_id" ref="rotation_4shift_daily"/>
+            <field name="day_number">1</field>
+            <field name="shift_type_id" ref="shift_type_pagi"/>
+        </record>
+        <record id="rotation_4shift_line_2" model="hr.shift.rotation.line">
+            <field name="rotation_id" ref="rotation_4shift_daily"/>
+            <field name="day_number">2</field>
+            <field name="shift_type_id" ref="shift_type_siang"/>
+        </record>
+        <record id="rotation_4shift_line_3" model="hr.shift.rotation.line">
+            <field name="rotation_id" ref="rotation_4shift_daily"/>
+            <field name="day_number">3</field>
+            <field name="shift_type_id" ref="shift_type_malam"/>
+        </record>
+        <record id="rotation_4shift_line_4" model="hr.shift.rotation.line">
+            <field name="rotation_id" ref="rotation_4shift_daily"/>
+            <field name="day_number">4</field>
+            <field name="shift_type_id" ref="shift_type_libur"/>
+        </record>
+
+    </data>
+</odoo>

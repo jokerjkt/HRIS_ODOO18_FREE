@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ================================================================
+             Role/Group System — 4 Levels
+             Hierarchy: User → Admin → Supervisor → Full Administrator
+             ================================================================ -->
+
+        <!-- Level 1: Pegawai/User -->
+        <record id="group_hr_user" model="res.groups">
+            <field name="name">Pegawai / User</field>
+            <field name="category_id" ref="base.module_category_human_resources"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <!-- Level 2: Admin HR -->
+        <record id="group_hr_admin" model="res.groups">
+            <field name="name">Admin HR</field>
+            <field name="category_id" ref="base.module_category_human_resources"/>
+            <field name="implied_ids" eval="[(4, ref('group_hr_user'))]"/>
+        </record>
+
+        <!-- Level 3: Supervisor -->
+        <record id="group_hr_supervisor" model="res.groups">
+            <field name="name">Supervisor</field>
+            <field name="category_id" ref="base.module_category_human_resources"/>
+            <field name="implied_ids" eval="[(4, ref('group_hr_admin'))]"/>
+        </record>
+
+        <!-- Level 4: Full Administrator -->
+        <record id="group_hr_full_admin" model="res.groups">
+            <field name="name">Full Administrator</field>
+            <field name="category_id" ref="base.module_category_human_resources"/>
+            <field name="implied_ids" eval="[(4, ref('group_hr_supervisor'))]"/>
+        </record>
+
+    </data>
+</odoo>

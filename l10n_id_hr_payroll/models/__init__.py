@@ -12,4 +12,9 @@ from . import (
     hr_thr,
     hr_payroll_dashboard,
     hr_user_dashboard,
+    hr_my_dashboard,
+    hr_shift_type,
+    hr_shift_rotation,
+    hr_shift_assign,
+    hr_shift_daily,
 )

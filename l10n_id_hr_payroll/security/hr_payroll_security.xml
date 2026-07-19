@@ -17,5 +17,19 @@
             <field name="perm_unlink" eval="False"/>
         </record>
 
+        <!-- ================================================================
+             ACL — Bulk Assign Shift Wizard (TransientModel)
+             ================================================================ -->
+
+        <record id="access_hr_shift_bulk_assign" model="ir.model.access">
+            <field name="name">hr.shift.bulk.assign</field>
+            <field name="model_id" ref="model_hr_shift_bulk_assign"/>
+            <field name="group_id" ref="hr.group_hr_manager"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
     </data>
 </odoo>

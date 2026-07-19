@@ -15,3 +15,9 @@ access_hr_payslip_user,hr.payslip User,model_hr_payslip,hr.group_hr_user,1,1,1,0
 access_hr_payslip_manager,hr.payslip Manager,model_hr_payslip,hr.group_hr_manager,1,1,1,1
 access_hr_payslip_generate_wizard,hr.payslip.generate.wizard,model_hr_payslip_generate_wizard,hr.group_hr_manager,1,1,1,1
 access_hr_user_dashboard,hr.user.dashboard,model_hr_user_dashboard,hr.group_hr_user,1,1,1,1
+access_hr_my_dashboard,hr.my.dashboard,model_hr_my_dashboard,hr.group_hr_user,1,1,1,1
+access_hr_shift_type,hr.shift.type,model_hr_shift_type,l10n_id_hr_payroll.group_hr_admin,1,1,1,1
+access_hr_shift_rotation,hr.shift.rotation,model_hr_shift_rotation,l10n_id_hr_payroll.group_hr_admin,1,1,1,1
+access_hr_shift_rotation_line,hr.shift.rotation.line,model_hr_shift_rotation_line,l10n_id_hr_payroll.group_hr_admin,1,1,1,1
+access_hr_shift_assign,hr.shift.assign,model_hr_shift_assign,l10n_id_hr_payroll.group_hr_admin,1,1,1,1
+access_hr_shift_daily,hr.shift.daily,model_hr_shift_daily,l10n_id_hr_payroll.group_hr_admin,1,1,1,1

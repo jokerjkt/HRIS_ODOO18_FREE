@@ -111,13 +111,13 @@ class HrOvertime(models.Model):
         required=True,
         help='Alasan singkat mengapa lembur diperlukan',
     )
-    activity_description = fields.Text(
+    activity_description = fields.Html(
         string='Deskripsi Kegiatan Lembur',
         required=True,
         help='Uraian detail kegiatan yang dilakukan selama lembur. '
              'Wajib diisi dan akan digunakan sebagai dasar persetujuan atasan.',
     )
-    result_output = fields.Text(
+    result_output = fields.Html(
         string='Output / Hasil Kegiatan',
         help='Hasil atau output nyata yang dicapai selama lembur',
     )

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ================================================================
+             Bulk Assign Shift — Form View
+             ================================================================ -->
+
+        <record id="view_hr_shift_bulk_assign_form" model="ir.ui.view">
+            <field name="name">hr.shift.bulk.assign.form</field>
+            <field name="model">hr.shift.bulk.assign</field>
+            <field name="arch" type="xml">
+                <form string="Bulk Assign Shift">
+                    <group string="Pengaturan">
+                        <group>
+                            <field name="rotation_id"/>
+                            <field name="department_id"/>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                        </group>
+                        <group>
+                            <field name="employee_ids" widget="many2many_tags"
+                                   placeholder="Pilih karyawan..."/>
+                            <field name="overwrite_existing"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="action_apply" string="Terapkan" type="object"
+                                class="btn-primary"/>
+                        <button string="Batal" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- ================================================================
+             Bulk Assign Shift — Action
+             ================================================================ -->
+
+        <record id="action_hr_shift_bulk_assign" model="ir.actions.act_window">
+            <field name="name">Generate Bulk Assign</field>
+            <field name="res_model">hr.shift.bulk.assign</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</odoo>

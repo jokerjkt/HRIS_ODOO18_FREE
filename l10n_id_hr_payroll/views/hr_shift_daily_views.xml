@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ================================================================
+             Shift Daily — Calendar View
+             ================================================================ -->
+
+        <record id="view_hr_shift_daily_calendar" model="ir.ui.view">
+            <field name="name">hr.shift.daily.calendar</field>
+            <field name="model">hr.shift.daily</field>
+            <field name="arch" type="xml">
+                <calendar string="Jadwal Shift Harian"
+                          date_start="date"
+                          date_stop="date"
+                          color="shift_type_id"
+                          event_open_popup="true"
+                          quick_create="false">
+                    <field name="employee_id"/>
+                    <field name="shift_type_id"/>
+                    <field name="department_id"/>
+                    <field name="date"/>
+                </calendar>
+            </field>
+        </record>
+
+        <!-- ================================================================
+             Shift Daily — Form View
+             ================================================================ -->
+
+        <record id="view_hr_shift_daily_form" model="ir.ui.view">
+            <field name="name">hr.shift.daily.form</field>
+            <field name="model">hr.shift.daily</field>
+            <field name="arch" type="xml">
+                <form string="Jadwal Harian Shift" create="false" edit="false">
+                    <sheet>
+                        <group>
+                            <group string="Informasi Karyawan">
+                                <field name="employee_id"/>
+                                <field name="department_id"/>
+                            </group>
+                            <group string="Detail Shift">
+                                <field name="date"/>
+                                <field name="shift_type_id"/>
+                                <field name="hour_from" readonly="1"/>
+                                <field name="hour_to" readonly="1"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group string="Status">
+                                <field name="is_holiday"/>
+                                <field name="is_rest"/>
+                                <field name="is_weekend"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="note" placeholder="Catatan..."/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- ================================================================
+             Shift Daily — List View
+             ================================================================ -->
+
+        <record id="view_hr_shift_daily_list" model="ir.ui.view">
+            <field name="name">hr.shift.daily.list</field>
+            <field name="model">hr.shift.daily</field>
+            <field name="arch" type="xml">
+                <list string="Jadwal Harian Shift"
+                      decoration-warning="is_holiday"
+                      decoration-danger="is_weekend and not is_rest"
+                      decoration-muted="is_rest">
+                    <field name="employee_id"/>
+                    <field name="department_id" optional="show"/>
+                    <field name="date"/>
+                    <field name="shift_type_id"/>
+                    <field name="shift_code" width="80"/>
+                    <field name="hour_from" width="80"/>
+                    <field name="hour_to" width="80"/>
+                    <field name="is_holiday" widget="boolean_toggle" width="50"/>
+                    <field name="is_rest" widget="boolean_toggle" width="50"/>
+                    <field name="is_weekend" widget="boolean_toggle" width="50"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- ================================================================
+             Shift Daily — Search View
+             ================================================================ -->
+
+        <record id="view_hr_shift_daily_search" model="ir.ui.view">
+            <field name="name">hr.shift.daily.search</field>
+            <field name="model">hr.shift.daily</field>
+            <field name="arch" type="xml">
+                <search string="Cari Jadwal Shift">
+                    <field name="employee_id"/>
+                    <field name="shift_type_id"/>
+                    <field name="department_id"/>
+                    <separator/>
+                    <filter string="Hari Ini" name="filter_today"
+                            domain="[('date', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                    <separator/>
+                    <filter string="Hari Libur" name="filter_holiday"
+                            domain="[('is_holiday', '=', True)]"/>
+                    <filter string="Akhir Pekan" name="filter_weekend"
+                            domain="[('is_weekend', '=', True)]"/>
+                    <separator/>
+                    <group expand="0" string="Kelompokkan Berdasarkan">
+                        <filter string="Karyawan" name="group_employee"
+                                context="{'group_by': 'employee_id'}"/>
+                        <filter string="Departemen" name="group_department"
+                                context="{'group_by': 'department_id'}"/>
+                        <filter string="Tipe Shift" name="group_shift_type"
+                                context="{'group_by': 'shift_type_id'}"/>
+                        <filter string="Tanggal" name="group_date"
+                                context="{'group_by': 'date'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- ================================================================
+             Shift Daily — Action
+             ================================================================ -->
+
+        <record id="action_hr_shift_daily" model="ir.actions.act_window">
+            <field name="name">Jadwal Harian</field>
+            <field name="res_model">hr.shift.daily</field>
+            <field name="view_mode">calendar,list,form</field>
+            <field name="search_view_id" ref="view_hr_shift_daily_search"/>
+            <field name="context">{'search_default_filter_today': 0}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Belum ada jadwal shift!
+                </p>
+                <p>
+                    Generate jadwal harian dari menu "Assign Shift" atau gunakan wizard "Generate Bulk Assign".
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -23,6 +23,12 @@
 │  └──────────────┘  └──────────────┘  └──────────────┘  │
 │                                                         │
 │  ┌─────────────────────────────────────────────────┐    │
+│  │  Shift Scheduling System                        │    │
+│  │  hr.shift.type │ hr.shift.rotation              │    │
+│  │  hr.shift.assign │ hr.shift.daily               │    │
+│  └─────────────────────────────────────────────────┘    │
+│                                                         │
+│  ┌─────────────────────────────────────────────────┐    │
 │  │  Trial Mixin (bypass-proof, 3-layer check)      │    │
 │  └─────────────────────────────────────────────────┘    │
 │                                                         │
@@ -54,6 +60,11 @@
 | `hr.bpjs.rate` | BPJS rate config by risk class | — |
 | `hr.overtime` | Overtime with approval workflow | mail.thread, mail.activity.mixin, trial.mixin |
 | `hr.thr` | THR (holiday allowance) | mail.thread, trial.mixin |
+| `hr.shift.type` | Shift type definitions (Pagi/Siang/Malam/Libur) | — |
+| `hr.shift.rotation` | Rotation pattern (3-shift weekly / 4-shift daily) | — |
+| `hr.shift.rotation.line` | Detail of rotation cycle (day X → shift type) | — |
+| `hr.shift.assign` | Assign rotation to employee for period | — |
+| `hr.shift.daily` | Generated daily shift schedule | — |
 | `hr.payroll.dashboard` | Admin dashboard | — |
 | `hr.user.dashboard` | HR User dashboard | — |
 
@@ -64,6 +75,7 @@
 | `hr.thr.wizard` | Bulk THR generation |
 | `hr.payslip.generate.wizard` | Bulk payslip generation |
 | `hr.overtime.reject.wizard` | Overtime rejection reason |
+| `hr.shift.bulk.assign` | Bulk shift assignment wizard |
 
 ---
 
@@ -117,13 +129,22 @@ Example: `GJ.07.2026/SALES/001` = Gaji Juli 2026, Sales, slip ke-1
 
 ## Security Model
 
-### Groups
+### Groups (4-Level)
 
 ```
 hr.group_hr_user
     └── hr.group_hr_manager
             └── group_hr_overtime_user
                     └── group_hr_overtime_manager
+```
+
+### Custom Role Groups
+
+```
+l10n_id_hr_payroll.group_hr_user (Pegawai)
+    └── l10n_id_hr_payroll.group_hr_admin (Admin HR)
+            └── l10n_id_hr_payroll.group_hr_supervisor (Supervisor)
+                    └── l10n_id_hr_payroll.group_hr_full_admin (Full Administrator)
 ```
 
 ### ACL Summary
@@ -135,8 +156,73 @@ hr.group_hr_user
 | hr.thr | R | R/W/C/U |
 | hr.bpjs | R/W/C | R/W/C/U |
 | hr.bpjs.rate | R | R/W/C/U |
+| hr.shift.type | — | R/W/C/U |
+| hr.shift.rotation | — | R/W/C/U |
+| hr.shift.assign | — | R/W/C/U |
+| hr.shift.daily | — | R/W/C/U |
 | hr.payroll.dashboard | — | R/C |
 | hr.user.dashboard | R/C | R/C |
+
+---
+
+## Shift Scheduling System
+
+### Overview
+
+Sistem penjadwalan shift untuk operasional 24 jam (pabrik, department store).
+
+### Shift Types
+
+| Tipe | Kode | Jam | Warna |
+|------|------|-----|-------|
+| Pagi | P | 06:00 - 14:00 | Hijau |
+| Siang | S | 14:00 - 22:00 | Biru |
+| Malam | M | 22:00 - 06:00 | Merah |
+| Libur | L | - | Abu-abu |
+
+### Rotation Patterns
+
+**3-Shift Weekly:**
+```
+Hari ke-1: Pagi (06-14)
+Hari ke-2: Pagi (06-14)
+Hari ke-3: Siang (14-22)
+Hari ke-4: Siang (14-22)
+Hari ke-5: Malam (22-06)
+Hari ke-6: Malam (22-06)
+Hari ke-7: Libur
+```
+
+**4-Shift Daily:**
+```
+Hari ke-1: Pagi (06-14)
+Hari ke-2: Siang (14-22)
+Hari ke-3: Malam (22-06)
+Hari ke-4: Libur
+```
+
+### Data Flow
+
+```
+1. Define Shift Types (Pagi, Siang, Malam, Libur)
+         ↓
+2. Create Rotation Pattern (3-shift or 4-shift)
+         ↓
+3. Assign Rotation to Employee (date_from - date_to)
+         ↓
+4. Auto-generate Daily Records (hr.shift.daily)
+         ↓
+5. View in Gantt/Calendar (visual scheduling)
+         ↓
+6. Holiday Detection (auto-detect from hr.holiday)
+```
+
+### Holiday Integration
+
+- Uses existing `hr.holiday` (public holiday) system
+- Auto-detect holidays during daily generation
+- Flag: `is_holiday = True` for public holidays
+- User can edit/add holidays in Settings → Leaves
 
 ---
 
@@ -209,4 +295,4 @@ PPh 21 Final
 
 ---
 
-*Last updated: 2026-07-18*
+*Last updated: 2026-07-19*

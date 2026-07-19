@@ -6,7 +6,14 @@
              Indonesian HR — Integrated under Odoo 18 HR App
              ================================================================ -->
 
-        <!-- ── Dashboard HR — Top-level navbar (before Employees) ────── -->
+        <!-- ── My Dashboard — Top-level navbar (before Dashboard HR) ──── -->
+
+        <menuitem id="menu_hr_my_dashboard"
+                  name="Dashboard Saya"
+                  action="action_hr_my_dashboard"
+                  sequence="175"/>
+
+        <!-- ── Dashboard HR — Top-level navbar ────────────────────────── -->
 
         <menuitem id="menu_hr_user_dashboard"
                   name="Dashboard HR"
@@ -20,14 +27,15 @@
                   parent="hr.menu_hr_root"
                   action="action_indonesia_hr_dashboard"
                   sequence="1"
-                  groups="hr.group_hr_manager"/>
+                  groups="l10n_id_hr_payroll.group_hr_full_admin"/>
 
         <!-- ── Payroll ────────────────────────────────────────────────────── -->
 
         <menuitem id="menu_indonesia_hr_payslip"
                   name="Payroll"
                   parent="hr.menu_hr_root"
-                  sequence="50"/>
+                  sequence="50"
+                  groups="l10n_id_hr_payroll.group_hr_admin"/>
 
         <menuitem id="menu_hr_payslip_list"
                   name="Daftar Slip Gaji"
@@ -64,20 +72,23 @@
                   name="Perlu Persetujuan"
                   parent="menu_indonesia_hr_overtime"
                   action="action_hr_overtime_to_approve"
-                  sequence="20"/>
+                  sequence="20"
+                  groups="l10n_id_hr_payroll.group_hr_admin"/>
 
         <menuitem id="menu_hr_overtime_all"
                   name="Semua Lembur"
                   parent="menu_indonesia_hr_overtime"
                   action="action_hr_overtime"
-                  sequence="30"/>
+                  sequence="30"
+                  groups="l10n_id_hr_payroll.group_hr_admin"/>
 
         <!-- ── THR ────────────────────────────────────────────────────────── -->
 
         <menuitem id="menu_indonesia_hr_thr"
                   name="THR"
                   parent="hr.menu_hr_root"
-                  sequence="60"/>
+                  sequence="60"
+                  groups="l10n_id_hr_payroll.group_hr_admin"/>
 
         <menuitem id="menu_hr_thr_list"
                   name="Daftar THR"
@@ -91,13 +102,40 @@
                   action="action_hr_thr_wizard"
                   sequence="20"/>
 
+        <!-- ── Shift Scheduling ────────────────────────────────────────────── -->
+
+        <menuitem id="menu_indonesia_hr_shift_scheduling"
+                  name="Shift Scheduling"
+                  parent="hr.menu_hr_root"
+                  sequence="58"
+                  groups="l10n_id_hr_payroll.group_hr_admin"/>
+
+        <menuitem id="menu_hr_shift_daily"
+                  name="Jadwal Harian"
+                  parent="menu_indonesia_hr_shift_scheduling"
+                  action="action_hr_shift_daily"
+                  sequence="10"/>
+
+        <menuitem id="menu_hr_shift_assign"
+                  name="Assign Shift"
+                  parent="menu_indonesia_hr_shift_scheduling"
+                  action="action_hr_shift_assign"
+                  sequence="20"/>
+
+        <menuitem id="menu_hr_shift_bulk_assign"
+                  name="Generate Bulk Assign"
+                  parent="menu_indonesia_hr_shift_scheduling"
+                  action="action_hr_shift_bulk_assign"
+                  sequence="30"/>
+
         <!-- ── Reporting (under existing HR Reporting) ─────────────────────── -->
 
         <menuitem id="menu_hr_report_bpjs"
                   name="Rekap Iuran BPJS"
                   parent="hr.hr_menu_hr_reports"
                   action="action_report_bpjs_rekap"
-                  sequence="15"/>
+                  sequence="15"
+                  groups="l10n_id_hr_payroll.group_hr_supervisor"/>
 
         <!-- ── Configuration (under existing HR Configuration) ─────────────── -->
 
@@ -105,7 +143,22 @@
                   name="Tarif BPJS"
                   parent="hr.menu_human_resources_configuration"
                   action="action_hr_bpjs_rate"
-                  sequence="26"/>
+                  sequence="26"
+                  groups="l10n_id_hr_payroll.group_hr_full_admin"/>
+
+        <menuitem id="menu_hr_shift_type"
+                  name="Tipe Shift"
+                  parent="hr.menu_human_resources_configuration"
+                  action="action_hr_shift_type"
+                  sequence="27"
+                  groups="l10n_id_hr_payroll.group_hr_admin"/>
+
+        <menuitem id="menu_hr_shift_rotation"
+                  name="Pola Rotasi Shift"
+                  parent="hr.menu_human_resources_configuration"
+                  action="action_hr_shift_rotation"
+                  sequence="28"
+                  groups="l10n_id_hr_payroll.group_hr_admin"/>
 
     </data>
 </odoo>

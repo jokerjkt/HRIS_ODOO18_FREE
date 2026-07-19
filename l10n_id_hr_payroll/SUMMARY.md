@@ -38,6 +38,9 @@ Complete HR payroll system built as a standalone module for Odoo 18 Community (n
 │  Trial Mixin    │  Demo Data    │  Reports               │
 │  (5-day,        │  (5 employees)│  (Slip Gaji, Bukti     │
 │   bypass-proof) │               │   Potong, Rekap BPJS)  │
+│                 │               │                       │
+│  Shift Scheduling System                              │
+│  (3-shift weekly / 4-shift daily rotation)            │
 └─────────────────────────────────────────────────────────┘
 ```
 
@@ -60,10 +63,14 @@ Complete HR payroll system built as a standalone module for Odoo 18 Community (n
 | 11 | **Reports** | Slip Gaji PDF, Bukti Potong 1721, Rekap BPJS |
 | 12 | **Trial Mode** | 5-day bypass-proof trial, read-only after expiry |
 | 13 | **Demo Data** | Sample employees, contracts ready to test |
+| 14 | **Shift Scheduling** | 3-shift weekly / 4-shift daily rotation with Gantt view |
+| 15 | **Bulk Shift Assign** | Wizard to assign shifts to multiple employees |
+| 16 | **Holiday Integration** | Auto-detect public holidays from hr.holiday |
+| 17 | **Role/Group System** | 4-level security (Pegawai → Admin → Supervisor → Full Admin) |
 
 ---
 
-## File Structure (46 files)
+## File Structure (58 files)
 
 ```
 l10n_id_hr_payroll/
@@ -83,20 +90,29 @@ l10n_id_hr_payroll/
 │   ├── hr_payslip.py                 # Payslip (standalone, GJ.MM.YYYY/DDD/NNN)
 │   ├── hr_thr.py                     # THR calculator (proportional)
 │   ├── hr_payroll_dashboard.py       # Admin dashboard (TransientModel)
-│   └── hr_user_dashboard.py          # HR User dashboard (TransientModel)
+│   ├── hr_user_dashboard.py          # HR User dashboard (TransientModel)
+│   ├── hr_my_dashboard.py            # Personal dashboard (TransientModel)
+│   ├── hr_shift_type.py              # Shift type definitions
+│   ├── hr_shift_rotation.py          # Rotation patterns
+│   ├── hr_shift_assign.py            # Assign rotation to employee
+│   └── hr_shift_daily.py             # Generated daily schedule
 ├── wizard/
 │   ├── __init__.py
 │   ├── hr_thr_wizard.py              # Bulk THR generation
 │   ├── hr_thr_wizard_views.xml
 │   ├── hr_payslip_generate_wizard.py # Bulk payslip generation
-│   └── hr_payslip_generate_views.xml
+│   ├── hr_payslip_generate_views.xml
+│   ├── hr_shift_bulk_assign.py       # Bulk shift assignment
+│   └── hr_shift_bulk_assign_views.xml
 ├── data/
 │   ├── hr_bpjs_rate_data.xml         # 5 BPJS risk groups
 │   ├── hr_leave_type_data.xml        # 8 Indonesian leave types
+│   ├── hr_shift_type_data.xml        # 4 default shift types + rotation templates
 │   └── hr_demo_data.xml              # Demo employees & contracts
 ├── security/
 │   ├── ir.model.access.csv           # ACL for all models
 │   ├── hr_overtime_security.xml      # Overtime groups + record rules
+│   ├── hr_role_security.xml          # 4-level role groups
 │   └── hr_payroll_security.xml       # Dashboard ACL
 ├── views/
 │   ├── hr_employee_views.xml         # Indonesia HR tab on employee form
@@ -107,6 +123,11 @@ l10n_id_hr_payroll/
 │   ├── hr_overtime_views.xml         # Overtime form/list/kanban
 │   ├── hr_thr_views.xml              # THR form/list
 │   ├── hr_bpjs_rate_views.xml        # BPJS rate list/form
+│   ├── hr_shift_type_views.xml       # Shift type list/form
+│   ├── hr_shift_rotation_views.xml   # Rotation pattern form/list
+│   ├── hr_shift_assign_views.xml     # Assign shift form/list
+│   ├── hr_shift_daily_views.xml      # Daily schedule Gantt/calendar/list
+│   ├── hr_my_dashboard_views.xml     # Personal dashboard
 │   ├── hr_user_dashboard_views.xml   # HR User dashboard
 │   ├── dashboard_views.xml           # Admin dashboard
 │   └── menu_views.xml                # Integrated under HR app
@@ -130,7 +151,7 @@ l10n_id_hr_payroll/
 1. Copy `l10n_id_hr_payroll` to Odoo 18 addons directory
 2. Update Apps List (Settings → Developer Mode → Update Apps List)
 3. Install **Indonesian HR Payroll (PPh 21 & BPJS)**
-4. Dependencies: `hr`, `hr_contract`, `hr_work_entry`, `hr_attendance`, `hr_holidays`, `mail`
+4. Dependencies: `hr`, `hr_contract`, `hr_work_entry`, `hr_attendance`, `hr_holidays`, `hr_expense`, `mail`
 
 ---
 
@@ -165,6 +186,13 @@ l10n_id_hr_payroll/
 3. Preview eligible employees
 4. **Generate THR** → Confirm → Mark paid
 
+### Shift Scheduling
+1. **Configuration → Tipe Shift** — Define shift types (Pagi/Siang/Malam/Libur)
+2. **Configuration → Pola Rotasi Shift** — Create rotation patterns
+3. **Shift Scheduling → Assign Shift** — Assign rotation to employee
+4. **Shift Scheduling → Generate Bulk Assign** — Assign to multiple employees
+5. **Shift Scheduling → Jadwal Harian** — View Gantt/Calendar schedule
+
 ### Cetak Laporan
 - **Slip Gaji**: from Payslip → Print → Slip Gaji Indonesia
 - **Bukti Potong**: from Payslip → Print → Bukti Potong PPh 21
@@ -178,8 +206,9 @@ Integrated under Odoo 18 HR app (Employees):
 
 ```
 HR App (Employees)
+├── Dashboard Saya (top navbar)
+├── Dashboard HR (top navbar)
 ├── Dashboard Admin (HR Managers)
-├── Dashboard HR (All HR Users)
 ├── Payroll
 │   ├── Daftar Slip Gaji
 │   ├── Daftar Pembayaran Gaji
@@ -191,8 +220,15 @@ HR App (Employees)
 ├── THR
 │   ├── Daftar THR
 │   └── Generate THR Massal
+├── Shift Scheduling
+│   ├── Jadwal Harian (Gantt view)
+│   ├── Assign Shift
+│   └── Generate Bulk Assign
 ├── Reporting → Rekap Iuran BPJS
-└── Configuration → Tarif BPJS
+└── Configuration
+    ├── Tipe Shift
+    ├── Pola Rotasi Shift
+    └── Tarif BPJS
 ```
 
 ---
@@ -231,4 +267,4 @@ HR App (Employees)
 
 ---
 
-*Last updated: 2026-07-18*
+*Last updated: 2026-07-19*
