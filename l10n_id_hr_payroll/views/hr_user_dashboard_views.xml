@@ -20,7 +20,7 @@
                         </div>
 
                         <!-- Trial Banner -->
-                        <div class="alert alert-warning" role="alert"
+                        <div class="alert alert-danger" role="alert"
                              invisible="not trial_expired">
                             <strong>Masa Uji Coba Berakhir / Trial Expired</strong><br/>
                             Fitur payroll terbatas (read-only). Hubungi vendor untuk lisensi.
@@ -33,9 +33,12 @@
                             <field name="trial_days_left" readonly="1" nolabel="1"/> hari
                         </div>
 
-                        <!-- Stats Cards -->
+                        <!-- ════════════════════════════════════════════════════════ -->
+                        <!-- ROW 1: Overview (6 cards)                                -->
+                        <!-- ════════════════════════════════════════════════════════ -->
                         <div class="row mb-4">
-                            <div class="col-lg-3 col-md-6 mb-3">
+                            <!-- Karyawan Aktif -->
+                            <div class="col-lg-2 col-md-4 mb-3">
                                 <div class="card border-primary h-100 shadow-sm">
                                     <div class="card-body text-center">
                                         <i class="fa fa-users fa-3x text-primary mb-2"/>
@@ -47,23 +50,100 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-3 col-md-6 mb-3">
+                            <!-- Hadir Hari Ini -->
+                            <div class="col-lg-2 col-md-4 mb-3">
                                 <div class="card border-success h-100 shadow-sm">
                                     <div class="card-body text-center">
-                                        <i class="fa fa-file-text-o fa-3x text-success mb-2"/>
+                                        <i class="fa fa-check-circle fa-3x text-success mb-2"/>
                                         <h2 class="mb-1 text-success">
-                                            <field name="payslip_computed_count" readonly="1" nolabel="1"/>
+                                            <field name="hadir_hari_ini" readonly="1" nolabel="1"/>
                                         </h2>
-                                        <small class="text-muted text-uppercase fw-bold">Slip Gaji Siap</small>
-                                        <br/>
-                                        <span class="badge bg-warning text-dark">
-                                            <field name="payslip_draft_count" readonly="1" nolabel="1"/> Draft
-                                        </span>
+                                        <small class="text-muted text-uppercase fw-bold">Hadir Hari Ini</small>
+                                    </div>
+                                    <div class="card-footer bg-transparent text-center py-2">
+                                        <a class="btn btn-outline-success btn-sm"
+                                           name="action_open_attendance" type="object">
+                                            <i class="fa fa-eye"/> Lihat Absensi
+                                        </a>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col-lg-3 col-md-6 mb-3">
+                            <!-- Tidak Hadir -->
+                            <div class="col-lg-2 col-md-4 mb-3">
+                                <div class="card border-danger h-100 shadow-sm">
+                                    <div class="card-body text-center">
+                                        <i class="fa fa-times-circle fa-3x text-danger mb-2"/>
+                                        <h2 class="mb-1 text-danger">
+                                            <field name="tidak_hadir_hari_ini" readonly="1" nolabel="1"/>
+                                        </h2>
+                                        <small class="text-muted text-uppercase fw-bold">Tidak Hadir</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Cuti Pending -->
+                            <div class="col-lg-2 col-md-4 mb-3">
+                                <div class="card border-warning h-100 shadow-sm">
+                                    <div class="card-body text-center">
+                                        <i class="fa fa-hourglass-o fa-3x text-warning mb-2"/>
+                                        <h2 class="mb-1 text-warning">
+                                            <field name="cuti_pending" readonly="1" nolabel="1"/>
+                                        </h2>
+                                        <small class="text-muted text-uppercase fw-bold">Cuti Pending</small>
+                                    </div>
+                                    <div class="card-footer bg-transparent text-center py-2">
+                                        <a class="btn btn-outline-warning btn-sm"
+                                           name="action_open_leave_pending" type="object">
+                                            <i class="fa fa-check"/> Review Cuti
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Cuti Sakit -->
+                            <div class="col-lg-2 col-md-4 mb-3">
+                                <div class="card border-secondary h-100 shadow-sm">
+                                    <div class="card-body text-center">
+                                        <i class="fa fa-medkit fa-3x text-secondary mb-2"/>
+                                        <h2 class="mb-1 text-secondary">
+                                            <field name="cuti_sakit" readonly="1" nolabel="1"/>
+                                        </h2>
+                                        <small class="text-muted text-uppercase fw-bold">Cuti Sakit</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Slip Gaji Draft -->
+                            <div class="col-lg-2 col-md-4 mb-3">
+                                <div class="card border-info h-100 shadow-sm">
+                                    <div class="card-body text-center">
+                                        <i class="fa fa-file-text-o fa-3x text-info mb-2"/>
+                                        <h2 class="mb-1 text-info">
+                                            <field name="payslip_draft_count" readonly="1" nolabel="1"/>
+                                        </h2>
+                                        <small class="text-muted text-uppercase fw-bold">Slip Gaji Draft</small>
+                                        <br/>
+                                        <span class="badge bg-success">
+                                            <field name="payslip_computed_count" readonly="1" nolabel="1"/> Siap
+                                        </span>
+                                    </div>
+                                    <div class="card-footer bg-transparent text-center py-2">
+                                        <a class="btn btn-outline-info btn-sm"
+                                           name="action_open_my_payslips" type="object">
+                                            <i class="fa fa-eye"/> Lihat Slip Gaji
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ════════════════════════════════════════════════════════ -->
+                        <!-- ROW 2: Additional Stats                                  -->
+                        <!-- ════════════════════════════════════════════════════════ -->
+                        <div class="row mb-4">
+                            <!-- Lembur Pending -->
+                            <div class="col-lg-4 col-md-6 mb-3">
                                 <div class="card border-warning h-100 shadow-sm">
                                     <div class="card-body text-center">
                                         <i class="fa fa-clock-o fa-3x text-warning mb-2"/>
@@ -72,49 +152,8 @@
                                         </h2>
                                         <small class="text-muted text-uppercase fw-bold">Lembur Pending</small>
                                     </div>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-3 col-md-6 mb-3">
-                                <div class="card border-danger h-100 shadow-sm">
-                                    <div class="card-body text-center">
-                                        <i class="fa fa-gift fa-3x text-danger mb-2"/>
-                                        <h2 class="mb-1 text-danger">
-                                            <field name="thr_pending_count" readonly="1" nolabel="1"/>
-                                        </h2>
-                                        <small class="text-muted text-uppercase fw-bold">THR Draft</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Quick Actions -->
-                        <div class="row mb-4">
-                            <div class="col-lg-4 col-md-6 mb-3">
-                                <div class="card border-secondary h-100 shadow-sm">
-                                    <div class="card-body text-center">
-                                        <i class="fa fa-list fa-3x text-secondary mb-2"/>
-                                        <h6>Slip Gaji</h6>
-                                        <p class="text-muted small mb-2">Lihat daftar slip gaji</p>
-                                    </div>
                                     <div class="card-footer bg-transparent text-center py-2">
-                                        <a class="btn btn-outline-secondary btn-sm"
-                                           name="action_open_my_payslips" type="object">
-                                            <i class="fa fa-eye"/> Lihat Slip Gaji
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-4 col-md-6 mb-3">
-                                <div class="card border-secondary h-100 shadow-sm">
-                                    <div class="card-body text-center">
-                                        <i class="fa fa-check fa-3x text-secondary mb-2"/>
-                                        <h6>Review Lembur</h6>
-                                        <p class="text-muted small mb-2">Approve/reject pengajuan lembur</p>
-                                    </div>
-                                    <div class="card-footer bg-transparent text-center py-2">
-                                        <a class="btn btn-outline-secondary btn-sm"
+                                        <a class="btn btn-outline-warning btn-sm"
                                            name="action_open_overtime_pending" type="object">
                                             <i class="fa fa-check"/> Review Lembur
                                         </a>
@@ -122,18 +161,32 @@
                                 </div>
                             </div>
 
+                            <!-- THR -->
                             <div class="col-lg-4 col-md-6 mb-3">
-                                <div class="card border-secondary h-100 shadow-sm">
+                                <div class="card border-danger h-100 shadow-sm">
                                     <div class="card-body text-center">
-                                        <i class="fa fa-gift fa-3x text-secondary mb-2"/>
-                                        <h6>Daftar THR</h6>
+                                        <i class="fa fa-gift fa-3x text-danger mb-2"/>
+                                        <h6 class="text-danger">THR</h6>
                                         <p class="text-muted small mb-2">Kelola tunjangan hari raya</p>
                                     </div>
                                     <div class="card-footer bg-transparent text-center py-2">
-                                        <a class="btn btn-outline-secondary btn-sm"
+                                        <a class="btn btn-outline-danger btn-sm"
                                            name="action_open_thr" type="object">
                                             <i class="fa fa-eye"/> Lihat THR
                                         </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Expense Pending -->
+                            <div class="col-lg-4 col-md-6 mb-3">
+                                <div class="card border-primary h-100 shadow-sm">
+                                    <div class="card-body text-center">
+                                        <i class="fa fa-receipt fa-3x text-primary mb-2"/>
+                                        <h2 class="mb-1 text-primary">
+                                            <field name="expense_pending" readonly="1" nolabel="1"/>
+                                        </h2>
+                                        <small class="text-muted text-uppercase fw-bold">Expense Pending</small>
                                     </div>
                                 </div>
                             </div>
