@@ -12,7 +12,8 @@
             <field name="arch" type="xml">
                 <form string="Dashboard Payroll Indonesia" create="false" edit="false">
                     <sheet>
-                        <div class="oe_title mb-4">
+                        <div class="container-fluid">
+                        <div class="oe_title mb-4 text-center">
                             <h1>
                                 <span>Dashboard Payroll Indonesia</span>
                             </h1>
@@ -451,6 +452,7 @@
                             </div>
                         </div>
 
+                        </div>
                     </sheet>
                 </form>
             </field>
