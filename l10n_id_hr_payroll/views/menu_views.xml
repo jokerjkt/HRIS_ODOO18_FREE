@@ -4,25 +4,23 @@
 
         <!-- ================================================================
              Indonesian HR — Integrated under Odoo 18 HR App
-             All menus are children of hr.menu_hr_root (Employees app)
              ================================================================ -->
 
-        <!-- ── Dashboard Admin (HR Managers only) ──────────────────────────── -->
+        <!-- ── Dashboard HR — Top-level navbar (before Employees) ────── -->
+
+        <menuitem id="menu_hr_user_dashboard"
+                  name="Dashboard HR"
+                  action="action_hr_user_dashboard"
+                  sequence="180"/>
+
+        <!-- ── Dashboard Admin (inside Employees menu) ──────────────── -->
 
         <menuitem id="menu_indonesia_hr_dashboard"
                   name="Dashboard Admin"
                   parent="hr.menu_hr_root"
                   action="action_indonesia_hr_dashboard"
-                  sequence="45"
+                  sequence="1"
                   groups="hr.group_hr_manager"/>
-
-        <!-- ── Dashboard HR User (all HR users) ───────────────────────────── -->
-
-        <menuitem id="menu_hr_user_dashboard"
-                  name="Dashboard HR"
-                  parent="hr.menu_hr_root"
-                  action="action_hr_user_dashboard"
-                  sequence="46"/>
 
         <!-- ── Payroll ────────────────────────────────────────────────────── -->
 
