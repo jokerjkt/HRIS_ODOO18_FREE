@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================================ -->
+    <!-- EXTEND hr.attendance FORM — tambahkan info device             -->
+    <!-- ============================================================ -->
+    <record id="view_hr_attendance_form_inherit_device" model="ir.ui.view">
+        <field name="name">hr.attendance.form.device</field>
+        <field name="model">hr.attendance</field>
+        <field name="inherit_id" ref="hr_attendance.hr_attendance_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='check_in']" position="after">
+                <field name="device_id" readonly="1"/>
+                <field name="device_log_id" readonly="1" invisible="not device_log_id"/>
+                <field name="punch_type" readonly="1" invisible="not punch_type"/>
+                <field name="verify_mode" readonly="1" invisible="not verify_mode"/>
+                <field name="is_from_device" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- EXTEND hr.attendance LIST — tambahkan kolom device            -->
+    <!-- ============================================================ -->
+    <record id="view_hr_attendance_tree_inherit_device" model="ir.ui.view">
+        <field name="name">hr.attendance.list.device</field>
+        <field name="model">hr.attendance</field>
+        <field name="inherit_id" ref="hr_attendance.view_attendance_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='check_out']" position="after">
+                <field name="device_id" optional="hide"/>
+                <field name="punch_type" optional="hide"/>
+                <field name="verify_mode" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- EXTEND hr.attendance SEARCH — tambahkan filter device         -->
+    <!-- ============================================================ -->
+    <record id="view_hr_attendance_search_inherit_device" model="ir.ui.view">
+        <field name="name">hr.attendance.search.device</field>
+        <field name="model">hr.attendance</field>
+        <field name="inherit_id" ref="hr_attendance.hr_attendance_view_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[1]" position="before">
+                <filter name="filter_from_device" string="Dari Mesin"
+                        domain="[('device_id', '!=', False)]"/>
+                <filter name="filter_manual" string="Manual/Android"
+                        domain="[('device_id', '=', False)]"/>
+                <separator/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

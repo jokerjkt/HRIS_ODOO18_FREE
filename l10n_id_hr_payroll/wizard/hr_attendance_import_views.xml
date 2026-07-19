@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================================ -->
+    <!-- ACTION                                                        -->
+    <!-- ============================================================ -->
+    <record id="action_hr_attendance_import_wizard" model="ir.actions.act_window">
+        <field name="name">Import Absensi</field>
+        <field name="res_model">hr.attendance.import.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'default_source': 'file', 'default_auto_import': True}</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- FORM VIEW                                                     -->
+    <!-- ============================================================ -->
+    <record id="view_hr_attendance_import_wizard_form" model="ir.ui.view">
+        <field name="name">hr.attendance.import.wizard.form</field>
+        <field name="model">hr.attendance.import.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Import Absensi">
+                <group invisible="state != 'draft'">
+                    <group string="Sumber Data">
+                        <field name="source"/>
+                        <field name="device_id"
+                               invisible="source != 'device'"
+                               required="source == 'device'"
+                               options="{'no_create': True}"/>
+                    </group>
+                    <group string="Upload File" invisible="source != 'file'">
+                        <field name="file" required="source == 'file'"/>
+                        <field name="file_name" invisible="1"/>
+                        <field name="file_format"/>
+                    </group>
+                </group>
+                <group invisible="state != 'draft'">
+                    <group string="Periode">
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                    </group>
+                    <group string="Opsi">
+                        <field name="auto_import"/>
+                    </group>
+                </group>
+
+                <!-- Preview Section -->
+                <group invisible="state == 'draft'" string="Ringkasan">
+                    <group>
+                        <field name="total_parsed" string="Total Diparse"/>
+                        <field name="total_matched" string="Cocok dengan Karyawan"/>
+                        <field name="total_unmatched" string="Tidak Cocok"/>
+                    </group>
+                    <group>
+                        <field name="total_imported" invisible="state != 'done'"
+                               string="Berhasil Diimport"/>
+                    </group>
+                </group>
+
+                <notebook invisible="state == 'draft'">
+                    <page string="Preview Data" name="preview">
+                        <field name="line_ids" nolabel="1" readonly="1">
+                            <list editable="bottom" decoration-success="state == 'matched'"
+                                  decoration-danger="state == 'error'">
+                                <field name="employee_id"/>
+                                <field name="employee_pin"/>
+                                <field name="timestamp"/>
+                                <field name="punch_display"/>
+                                <field name="verify_display"/>
+                                <field name="state" widget="badge"/>
+                                <field name="error_message" optional="hide"/>
+                            </list>
+                        </field>
+                    </page>
+                    <page string="Error Log" name="error_log"
+                          invisible="not error_log">
+                        <field name="error_log" nolabel="1" placeholder="Tidak ada error"/>
+                    </page>
+                </notebook>
+
+                <footer invisible="state != 'draft'">
+                    <button name="action_parse" string="Parse Data"
+                            type="object" class="oe_highlight"/>
+                    <button string="Batal" class="btn-secondary" special="cancel"/>
+                </footer>
+                <footer invisible="state != 'preview'">
+                    <button name="action_import" string="Import Sekarang"
+                            type="object" class="oe_highlight"/>
+                    <button name="action_reset" string="Kembali"
+                            type="object" class="btn-secondary"/>
+                    <button string="Batal" class="btn-secondary" special="cancel"/>
+                </footer>
+                <footer invisible="state != 'done'">
+                    <button string="Tutup" class="btn-primary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

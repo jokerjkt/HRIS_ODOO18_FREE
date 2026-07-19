@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================================ -->
+    <!-- SEARCH VIEW (define BEFORE action that references it)         -->
+    <!-- ============================================================ -->
+    <record id="view_hr_attendance_device_search" model="ir.ui.view">
+        <field name="name">hr.attendance.device.search</field>
+        <field name="model">hr.attendance.device</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="brand"/>
+                <field name="ip_address"/>
+                <field name="location"/>
+                <filter name="filter_online" string="Online" domain="[('state', '=', 'online')]"/>
+                <filter name="filter_offline" string="Offline" domain="[('state', '=', 'offline')]"/>
+                <filter name="filter_error" string="Error" domain="[('state', '=', 'error')]"/>
+                <separator/>
+                <filter name="filter_zkteco" string="ZKTeco" domain="[('brand', '=', 'zteko')]"/>
+                <filter name="filter_solution" string="Solution" domain="[('brand', '=', 'solution')]"/>
+                <filter name="filter_csv_only" string="File Import Only" domain="[('connection_type', '=', 'csv_import')]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="Merek" name="group_brand" context="{'group_by': 'brand'}"/>
+                    <filter string="Tipe Koneksi" name="group_conn" context="{'group_by': 'connection_type'}"/>
+                    <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Lokasi" name="group_location" context="{'group_by': 'location'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- ACTION                                                        -->
+    <!-- ============================================================ -->
+    <record id="action_hr_attendance_device" model="ir.actions.act_window">
+        <field name="name">Mesin Absensi</field>
+        <field name="res_model">hr.attendance.device</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_hr_attendance_device_search"/>
+        <field name="context">{'search_default_filter_online': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Belum ada mesin absensi terdaftar.
+            </p>
+            <p>
+                Tambahkan mesin absensi (fingerprint/RFID) untuk mengimpor data
+                kehadiran dari berbagai merek: ZKTeco, Solution, Fingerspot, ATT2000, dll.
+            </p>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- LIST VIEW                                                     -->
+    <!-- ============================================================ -->
+    <record id="view_hr_attendance_device_list" model="ir.ui.view">
+        <field name="name">hr.attendance.device.list</field>
+        <field name="model">hr.attendance.device</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="brand"/>
+                <field name="connection_type"/>
+                <field name="ip_address"/>
+                <field name="port"/>
+                <field name="location"/>
+                <field name="employee_mapping"/>
+                <field name="serial_number"/>
+                <field name="last_sync"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'online'"
+                       decoration-danger="state == 'error'"
+                       decoration-muted="state == 'offline'"/>
+                <field name="active" invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- FORM VIEW                                                     -->
+    <!-- ============================================================ -->
+    <record id="view_hr_attendance_device_form" model="ir.ui.view">
+        <field name="name">hr.attendance.device.form</field>
+        <field name="model">hr.attendance.device</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_test_connection" string="Test Koneksi"
+                            type="object" class="oe_highlight"
+                            invisible="connection_type == 'csv_import'"/>
+                    <button name="action_pull_attendance" string="Ambil Data dari Mesin"
+                            type="object" class="oe_highlight"
+                            invisible="connection_type == 'csv_import' or state != 'online'"/>
+                    <button name="action_set_offline" string="Set Offline"
+                            type="object"
+                            invisible="state != 'online'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="offline,online"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_logs" type="object"
+                                class="oe_stat_button" icon="fa-list">
+                            <div class="o_stat_info">
+                                <field name="log_count" class="o_stat_value"/>
+                                <span class="o_stat_text">Log</span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="Nama Mesin Absensi"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Informasi Mesin">
+                            <field name="brand"/>
+                            <field name="connection_type"/>
+                            <field name="serial_number"/>
+                            <field name="firmware_version"/>
+                        </group>
+                        <group string="Koneksi">
+                            <field name="ip_address"
+                                   invisible="connection_type == 'csv_import'"/>
+                            <field name="port"
+                                   invisible="connection_type == 'csv_import'"/>
+                            <field name="comm_key"
+                                   invisible="connection_type == 'csv_import'"
+                                   password="True"/>
+                            <field name="location"/>
+                            <field name="user_id"/>
+                        </group>
+                    </group>
+                    <group string="Konfigurasi">
+                        <group>
+                            <field name="employee_mapping"/>
+                            <field name="last_sync"/>
+                        </group>
+                        <group>
+                            <field name="department_ids" widget="many2many_tags"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Catatan" name="note">
+                            <field name="note" placeholder="Catatan tentang mesin ini..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+</odoo>

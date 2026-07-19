@@ -29,6 +29,13 @@
 │  └─────────────────────────────────────────────────┘    │
 │                                                         │
 │  ┌─────────────────────────────────────────────────┐    │
+│  │  Attendance Device Integration                  │    │
+│  │  hr.attendance.device │ hr.attendance.device.log│    │
+│  │  Connectors: CSV │ ZKTeco │ Solution            │    │
+│  │  Flask ADMS Server (port 8068)                  │    │
+│  └─────────────────────────────────────────────────┘    │
+│                                                         │
+│  ┌─────────────────────────────────────────────────┐    │
 │  │  Trial Mixin (bypass-proof, 3-layer check)      │    │
 │  └─────────────────────────────────────────────────┘    │
 │                                                         │
@@ -67,6 +74,22 @@
 | `hr.shift.daily` | Generated daily shift schedule | — |
 | `hr.payroll.dashboard` | Admin dashboard | — |
 | `hr.user.dashboard` | HR User dashboard | — |
+| `hr.attendance.device` | Device registry (ZKTeco, Solution, etc.) | mail.thread, mail.activity.mixin |
+| `hr.attendance.device.log` | Raw attendance logs from devices | — |
+
+### Extension Models (extend hr.attendance)
+
+| Model | Inherits | Fields Added |
+|-------|----------|--------------|
+| `hr.attendance` | `hr.attendance` | device_id, device_log_id, punch_type, verify_mode, is_from_device |
+
+### Abstract Models (connectors)
+
+| Model | Description |
+|-------|-------------|
+| `hr.attendance.connector` | Abstract base connector |
+| `hr.attendance.connector.csv` | CSV/Excel universal connector |
+| `hr.attendance.connector.zkteco` | ZKTeco direct connector (PyZK) |
 
 ### TransientModels (wizards)
 
@@ -76,10 +99,94 @@
 | `hr.payslip.generate.wizard` | Bulk payslip generation |
 | `hr.overtime.reject.wizard` | Overtime rejection reason |
 | `hr.shift.bulk.assign` | Bulk shift assignment wizard |
+| `hr.attendance.import.wizard` | Attendance import from file/device |
+| `hr.attendance.import.wizard.line` | Preview line for import wizard |
 
 ---
 
-## Trial Mode (Bypass-Proof)
+## Attendance Device Integration
+
+### Architecture
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    Odoo 18 Community                        │
+│  ┌───────────────────────────────────────────────────────┐  │
+│  │  l10n_id_hr_payroll (extended)                       │  │
+│  │                                                       │  │
+│  │  ┌─────────────┐  ┌──────────────┐  ┌─────────────┐  │  │
+│  │  │ hr.attendance│  │hr.attendance │  │hr.attendance │  │  │
+│  │  │  (core, +   │←─│  .device     │←─│  .device.log │  │  │
+│  │  │  device_id) │  │  (registry)  │  │  (raw logs)  │  │  │
+│  │  └─────────────┘  └──────┬───────┘  └─────────────┘  │  │
+│  │                          │                             │  │
+│  │              ┌───────────┴───────────┐                 │  │
+│  │              │                       │                 │  │
+│  │    ┌─────────┴─────────┐  ┌─────────┴─────────┐      │  │
+│  │    │ Device Connector  │  │ Import Wizard     │      │  │
+│  │    │ (abstract base)   │  │ (file import)     │      │  │
+│  │    └─────────┬─────────┘  └───────────────────┘      │  │
+│  │              │                                         │  │
+│  │    ┌─────────┴──────────────────────────┐             │  │
+│  │    │         Brand Connectors           │             │  │
+│  │    ├──────────┬──────────┬──────────────┤             │  │
+│  │    │ ZKTeco   │ Solution │ Generic CSV  │             │  │
+│  │    │ (PyZK/   │ (SOAP/   │ (universal)  │             │  │
+│  │    │  ADMS)   │  HTTP)   │              │             │  │
+│  │    └──────────┴──────────┴──────────────┘             │  │
+│  └───────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────┘
+
+External Connections:
+  ZKTeco device  ──TCP:4370──→  Odoo (pyzk library)
+  Solution device──HTTP:80────→  Odoo (requests library)
+  Any device     ──CSV/Excel──→  Odoo (file upload)
+  ZKTeco device  ──HTTP push──→  Odoo (ADMS Flask server port 8068)
+```
+
+### Supported Brands
+
+| Brand | Connection | Protocol | Status |
+|-------|-----------|----------|--------|
+| ZKTeco | TCP/UDP Direct | PyZK (port 4370) | Implemented |
+| ZKTeco | ADMS Push | HTTP (port 8068) | Implemented |
+| Solution | SOAP/HTTP | requests (port 80) | Planned |
+| Fingerspot | TCP/UDP | PyZK compatible | Implemented |
+| ATT2000 | CSV Import | File upload | Implemented |
+| eSSL | CSV Import | File upload | Implemented |
+| Generic | CSV/Excel | File upload | Implemented |
+
+### CSV Format Support
+
+Auto-detects columns from various machine brands:
+
+**ZKTeco Export:**
+```
+User ID,DateTime,Status,Verify
+1001,2025-01-15 08:05:23,0,1
+```
+
+**Solution/Fingerspot:**
+```
+PIN,DateTime,Verified,Status
+12345,2025-01-15 08:05:23,1,0
+```
+
+**ATT2000/Generic:**
+```
+EmpCode,Date,Time,In/Out
+EMP001,2025-01-15,08:05,IN
+```
+
+### Employee Matching
+
+Matches device User ID to Odoo employee via:
+- `pin` field (default)
+- `identification_id` field
+
+Configurable per device in the device registry.
+
+### Trial Mode (Bypass-Proof)
 
 ### 3-Layer Verification
 

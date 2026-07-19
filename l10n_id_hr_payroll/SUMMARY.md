@@ -67,10 +67,16 @@ Complete HR payroll system built as a standalone module for Odoo 18 Community (n
 | 15 | **Bulk Shift Assign** | Wizard to assign shifts to multiple employees |
 | 16 | **Holiday Integration** | Auto-detect public holidays from hr.holiday |
 | 17 | **Role/Group System** | 4-level security (Pegawai → Admin → Supervisor → Full Admin) |
+| 18 | **Attendance Device Integration** | Multi-brand support: ZKTeco, Solution, Fingerspot, ATT2000 |
+| 19 | **CSV/Excel Import** | Universal import from any attendance machine |
+| 20 | **ZKTeco Direct** | TCP/UDP connection via PyZK library |
+| 21 | **ADMS Cloud Push** | Flask server for ZKTeco push data |
+| 22 | **Device Registry** | Manage multiple attendance machines |
+| 23 | **Attendance Log Viewer** | View and match raw attendance logs |
 
 ---
 
-## File Structure (58 files)
+## File Structure (72 files)
 
 ```
 l10n_id_hr_payroll/
@@ -95,7 +101,13 @@ l10n_id_hr_payroll/
 │   ├── hr_shift_type.py              # Shift type definitions
 │   ├── hr_shift_rotation.py          # Rotation patterns
 │   ├── hr_shift_assign.py            # Assign rotation to employee
-│   └── hr_shift_daily.py             # Generated daily schedule
+│   ├── hr_shift_daily.py             # Generated daily schedule
+│   ├── hr_attendance_device.py       # Device registry (ZKTeco, Solution, etc.)
+│   ├── hr_attendance_device_log.py   # Raw attendance logs from devices
+│   ├── hr_attendance_extend.py       # Extend hr.attendance with device fields
+│   ├── hr_attendance_connector.py    # Abstract connector base class
+│   ├── hr_attendance_connector_csv.py # CSV/Excel universal connector
+│   └── hr_attendance_connector_zkteco.py # ZKTeco direct connector (PyZK)
 ├── wizard/
 │   ├── __init__.py
 │   ├── hr_thr_wizard.py              # Bulk THR generation
@@ -103,7 +115,9 @@ l10n_id_hr_payroll/
 │   ├── hr_payslip_generate_wizard.py # Bulk payslip generation
 │   ├── hr_payslip_generate_views.xml
 │   ├── hr_shift_bulk_assign.py       # Bulk shift assignment
-│   └── hr_shift_bulk_assign_views.xml
+│   ├── hr_shift_bulk_assign_views.xml
+│   ├── hr_attendance_import.py       # Attendance import wizard
+│   └── hr_attendance_import_views.xml
 ├── data/
 │   ├── hr_bpjs_rate_data.xml         # 5 BPJS risk groups
 │   ├── hr_leave_type_data.xml        # 8 Indonesian leave types
@@ -127,6 +141,9 @@ l10n_id_hr_payroll/
 │   ├── hr_shift_rotation_views.xml   # Rotation pattern form/list
 │   ├── hr_shift_assign_views.xml     # Assign shift form/list
 │   ├── hr_shift_daily_views.xml      # Daily schedule Gantt/calendar/list
+│   ├── hr_attendance_device_views.xml    # Device list/form
+│   ├── hr_attendance_device_log_views.xml # Log list/form
+│   ├── hr_attendance_views.xml           # Extended attendance views
 │   ├── hr_my_dashboard_views.xml     # Personal dashboard
 │   ├── hr_user_dashboard_views.xml   # HR User dashboard
 │   ├── dashboard_views.xml           # Admin dashboard
@@ -141,7 +158,12 @@ l10n_id_hr_payroll/
 │       ├── icon.png
 │       └── index.html                # Module description page
 ├── SUMMARY.md
-└── MODULE_DESIGN.md
+├── MODULE_DESIGN.md
+├── flask_adms/
+│   ├── __init__.py
+│   ├── app.py                          # Flask ADMS server (ZKTeco push)
+│   └── config.py                       # Configuration
+└── run_adms.py                         # ADMS server entry point
 ```
 
 ---
@@ -193,6 +215,14 @@ l10n_id_hr_payroll/
 4. **Shift Scheduling → Generate Bulk Assign** — Assign to multiple employees
 5. **Shift Scheduling → Jadwal Harian** — View Gantt/Calendar schedule
 
+### Attendance Device Integration
+1. **Mesin Absensi → Daftar Mesin** — Add attendance machine
+2. Select brand (ZKTeco/Solution/Fingerspot/ATT2000) and connection type
+3. For CSV Import: Set connection type to "File Import Only"
+4. **Mesin Absensi → Import Absensi** — Import from file or pull from device
+5. Upload CSV/Excel → Parse → Preview → Import
+6. **Mesin Absensi → Log dari Mesin** — View raw logs and match employees
+
 ### Cetak Laporan
 - **Slip Gaji**: from Payslip → Print → Slip Gaji Indonesia
 - **Bukti Potong**: from Payslip → Print → Bukti Potong PPh 21
@@ -224,6 +254,10 @@ HR App (Employees)
 │   ├── Jadwal Harian (Gantt view)
 │   ├── Assign Shift
 │   └── Generate Bulk Assign
+├── Mesin Absensi
+│   ├── Daftar Mesin
+│   ├── Log dari Mesin
+│   └── Import Absensi
 ├── Reporting → Rekap Iuran BPJS
 └── Configuration
     ├── Tipe Shift
@@ -267,4 +301,4 @@ HR App (Employees)
 
 ---
 
-*Last updated: 2026-07-19*
+*Last updated: 2026-07-19 (Phase 3a: Attendance Device Integration)*

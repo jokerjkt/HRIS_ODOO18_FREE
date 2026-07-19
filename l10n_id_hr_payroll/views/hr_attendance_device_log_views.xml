@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================================ -->
+    <!-- SEARCH VIEW (define BEFORE action)                            -->
+    <!-- ============================================================ -->
+    <record id="view_hr_attendance_device_log_search" model="ir.ui.view">
+        <field name="name">hr.attendance.device.log.search</field>
+        <field name="model">hr.attendance.device.log</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="employee_id"/>
+                <field name="employee_pin"/>
+                <field name="device_id"/>
+                <filter name="filter_pending" string="Belum Diproses" domain="[('state', '=', 'pending')]"/>
+                <filter name="filter_matched" string="Sudah Match" domain="[('state', '=', 'matched')]"/>
+                <filter name="filter_imported" string="Sudah Import" domain="[('state', '=', 'imported')]"/>
+                <filter name="filter_error" string="Error" domain="[('state', '=', 'error')]"/>
+                <separator/>
+                <filter name="filter_today" string="Hari Ini"
+                        domain="[('timestamp', '>=', context_today().strftime('%Y-%m-%d'))]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="Mesin" name="group_device" context="{'group_by': 'device_id'}"/>
+                    <filter string="Karyawan" name="group_employee" context="{'group_by': 'employee_id'}"/>
+                    <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Tanggal" name="group_date" context="{'group_by': 'timestamp:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- ACTION                                                        -->
+    <!-- ============================================================ -->
+    <record id="action_hr_attendance_device_log" model="ir.actions.act_window">
+        <field name="name">Log dari Mesin</field>
+        <field name="res_model">hr.attendance.device.log</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_hr_attendance_device_log_search"/>
+        <field name="context">{'search_default_filter_pending': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Belum ada log absensi dari mesin.
+            </p>
+            <p>
+                Import data absensi dari mesin melalui menu
+                <strong>Import Absensi</strong> atau langsung pull dari mesin yang terhubung.
+            </p>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- ACTION: Import All Pending                                    -->
+    <!-- ============================================================ -->
+    <record id="action_import_all_pending_logs" model="ir.actions.server">
+        <field name="name">Import Semua Pending</field>
+        <field name="model_id" ref="model_hr_attendance_device_log"/>
+        <field name="code">
+            if records:
+                records.action_import_all_pending()
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- LIST VIEW                                                     -->
+    <!-- ============================================================ -->
+    <record id="view_hr_attendance_device_log_list" model="ir.ui.view">
+        <field name="name">hr.attendance.device.log.list</field>
+        <field name="model">hr.attendance.device.log</field>
+        <field name="arch" type="xml">
+            <list decoration-success="state == 'imported'"
+                  decoration-warning="state == 'matched'"
+                  decoration-danger="state == 'error'"
+                  decoration-muted="state == 'pending'">
+                <field name="timestamp"/>
+                <field name="device_id"/>
+                <field name="employee_id"/>
+                <field name="employee_pin"/>
+                <field name="punch_type"/>
+                <field name="verify_mode"/>
+                <field name="state" widget="badge"/>
+                <field name="error_message" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- FORM VIEW                                                     -->
+    <!-- ============================================================ -->
+    <record id="view_hr_attendance_device_log_form" model="ir.ui.view">
+        <field name="name">hr.attendance.device.log.form</field>
+        <field name="model">hr.attendance.device.log</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_match_employee" string="Cocokkan Karyawan"
+                            type="object" class="oe_highlight"
+                            invisible="employee_id or state == 'imported'"/>
+                    <button name="action_import_to_attendance" string="Import ke Attendance"
+                            type="object" class="oe_highlight"
+                            invisible="state == 'imported' or not employee_id"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="pending,matched,imported"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group string="Data Absensi">
+                            <field name="device_id"/>
+                            <field name="timestamp"/>
+                            <field name="punch_type"/>
+                            <field name="verify_mode"/>
+                        </group>
+                        <group string="Karyawan">
+                            <field name="employee_id"/>
+                            <field name="employee_pin"/>
+                            <field name="attendance_id"/>
+                        </group>
+                    </group>
+                    <group string="Data Mentah" invisible="not raw_data">
+                        <field name="raw_data" nolabel="1" colspan="2"/>
+                    </group>
+                    <group string="Error" invisible="state != 'error'">
+                        <field name="error_message" nolabel="1" colspan="2"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

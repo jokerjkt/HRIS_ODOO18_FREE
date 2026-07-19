@@ -17,4 +17,10 @@ from . import (
     hr_shift_rotation,
     hr_shift_assign,
     hr_shift_daily,
+    hr_attendance_device,
+    hr_attendance_device_log,
+    hr_attendance_extend,
+    hr_attendance_connector,
+    hr_attendance_connector_csv,
+    hr_attendance_connector_zkteco,
 )

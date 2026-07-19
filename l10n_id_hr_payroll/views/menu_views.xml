@@ -128,6 +128,32 @@
                   action="action_hr_shift_bulk_assign"
                   sequence="30"/>
 
+        <!-- ── Attendance Device Integration ──────────────────────────────── -->
+
+        <menuitem id="menu_indonesia_hr_attendance_device"
+                  name="Mesin Absensi"
+                  parent="hr.menu_hr_root"
+                  sequence="52"
+                  groups="l10n_id_hr_payroll.group_hr_admin"/>
+
+        <menuitem id="menu_hr_attendance_device_list"
+                  name="Daftar Mesin"
+                  parent="menu_indonesia_hr_attendance_device"
+                  action="action_hr_attendance_device"
+                  sequence="10"/>
+
+        <menuitem id="menu_hr_attendance_device_log"
+                  name="Log dari Mesin"
+                  parent="menu_indonesia_hr_attendance_device"
+                  action="action_hr_attendance_device_log"
+                  sequence="20"/>
+
+        <menuitem id="menu_hr_attendance_import"
+                  name="Import Absensi"
+                  parent="menu_indonesia_hr_attendance_device"
+                  action="action_hr_attendance_import_wizard"
+                  sequence="30"/>
+
         <!-- ── Reporting (under existing HR Reporting) ─────────────────────── -->
 
         <menuitem id="menu_hr_report_bpjs"

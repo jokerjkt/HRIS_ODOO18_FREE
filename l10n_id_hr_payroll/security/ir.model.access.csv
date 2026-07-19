@@ -21,3 +21,6 @@ access_hr_shift_rotation,hr.shift.rotation,model_hr_shift_rotation,l10n_id_hr_pa
 access_hr_shift_rotation_line,hr.shift.rotation.line,model_hr_shift_rotation_line,l10n_id_hr_payroll.group_hr_admin,1,1,1,1
 access_hr_shift_assign,hr.shift.assign,model_hr_shift_assign,l10n_id_hr_payroll.group_hr_admin,1,1,1,1
 access_hr_shift_daily,hr.shift.daily,model_hr_shift_daily,l10n_id_hr_payroll.group_hr_admin,1,1,1,1
+access_hr_attendance_device,hr.attendance.device,model_hr_attendance_device,l10n_id_hr_payroll.group_hr_admin,1,1,1,1
+access_hr_attendance_device_log,hr.attendance.device.log,model_hr_attendance_device_log,l10n_id_hr_payroll.group_hr_admin,1,1,1,1
+access_hr_attendance_import_wizard,hr.attendance.import.wizard,model_hr_attendance_import_wizard,l10n_id_hr_payroll.group_hr_admin,1,1,1,1

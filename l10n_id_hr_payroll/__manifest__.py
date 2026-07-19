@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Indonesian HR Payroll (PPh 21 & BPJS)',
-    'version': '18.0.1.0.0',
+    'version': '18.0.2.0.0',
     'category': 'Human Resources/Payroll',
-    'summary': 'Payroll Indonesia: PPh 21, BPJS, Lembur, THR, Shift Scheduling, Dashboard',
+    'summary': 'Payroll Indonesia: PPh 21, BPJS, Lembur, THR, Shift Scheduling, Dashboard, Attendance Device Integration',
     'description': """
 Modul HR Payroll Indonesia untuk Odoo 18
 =========================================
@@ -20,8 +20,12 @@ Fitur utama:
 - Dashboard pribadi untuk setiap karyawan
 - Shift Scheduling dengan rotasi (3-shift weekly, 4-shift daily)
 - Bulk Assign Shift ke banyak karyawan
-- Gantt view jadwal shift harian
 - Sistem role/grup 4 tingkat
+- Integrasi Mesin Absensi (Multi-brand):
+  - ZKTeco (Direct TCP/UDP via PyZK)
+  - Solution, Fingerspot, ATT2000 (via CSV/Excel import)
+  - ADMS Cloud Push (Flask server)
+  - Generic CSV/Excel import untuk semua merek
     """,
     'author': 'Susilo Raden',
     'website': 'https://www.linkedin.com/in/susilo-raden-68a19049',
@@ -35,6 +39,9 @@ Fitur utama:
         'hr_expense',
         'mail',
     ],
+    'external_dependencies': {
+        'python': ['pyzk'],
+    },
     'data': [
         # Security (groups first, then ACLs)
         'security/hr_role_security.xml',
@@ -54,25 +61,30 @@ Fitur utama:
         'views/hr_overtime_views.xml',
         'views/hr_thr_views.xml',
         'views/hr_bpjs_rate_views.xml',
-        # Shift Scheduling views (daily BEFORE assign because assign references daily action)
+        # Shift Scheduling views
         'views/hr_shift_type_views.xml',
         'views/hr_shift_rotation_views.xml',
         'views/hr_shift_daily_views.xml',
         'views/hr_shift_assign_views.xml',
-        # Reports (define report actions)
+        # Attendance Device Integration
+        'views/hr_attendance_device_views.xml',
+        'views/hr_attendance_device_log_views.xml',
+        'views/hr_attendance_views.xml',
+        # Reports
         'report/hr_payslip_report.xml',
         'report/hr_bukti_potong_report.xml',
         'report/hr_bpjs_report.xml',
         'report/hr_bank_payment_report.xml',
-        # Wizards (define wizard actions)
+        # Wizards
         'wizard/hr_thr_wizard_views.xml',
         'wizard/hr_payslip_generate_views.xml',
         'wizard/hr_shift_bulk_assign_views.xml',
+        'wizard/hr_attendance_import_views.xml',
         # Personal Dashboard
         'views/hr_my_dashboard_views.xml',
-        # HR User Dashboard (references actions above)
+        # HR User Dashboard
         'views/hr_user_dashboard_views.xml',
-        # Dashboard Admin (references all actions above)
+        # Dashboard Admin
         'views/dashboard_views.xml',
         # Menu (references all actions above)
         'views/menu_views.xml',

@@ -31,5 +31,19 @@
             <field name="perm_unlink" eval="True"/>
         </record>
 
+        <!-- ================================================================
+             ACL — Attendance Import Wizard Lines (TransientModel)
+             ================================================================ -->
+
+        <record id="access_hr_attendance_import_wizard_line" model="ir.model.access">
+            <field name="name">hr.attendance.import.wizard.line</field>
+            <field name="model_id" ref="model_hr_attendance_import_wizard_line"/>
+            <field name="group_id" ref="hr.group_hr_manager"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
     </data>
 </odoo>
