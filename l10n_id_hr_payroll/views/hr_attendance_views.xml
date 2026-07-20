@@ -16,22 +16,14 @@
                 <field name="is_from_device" invisible="1"/>
             </xpath>
             <xpath expr="//field[@name='worked_hours']" position="after">
-                <field name="check_in_latitude" readonly="1"
-                       invisible="not check_in_latitude"/>
-                <field name="check_in_longitude" readonly="1"
-                       invisible="not check_in_longitude"/>
-                <field name="check_in_zone_id" readonly="1"
-                       invisible="not check_in_zone_id"/>
-                <field name="is_check_in_inside" readonly="1"
-                       invisible="not check_in_latitude"/>
-                <field name="check_out_latitude" readonly="1"
-                       invisible="not check_out_latitude"/>
-                <field name="check_out_longitude" readonly="1"
-                       invisible="not check_out_longitude"/>
-                <field name="check_out_zone_id" readonly="1"
-                       invisible="not check_out_zone_id"/>
-                <field name="is_check_out_inside" readonly="1"
-                       invisible="not check_out_latitude"/>
+                <field name="check_in_latitude" readonly="1" optional="hide"/>
+                <field name="check_in_longitude" readonly="1" optional="hide"/>
+                <field name="check_in_zone_id" readonly="1" optional="hide"/>
+                <field name="is_check_in_inside" readonly="1" optional="hide"/>
+                <field name="check_out_latitude" readonly="1" optional="hide"/>
+                <field name="check_out_longitude" readonly="1" optional="hide"/>
+                <field name="check_out_zone_id" readonly="1" optional="hide"/>
+                <field name="is_check_out_inside" readonly="1" optional="hide"/>
             </xpath>
         </field>
     </record>
