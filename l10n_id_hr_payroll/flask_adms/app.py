@@ -371,11 +371,15 @@ def api_attendance_checkin():
         "employee_pin": "1234",
         "latitude": -6.1234567,
         "longitude": 106.1234567,
-        "device_sn": "optional-device-sn"
+        "accuracy": 10.5,
+        "device_sn": "optional-device-sn",
+        "device_type": "mobile",
+        "photo": "base64-encoded-photo-string",
+        "device_info": "Mozilla/5.0..."
       }
 
     Returns:
-      200: {"success": true, "zone": "...", "inside_fence": true/false}
+      200: {"success": true, "zone": "...", "inside_fence": true/false, "action": "check_in"/"check_out"}
       400: {"success": false, "error": "..."}
     """
     if not verify_api_key():
@@ -395,7 +399,11 @@ def api_attendance_checkin():
     employee_pin = data.get('employee_pin', '')
     latitude = data.get('latitude')
     longitude = data.get('longitude')
+    accuracy = data.get('accuracy', 0)
     device_sn = data.get('device_sn', '')
+    device_type = data.get('device_type', 'mobile')
+    photo_b64 = data.get('photo', '')
+    device_info = data.get('device_info', '')
 
     if not employee_pin or latitude is None or longitude is None:
         return Response(
@@ -502,7 +510,7 @@ def api_attendance_checkin():
             'timestamp': now,
             'punch_type': '0',  # Default check-in
             'verify_mode': '0',  # Mobile
-            'raw_data': f"MOBILE PIN={employee_pin} LAT={latitude} LNG={longitude} ZONE={zone_name or 'NONE'}",
+            'raw_data': f"MOBILE PIN={employee_pin} LAT={latitude} LNG={longitude} ZONE={zone_name or 'NONE'} ACC={accuracy}",
             'state': 'matched',
         }
         if device_id:
@@ -514,9 +522,78 @@ def api_attendance_checkin():
             log_vals,
         )
 
+        # Determine check-in or check-out (toggle based on last attendance)
+        now_dt = datetime.now()
+        today_start = now_dt.strftime('%Y-%m-%d 00:00:00')
+        today_end = now_dt.strftime('%Y-%m-%d 23:59:59')
+
+        existing = sock.execute(
+            config.ODOO_DB, uid, config.ODOO_PASSWORD,
+            'hr.attendance', 'search_read',
+            [
+                ('employee_id', '=', employee_id),
+                ('check_in', '>=', today_start),
+                ('check_in', '<=', today_end),
+            ],
+            ['id', 'check_in', 'check_out'],
+            0, 0,
+        )
+
+        # Toggle: if no check_out today, this is check-out; otherwise check-in
+        action = 'check_in'
+        attendance_id = False
+        if existing and not existing[0].get('check_out'):
+            # Check-out
+            action = 'check_out'
+            attendance_id = existing[0]['id']
+
+        # Build attendance vals
+        att_vals = {}
+        if action == 'check_in':
+            att_vals = {
+                'employee_id': employee_id,
+                'check_in': now,
+                'check_in_latitude': latitude,
+                'check_in_longitude': longitude,
+                'check_in_accuracy': float(accuracy) if accuracy else 0,
+                'device_type': device_type,
+            }
+            if photo_b64:
+                att_vals['check_in_photo'] = photo_b64
+            if device_info:
+                att_vals['check_in_device_info'] = device_info
+            if device_id:
+                att_vals['device_id'] = device_id
+        else:
+            att_vals = {
+                'check_out': now,
+                'check_out_latitude': latitude,
+                'check_out_longitude': longitude,
+                'check_out_accuracy': float(accuracy) if accuracy else 0,
+            }
+            if photo_b64:
+                att_vals['check_out_photo'] = photo_b64
+            if device_info:
+                att_vals['check_out_device_info'] = device_info
+
+        if attendance_id:
+            sock.execute(
+                config.ODOO_DB, uid, config.ODOO_PASSWORD,
+                'hr.attendance', 'write',
+                [attendance_id], att_vals,
+            )
+        else:
+            att_id = sock.execute(
+                config.ODOO_DB, uid, config.ODOO_PASSWORD,
+                'hr.attendance', 'create',
+                att_vals,
+            )
+            attendance_id = att_id
+
         logger.info(
-            "Mobile check-in: PIN=%s Employee=%s Lat=%s Lng=%s Zone=%s LogID=%s",
-            employee_pin, employee_name, latitude, longitude, zone_name, log_id,
+            "Mobile %s: PIN=%s Employee=%s Lat=%s Lng=%s Zone=%s Accuracy=%s Device=%s LogID=%s",
+            action, employee_pin, employee_name, latitude, longitude,
+            zone_name, accuracy, device_type, log_id,
         )
 
         return Response(
@@ -525,6 +602,8 @@ def api_attendance_checkin():
                 "employee": employee_name,
                 "zone": zone_name or "Outside all zones",
                 "inside_fence": inside_fence,
+                "action": action,
+                "attendance_id": attendance_id,
                 "log_id": log_id,
                 "timestamp": now,
             }),

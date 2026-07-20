@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!-- ============================================================ -->
-    <!-- EXTEND hr.attendance FORM — tambahkan info device + GPS       -->
+    <!-- EXTEND hr.attendance FORM — device + GPS + Photo + Mobile    -->
     <!-- ============================================================ -->
     <record id="view_hr_attendance_form_inherit_device" model="ir.ui.view">
         <field name="name">hr.attendance.form.device</field>
@@ -14,16 +14,43 @@
                 <field name="punch_type" readonly="1" invisible="not punch_type"/>
                 <field name="verify_mode" readonly="1" invisible="not verify_mode"/>
                 <field name="is_from_device" invisible="1"/>
+                <field name="device_type" readonly="1"/>
             </xpath>
             <xpath expr="//field[@name='worked_hours']" position="after">
                 <field name="check_in_latitude" readonly="1" optional="hide"/>
                 <field name="check_in_longitude" readonly="1" optional="hide"/>
+                <field name="check_in_accuracy" readonly="1" optional="hide"/>
                 <field name="check_in_zone_id" readonly="1" optional="hide"/>
                 <field name="is_check_in_inside" readonly="1" optional="hide"/>
                 <field name="check_out_latitude" readonly="1" optional="hide"/>
                 <field name="check_out_longitude" readonly="1" optional="hide"/>
+                <field name="check_out_accuracy" readonly="1" optional="hide"/>
                 <field name="check_out_zone_id" readonly="1" optional="hide"/>
                 <field name="is_check_out_inside" readonly="1" optional="hide"/>
+            </xpath>
+            <xpath expr="//field[@name='worked_hours']" position="before">
+                <notebook>
+                    <page string="Foto Absensi" name="photos">
+                        <group>
+                            <group string="Check In">
+                                <field name="check_in_photo" widget="image" readonly="1" nolabel="1" class="o attendance_photo"/>
+                            </group>
+                            <group string="Check Out">
+                                <field name="check_out_photo" widget="image" readonly="1" nolabel="1" class="o attendance_photo"/>
+                            </group>
+                        </group>
+                    </page>
+                    <page string="Info Device" name="device_info">
+                        <group>
+                            <group string="Check In">
+                                <field name="check_in_device_info" readonly="1" nolabel="1" placeholder="Device info saat check-in..."/>
+                            </group>
+                            <group string="Check Out">
+                                <field name="check_out_device_info" readonly="1" nolabel="1" placeholder="Device info saat check-out..."/>
+                            </group>
+                        </group>
+                    </page>
+                </notebook>
             </xpath>
         </field>
     </record>
@@ -38,10 +65,13 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='check_out']" position="after">
                 <field name="device_id" optional="hide"/>
+                <field name="device_type" optional="hide"/>
                 <field name="punch_type" optional="hide"/>
                 <field name="verify_mode" optional="hide"/>
                 <field name="check_in_zone_id" optional="hide"/>
                 <field name="check_out_zone_id" optional="hide"/>
+                <field name="check_in_photo" widget="image" optional="hide" width="40"/>
+                <field name="check_out_photo" widget="image" optional="hide" width="40"/>
             </xpath>
         </field>
     </record>
@@ -63,6 +93,11 @@
                         domain="[('check_in_zone_id', '!=', False)]"/>
                 <filter name="filter_outside_fence" string="Luar Zona"
                         domain="[('check_in_zone_id', '=', False), ('check_in_latitude', '!=', False)]"/>
+                <separator/>
+                <filter name="filter_mobile" string="Via Mobile"
+                        domain="[('device_type', '=', 'mobile')]"/>
+                <filter name="filter_with_photo" string="Ada Foto"
+                        domain="['|', ('check_in_photo', '!=', False), ('check_out_photo', '!=', False)]"/>
                 <separator/>
             </xpath>
         </field>

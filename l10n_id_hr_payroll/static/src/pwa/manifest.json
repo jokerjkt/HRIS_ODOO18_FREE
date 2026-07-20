@@ -1,0 +1,23 @@
+{
+  "name": "HRIS - Absensi Mobile",
+  "short_name": "HRIS Absen",
+  "description": "Aplikasi absensi mobile dengan selfie dan GPS",
+  "start_url": "/web#action=l10n_id_hr_payroll.selfie_checkin",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0a6ed1",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/l10n_id_hr_payroll/static/description/icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/l10n_id_hr_payroll/static/description/icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["business", "productivity"]
+}

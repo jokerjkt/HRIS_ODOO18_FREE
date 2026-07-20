@@ -1913,3 +1913,107 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+// ============================================================================
+// 26. SELFIE CHECK-IN (Mobile PWA)
+// ============================================================================
+
+.o_selfie_checkin {
+  max-width: 600px;
+  margin: 0 auto;
+
+  .position-relative {
+    video {
+      border: 3px solid $sap-border;
+      border-radius: $sap-radius-lg;
+
+      &:focus {
+        outline: none;
+        border-color: $sap-brand;
+        box-shadow: 0 0 0 3px rgba($sap-brand, 0.2);
+      }
+    }
+  }
+
+  .btn-primary {
+    background: $sap-brand;
+    border-color: $sap-brand;
+    border-radius: $sap-radius-lg;
+    font-weight: $sap-font-weight-bold;
+    padding: $sap-spacing-s $sap-spacing-xl;
+
+    &:hover {
+      background: $sap-brand-hover;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba($sap-brand, 0.3);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+
+  .btn-success {
+    background: $sap-positive;
+    border-color: $sap-positive;
+    border-radius: $sap-radius-lg;
+    font-weight: $sap-font-weight-bold;
+
+    &:hover {
+      background: darken($sap-positive, 8%);
+    }
+  }
+
+  .btn-outline-secondary {
+    border-radius: $sap-radius-lg;
+  }
+
+  .btn-outline-danger {
+    border-radius: $sap-radius-lg;
+  }
+
+  .card {
+    border-radius: $sap-radius;
+    border: 1px solid $sap-border-light;
+    box-shadow: $sap-shadow;
+  }
+
+  .badge {
+    border-radius: $sap-radius-sm;
+  }
+
+  .img-fluid {
+    border: 2px solid $sap-border;
+  }
+
+  .spinner-border {
+    border-width: 4px;
+  }
+}
+
+// ── Mobile Fullscreen Mode ─────────────────────────────────────────────
+@media (max-width: 768px) {
+  .o_selfie_checkin {
+    padding: $sap-spacing !important;
+
+    video {
+      max-height: 300px !important;
+    }
+
+    .btn-lg {
+      padding: $sap-spacing-s $sap-spacing-l;
+      font-size: $sap-font-size-m;
+    }
+  }
+}
+
+// ── Standalone PWA Mode ────────────────────────────────────────────────
+@media (display-mode: standalone) {
+  .o_selfie_checkin {
+    padding-top: $sap-spacing-xl;
+
+    .navbar, .o_main_navbar {
+      display: none !important;
+    }
+  }
+}

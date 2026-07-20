@@ -95,6 +95,8 @@ Fitur utama:
         'views/menu_views.xml',
         # Security (ACL for TransientModel — loaded after Python models)
         'security/hr_payroll_security.xml',
+        # PWA
+        'views/pwa_views.xml',
     ],
     'demo': [
         'data/hr_demo_data.xml',
@@ -103,6 +105,9 @@ Fitur utama:
         'web.assets_backend': [
             'l10n_id_hr_payroll/static/src/css/font-import.css',
             'l10n_id_hr_payroll/static/src/scss/l10n_id_hr_payroll.scss',
+            'l10n_id_hr_payroll/static/src/js/selfie_checkin.js',
+            'l10n_id_hr_payroll/static/src/xml/selfie_checkin.xml',
+            'l10n_id_hr_payroll/static/src/pwa/service_worker.js',
         ],
     },
     'post_init_hook': 'post_init_hook',

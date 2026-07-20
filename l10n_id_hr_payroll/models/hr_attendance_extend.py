@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-hr.attendance (extend) — Tambah field device + GPS ke Attendance core
+hr.attendance (extend) — Tambah field device + GPS + Photo + Mobile
 ======================================================================
 """
 import logging
@@ -43,7 +43,8 @@ class HrAttendance(models.Model):
         compute='_compute_is_from_device',
         store=True,
     )
-    # GPS fields
+
+    # ── GPS Fields ────────────────────────────────────────────────────────
     check_in_latitude = fields.Float(
         string='Lintang Masuk', digits=(10, 7),
         help='Koordinat GPS saat check-in',
@@ -79,6 +80,46 @@ class HrAttendance(models.Model):
         string='Keluar Dalam Zona',
         compute='_compute_fence_status',
         store=True,
+    )
+
+    # ── GPS Accuracy ──────────────────────────────────────────────────────
+    check_in_accuracy = fields.Float(
+        string='Akurasi GPS Masuk (m)',
+        help='Akurasi GPS dalam meter saat check-in',
+    )
+    check_out_accuracy = fields.Float(
+        string='Akurasi GPS Keluar (m)',
+        help='Akurasi GPS dalam meter saat check-out',
+    )
+
+    # ── Photo / Selfie ────────────────────────────────────────────────────
+    check_in_photo = fields.Image(
+        string='Foto Check In',
+        max_width=640, max_height=640,
+        help='Selfie saat check-in',
+    )
+    check_out_photo = fields.Image(
+        string='Foto Check Out',
+        max_width=640, max_height=640,
+        help='Selfie saat check-out',
+    )
+
+    # ── Device Type ───────────────────────────────────────────────────────
+    device_type = fields.Selection([
+        ('desktop', 'Desktop/Kiosk'),
+        ('mobile', 'Mobile/PWA'),
+        ('machine', 'Mesin Absensi'),
+        ('api', 'API Integration'),
+    ], string='Tipe Device', default='desktop',
+        help='Device yang digunakan untuk absensi',
+    )
+    check_in_device_info = fields.Text(
+        string='Info Device Masuk',
+        help='User agent / device info saat check-in',
+    )
+    check_out_device_info = fields.Text(
+        string='Info Device Keluar',
+        help='User agent / device info saat check-out',
     )
 
     @api.depends('device_id')
@@ -120,7 +161,6 @@ class HrAttendance(models.Model):
     def _validate_geo_fence(self):
         """Validasi geo-fence saat attendance dibuat."""
         for rec in self:
-            # Check-in validation
             if rec.check_in_latitude and rec.check_in_longitude:
                 zone = self.env['hr.attendance.geo.fence'].find_zone_for_point(
                     rec.check_in_latitude, rec.check_in_longitude, rec.employee_id
@@ -131,7 +171,6 @@ class HrAttendance(models.Model):
                         'Attendance check-in for %s at (%s, %s) is OUTSIDE all geo-fence zones',
                         rec.employee_id.name, rec.check_in_latitude, rec.check_in_longitude,
                     )
-            # Check-out validation
             if rec.check_out_latitude and rec.check_out_longitude:
                 zone = self.env['hr.attendance.geo.fence'].find_zone_for_point(
                     rec.check_out_latitude, rec.check_out_longitude, rec.employee_id
