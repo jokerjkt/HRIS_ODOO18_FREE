@@ -5,12 +5,13 @@
 // ============================================================================
 
 // ============================================================================
-// 1. FONT IMPORT
+// SAP Fiori Theme for Odoo 18
+// Full backend theme — overrides default Odoo styles + module-specific styles
+// Flat file (no @import/@use) for LibSass compatibility
 // ============================================================================
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 // ============================================================================
-// 2. SAP FIORI DESIGN TOKENS
+// DESIGN TOKENS
 // ============================================================================
 
 // ── Colors: Semantic ────────────────────────────────────────────────────────

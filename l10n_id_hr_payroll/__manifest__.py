@@ -100,6 +100,7 @@ Fitur utama:
     ],
     'assets': {
         'web.assets_backend': [
+            'l10n_id_hr_payroll/static/src/css/font-import.css',
             'l10n_id_hr_payroll/static/src/scss/l10n_id_hr_payroll.scss',
         ],
     },
