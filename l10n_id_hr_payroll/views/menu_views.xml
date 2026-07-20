@@ -25,7 +25,7 @@
 
         <menuitem id="menu_hr_user_dashboard"
                   name="Dashboard HR"
-                  parent="spreadsheet_dashboard.menu_spreadsheet_dashboard_root"
+                  parent="spreadsheet_dashboard.spreadsheet_dashboard_menu_root"
                   action="action_hr_user_dashboard"
                   sequence="15"
                   groups="l10n_id_hr_payroll.group_hr_admin"/>
