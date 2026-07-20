@@ -102,6 +102,7 @@ class HrThrWizard(models.TransientModel):
 
     def action_generate_thr(self):
         """Generate record THR untuk semua karyawan eligible."""
+        self.env['hr.payslip']._enforce_trial()
         if not self.thr_date:
             raise UserError('Tanggal pembayaran THR harus diisi.')
 

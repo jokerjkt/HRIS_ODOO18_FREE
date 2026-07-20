@@ -11,6 +11,7 @@ class HrShiftDaily(models.Model):
     _description = 'Jadwal Harian Shift'
     _order = 'date, employee_id'
     _rec_name = 'display_name'
+    _inherit = ['trial.mixin']
 
     assign_id = fields.Many2one(
         'hr.shift.assign', string='Assign Shift',
@@ -46,6 +47,11 @@ class HrShiftDaily(models.Model):
     display_name = fields.Char(
         string='Display Name', compute='_compute_display_name', store=True,
     )
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        self._enforce_trial()
+        return super().create(vals_list)
 
     @api.depends('employee_id', 'date', 'shift_type_id')
     def _compute_display_name(self):

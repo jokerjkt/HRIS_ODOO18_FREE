@@ -14,7 +14,7 @@
                     <header>
                         <button name="action_generate_daily" type="object"
                                 string="Generate Jadwal" class="btn-primary"
-                                invisible="state != 'draft'"/>
+                                invisible="state != 'draft' or trial_expired"/>
                         <button name="action_done" type="object"
                                 string="Selesai" class="btn-success"
                                 invisible="state != 'confirmed'"/>
@@ -23,6 +23,10 @@
                                 invisible="state in ('done',)"/>
                         <field name="state" widget="statusbar"
                                statusbar_visible="draft,confirmed,done"/>
+                        <div class="sapTrialBanner sapTrialBanner--danger"
+                             invisible="not trial_expired">
+                            <i class="fa fa-warning"/> Masa uji coba sudah berakhir. Fitur shift terkunci.
+                        </div>
                     </header>
                     <sheet>
                         <div class="oe_button_box" name="buttons">

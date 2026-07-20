@@ -13,6 +13,7 @@ class HrShiftAssign(models.Model):
     _name = 'hr.shift.assign'
     _description = 'Assign Shift ke Karyawan'
     _order = 'date_from desc, employee_id'
+    _inherit = ['trial.mixin']
 
     employee_id = fields.Many2one(
         'hr.employee', string='Karyawan', required=True,
@@ -38,6 +39,11 @@ class HrShiftAssign(models.Model):
         ('confirmed', 'Dikonfirmasi'),
         ('done', 'Selesai'),
     ], string='Status', default='draft')
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        self._enforce_trial()
+        return super().create(vals_list)
 
     @api.depends('daily_ids')
     def _compute_daily_count(self):
@@ -79,6 +85,7 @@ class HrShiftAssign(models.Model):
 
     def action_generate_daily(self):
         """Generate jadwal harian berdasarkan rotasi."""
+        self._enforce_trial()
         for rec in self:
             if not rec.rotation_id.line_ids:
                 raise ValidationError('Pola rotasi tidak memiliki detail siklus!')

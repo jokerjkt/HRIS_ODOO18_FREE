@@ -12,7 +12,7 @@ Bilingual messages: Indonesian + English
 import hashlib
 from datetime import date
 
-from odoo import models, api
+from odoo import models, fields, api
 from odoo.exceptions import UserError
 
 TRIAL_DAYS = 5
@@ -33,6 +33,18 @@ TRIAL_EXPIRED_MSG = (
 class TrialMixin(models.AbstractModel):
     _name = 'trial.mixin'
     _description = 'Trial Period Check — Bypass-Proof'
+
+    trial_expired = fields.Boolean(
+        string='Trial Expired',
+        compute='_compute_trial_expired',
+        store=False,
+    )
+
+    @api.depends()
+    def _compute_trial_expired(self):
+        active = self._is_trial_active()
+        for rec in self:
+            rec.trial_expired = not active
 
     @api.model
     def _compute_trial_hash(self, date_str):

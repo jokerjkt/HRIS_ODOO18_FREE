@@ -14,7 +14,7 @@
                     <header>
                         <button name="action_confirm" string="Konfirmasi THR"
                                 type="object" class="btn-primary"
-                                invisible="state != 'draft'"/>
+                                invisible="state != 'draft' or trial_expired"/>
                         <button name="action_mark_paid" string="Tandai Sudah Dibayar"
                                 type="object" class="btn-success"
                                 invisible="state != 'confirmed'"/>
@@ -23,6 +23,10 @@
                                 invisible="state == 'paid'"/>
                         <field name="state" widget="statusbar"
                                statusbar_visible="draft,confirmed,paid"/>
+                        <div class="sapTrialBanner sapTrialBanner--danger"
+                             invisible="not trial_expired">
+                            <i class="fa fa-warning"/> Masa uji coba sudah berakhir. Fitur THR terkunci.
+                        </div>
                     </header>
                     <sheet>
                         <div class="sapFormHeader">

@@ -14,6 +14,10 @@
                     <header>
                         <field name="state" widget="statusbar"
                                statusbar_visible="draft,submitted,approved"/>
+                        <div class="sapTrialBanner sapTrialBanner--danger"
+                             invisible="not trial_expired">
+                            <i class="fa fa-warning"/> Masa uji coba sudah berakhir. Fitur lembur terkunci.
+                        </div>
                     </header>
                     <sheet>
                         <!-- Form Header -->
@@ -39,7 +43,7 @@
                                         string="Submit ke Atasan"
                                         type="object"
                                         class="sapFormHeader__btn sapFormHeader__btn--emphasized"
-                                        invisible="state != 'draft'"/>
+                                        invisible="state != 'draft' or trial_expired"/>
                                 <button name="action_approve"
                                         string="Setujui"
                                         type="object"

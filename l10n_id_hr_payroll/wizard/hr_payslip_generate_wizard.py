@@ -98,6 +98,7 @@ class HrPayslipGenerateWizard(models.TransientModel):
 
     def action_generate_payslips(self):
         """Buat slip gaji massal."""
+        self.env['hr.payslip']._enforce_trial()
         if not self.date_from or not self.date_to:
             raise UserError('Periode tanggal harus diisi.')
         if self.date_from > self.date_to:

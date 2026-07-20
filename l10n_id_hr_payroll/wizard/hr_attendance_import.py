@@ -173,6 +173,7 @@ class HrAttendanceImportWizard(models.TransientModel):
     def action_import(self):
         """Import data yang sudah di-preview ke hr.attendance."""
         self.ensure_one()
+        self.env['hr.payslip']._enforce_trial()
 
         if self.state != 'preview':
             raise ValidationError('Lakukan parsing terlebih dahulu!')

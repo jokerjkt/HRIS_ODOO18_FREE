@@ -14,6 +14,10 @@
                     <header>
                         <field name="state" widget="statusbar"
                                statusbar_visible="draft,computed,done"/>
+                        <div class="sapTrialBanner sapTrialBanner--danger"
+                             invisible="not trial_expired">
+                            <i class="fa fa-warning"/> Masa uji coba sudah berakhir. Fitur slip gaji terkunci.
+                        </div>
                     </header>
                     <sheet>
 
@@ -37,10 +41,10 @@
                                 <div class="sapFormStatus sapFormStatus--cancelled" invisible="state != 'cancel'">Dibatalkan</div>
                                 <button name="action_compute" string="Hitung Gaji"
                                         type="object" class="btn-primary"
-                                        invisible="state != 'draft'"/>
+                                        invisible="state != 'draft' or trial_expired"/>
                                 <button name="action_confirm" string="Konfirmasi"
                                         type="object" class="btn-primary"
-                                        invisible="state != 'computed'"/>
+                                        invisible="state != 'computed' or trial_expired"/>
                                 <button name="action_cancel" string="Batalkan"
                                         type="object" class="btn-secondary"
                                         invisible="state not in ('draft', 'computed', 'done')"/>
