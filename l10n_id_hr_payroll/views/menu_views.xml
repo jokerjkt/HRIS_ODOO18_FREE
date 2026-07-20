@@ -3,10 +3,34 @@
     <data>
 
         <!-- ================================================================
-             Indonesian HR — Integrated under Odoo 18 HR App
+             Indonesian HR Payroll — Menu Structure
              ================================================================ -->
 
-        <!-- ── My Dashboard — inside HR menu ────────────────────────────── -->
+        <!-- ── Dashboard Admin — Root Level App ────────────────────────── -->
+
+        <menuitem id="menu_dashboard_admin_root"
+                  name="HR Dashboard"
+                  sequence="180"
+                  web_icon="l10n_id_hr_payroll,static/description/icon.png"
+                  groups="l10n_id_hr_payroll.group_hr_full_admin"/>
+
+        <menuitem id="menu_indonesia_hr_dashboard"
+                  name="Dashboard Admin"
+                  parent="menu_dashboard_admin_root"
+                  action="action_indonesia_hr_dashboard"
+                  sequence="10"
+                  groups="l10n_id_hr_payroll.group_hr_full_admin"/>
+
+        <!-- ── Dashboard HR — Under Odoo Dashboards ───────────────────── -->
+
+        <menuitem id="menu_hr_user_dashboard"
+                  name="Dashboard HR"
+                  parent="spreadsheet_dashboard.menu_spreadsheet_dashboard_root"
+                  action="action_hr_user_dashboard"
+                  sequence="15"
+                  groups="l10n_id_hr_payroll.group_hr_admin"/>
+
+        <!-- ── Dashboard Saya — Under Employees ───────────────────────── -->
 
         <menuitem id="menu_hr_my_dashboard"
                   name="Dashboard Saya"
@@ -14,24 +38,7 @@
                   action="action_hr_my_dashboard"
                   sequence="2"/>
 
-        <!-- ── Dashboard HR — inside HR menu ──────────────────────────── -->
-
-        <menuitem id="menu_hr_user_dashboard"
-                  name="Dashboard HR"
-                  parent="hr.menu_hr_root"
-                  action="action_hr_user_dashboard"
-                  sequence="3"/>
-
-        <!-- ── Dashboard Admin (inside Employees menu) ──────────────── -->
-
-        <menuitem id="menu_indonesia_hr_dashboard"
-                  name="Dashboard Admin"
-                  parent="hr.menu_hr_root"
-                  action="action_indonesia_hr_dashboard"
-                  sequence="1"
-                  groups="l10n_id_hr_payroll.group_hr_full_admin"/>
-
-        <!-- ── My Payslip — visible to all employees ──────────────────────── -->
+        <!-- ── My Payslip — Under Employees ────────────────────────────── -->
 
         <menuitem id="menu_hr_my_payslip"
                   name="Slip Gaji Saya"
@@ -39,7 +46,7 @@
                   action="action_hr_my_payslip"
                   sequence="45"/>
 
-        <!-- ── Payroll (admin only) ────────────────────────────────────────── -->
+        <!-- ── Payroll (admin only) ────────────────────────────────────── -->
 
         <menuitem id="menu_indonesia_hr_payslip"
                   name="Payroll"
@@ -65,7 +72,7 @@
                   action="action_hr_payslip_generate_wizard"
                   sequence="30"/>
 
-        <!-- ── Lembur ─────────────────────────────────────────────────────── -->
+        <!-- ── Lembur ─────────────────────────────────────────────────── -->
 
         <menuitem id="menu_indonesia_hr_overtime"
                   name="Lembur"
@@ -92,35 +99,7 @@
                   sequence="30"
                   groups="l10n_id_hr_payroll.group_hr_admin"/>
 
-        <!-- ── My THR — visible to all employees ──────────────────────────── -->
-
-        <menuitem id="menu_hr_my_thr"
-                  name="THR Saya"
-                  parent="hr.menu_hr_root"
-                  action="action_hr_my_thr"
-                  sequence="62"/>
-
-        <!-- ── THR (admin only) ────────────────────────────────────────────── -->
-
-        <menuitem id="menu_indonesia_hr_thr"
-                  name="THR"
-                  parent="hr.menu_hr_root"
-                  sequence="60"
-                  groups="l10n_id_hr_payroll.group_hr_admin"/>
-
-        <menuitem id="menu_hr_thr_list"
-                  name="Daftar THR"
-                  parent="menu_indonesia_hr_thr"
-                  action="action_hr_thr"
-                  sequence="10"/>
-
-        <menuitem id="menu_hr_thr_generate"
-                  name="Generate THR Massal"
-                  parent="menu_indonesia_hr_thr"
-                  action="action_hr_thr_wizard"
-                  sequence="20"/>
-
-        <!-- ── Shift Scheduling ────────────────────────────────────────────── -->
+        <!-- ── Shift Scheduling ────────────────────────────────────────── -->
 
         <menuitem id="menu_indonesia_hr_shift_scheduling"
                   name="Shift Scheduling"
@@ -146,12 +125,40 @@
                   action="action_hr_shift_bulk_assign"
                   sequence="30"/>
 
-        <!-- ── Attendance Device Integration ──────────────────────────────── -->
+        <!-- ── THR (admin only) ────────────────────────────────────────── -->
+
+        <menuitem id="menu_indonesia_hr_thr"
+                  name="THR"
+                  parent="hr.menu_hr_root"
+                  sequence="60"
+                  groups="l10n_id_hr_payroll.group_hr_admin"/>
+
+        <menuitem id="menu_hr_thr_list"
+                  name="Daftar THR"
+                  parent="menu_indonesia_hr_thr"
+                  action="action_hr_thr"
+                  sequence="10"/>
+
+        <menuitem id="menu_hr_thr_generate"
+                  name="Generate THR Massal"
+                  parent="menu_indonesia_hr_thr"
+                  action="action_hr_thr_wizard"
+                  sequence="20"/>
+
+        <!-- ── My THR — visible to all employees ──────────────────────── -->
+
+        <menuitem id="menu_hr_my_thr"
+                  name="THR Saya"
+                  parent="hr.menu_hr_root"
+                  action="action_hr_my_thr"
+                  sequence="62"/>
+
+        <!-- ── Attendance Device Integration — Under Attendances ──────── -->
 
         <menuitem id="menu_indonesia_hr_attendance_device"
                   name="Mesin Absensi"
-                  parent="hr.menu_hr_root"
-                  sequence="52"
+                  parent="hr_attendance.menu_hr_attendance_root"
+                  sequence="20"
                   groups="l10n_id_hr_payroll.group_hr_admin"/>
 
         <menuitem id="menu_hr_attendance_device_list"
@@ -178,7 +185,7 @@
                   action="action_hr_attendance_geo_fence"
                   sequence="40"/>
 
-        <!-- ── Reporting (under existing HR Reporting) ─────────────────────── -->
+        <!-- ── Reporting (under existing HR Reporting) ─────────────────── -->
 
         <menuitem id="menu_hr_report_bpjs"
                   name="Rekap Iuran BPJS"
@@ -187,7 +194,7 @@
                   sequence="15"
                   groups="l10n_id_hr_payroll.group_hr_supervisor"/>
 
-        <!-- ── Configuration (under existing HR Configuration) ─────────────── -->
+        <!-- ── Configuration (under existing HR Configuration) ─────────── -->
 
         <menuitem id="menu_hr_bpjs_rate"
                   name="Tarif BPJS"

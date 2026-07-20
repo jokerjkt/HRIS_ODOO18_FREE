@@ -38,6 +38,7 @@ Fitur utama:
         'hr_holidays',
         'hr_expense',
         'mail',
+        'spreadsheet_dashboard',
     ],
     'external_dependencies': {
         'python': ['pyzk', 'openpyxl'],
