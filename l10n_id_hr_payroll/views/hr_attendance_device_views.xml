@@ -107,40 +107,100 @@
                             </div>
                         </button>
                     </div>
-                    <div class="oe_title">
-                        <label for="name"/>
-                        <h1>
-                            <field name="name" placeholder="Nama Mesin Absensi"/>
-                        </h1>
+
+                    <div class="sapFormHeader">
+                        <div class="sapFormHeader__left">
+                            <div class="sapFormHeader__avatar">
+                                <i class="fa fa-server fa-2x"/>
+                            </div>
+                            <div>
+                                <div class="sapFormHeader__title">
+                                    <field name="name" placeholder="Nama Mesin Absensi"/>
+                                </div>
+                                <div class="sapFormHeader__subtitle">
+                                    <field name="brand"/> - <field name="connection_type"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sapFormHeader__actions">
+                            <field name="state" widget="badge"
+                                   class="sapFormStatus sapFormStatus--online"
+                                   invisible="state != 'online'"/>
+                            <field name="state" widget="badge"
+                                   class="sapFormStatus sapFormStatus--offline"
+                                   invisible="state != 'offline'"/>
+                            <field name="state" widget="badge"
+                                   class="sapFormStatus sapFormStatus--error"
+                                   invisible="state != 'error'"/>
+                        </div>
                     </div>
-                    <group>
-                        <group string="Informasi Mesin">
-                            <field name="brand"/>
-                            <field name="connection_type"/>
-                            <field name="serial_number"/>
-                            <field name="firmware_version"/>
-                        </group>
-                        <group string="Koneksi">
-                            <field name="ip_address"
-                                   invisible="connection_type == 'csv_import'"/>
-                            <field name="port"
-                                   invisible="connection_type == 'csv_import'"/>
-                            <field name="comm_key"
-                                   invisible="connection_type == 'csv_import'"
-                                   password="True"/>
-                            <field name="location"/>
-                            <field name="user_id"/>
-                        </group>
-                    </group>
-                    <group string="Konfigurasi">
+
+                    <div class="sapFormSummary">
+                        <div class="sapFormSummary__item">
+                            <div class="sapFormSummary__icon sapFormSummary__icon--brand">
+                                <i class="fa fa-plug"/>
+                            </div>
+                            <div class="sapFormSummary__label">IP Address</div>
+                            <div class="sapFormSummary__value">
+                                <field name="ip_address" readonly="1"/>
+                            </div>
+                        </div>
+                        <div class="sapFormSummary__item">
+                            <div class="sapFormSummary__icon sapFormSummary__icon--positive">
+                                <i class="fa fa-map-marker"/>
+                            </div>
+                            <div class="sapFormSummary__label">Lokasi</div>
+                            <div class="sapFormSummary__value">
+                                <field name="location" readonly="1"/>
+                            </div>
+                        </div>
+                        <div class="sapFormSummary__item">
+                            <div class="sapFormSummary__icon sapFormSummary__icon--neutral">
+                                <i class="fa fa-refresh"/>
+                            </div>
+                            <div class="sapFormSummary__label">Terakhir Sync</div>
+                            <div class="sapFormSummary__value">
+                                <field name="last_sync" readonly="1"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sapFormSection">
+                        <div class="sapFormSection__title">Informasi Mesin</div>
                         <group>
-                            <field name="employee_mapping"/>
-                            <field name="last_sync"/>
+                            <group>
+                                <field name="brand"/>
+                                <field name="connection_type"/>
+                                <field name="serial_number"/>
+                                <field name="firmware_version"/>
+                            </group>
+                            <group>
+                                <field name="ip_address"
+                                       invisible="connection_type == 'csv_import'"/>
+                                <field name="port"
+                                       invisible="connection_type == 'csv_import'"/>
+                                <field name="comm_key"
+                                       invisible="connection_type == 'csv_import'"
+                                       password="True"/>
+                                <field name="location"/>
+                                <field name="user_id"/>
+                            </group>
                         </group>
+                    </div>
+
+                    <div class="sapFormSection">
+                        <div class="sapFormSection__title">Konfigurasi</div>
                         <group>
-                            <field name="department_ids" widget="many2many_tags"/>
+                            <group>
+                                <field name="employee_mapping"/>
+                                <field name="last_sync"/>
+                            </group>
+                            <group>
+                                <field name="department_ids" widget="many2many_tags"/>
+                            </group>
                         </group>
-                    </group>
+                    </div>
+
                     <notebook>
                         <page string="Catatan" name="note">
                             <field name="note" placeholder="Catatan tentang mesin ini..."/>

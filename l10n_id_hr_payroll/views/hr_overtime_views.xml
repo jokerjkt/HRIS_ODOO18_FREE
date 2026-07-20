@@ -3,7 +3,7 @@
     <data>
 
         <!-- ================================================================
-             Overtime — Form View
+             Overtime — Form View (SAP Fiori Object Page)
              ================================================================ -->
 
         <record id="view_hr_overtime_form" model="ir.ui.view">
@@ -12,6 +12,34 @@
             <field name="arch" type="xml">
                 <form string="Pengajuan Lembur">
                     <header>
+                        <div class="sapFormHeader">
+                            <div class="sapFormHeader__left">
+                                <div class="sapFormHeader__avatar">
+                                    <field name="employee_id" widget="many2one_avatar_employee" readonly="1"/>
+                                </div>
+                                <div>
+                                    <h1 class="sapFormHeader__title">
+                                        <field name="employee_id" readonly="1" placeholder="Nama Karyawan"/>
+                                    </h1>
+                                    <div class="sapFormHeader__subtitle">Lembur</div>
+                                </div>
+                            </div>
+                            <div class="sapFormHeader__actions">
+                                <span class="sapFormStatus"
+                                      t-att-class="{
+                                          'sapFormStatus--draft': record.state.raw_value === 'draft',
+                                          'sapFormStatus--submitted': record.state.raw_value === 'submitted',
+                                          'sapFormStatus--approved': record.state.raw_value === 'approved',
+                                          'sapFormStatus--rejected': record.state.raw_value === 'rejected',
+                                          'sapFormStatus--cancelled': record.state.raw_value === 'cancelled'
+                                      }">
+                                    <field name="state" readonly="1"/>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="oe_button_box" name="button_box"/>
+
                         <button name="action_submit"
                                 string="Submit ke Atasan"
                                 type="object"
@@ -42,73 +70,126 @@
                                statusbar_visible="draft,submitted,approved"/>
                     </header>
                     <sheet>
-                        <div class="oe_title">
-                            <h1>
-                                <field name="name" readonly="1"/>
-                            </h1>
+                        <div class="sapFormSummary">
+                            <div class="sapFormSummary__item">
+                                <div class="sapFormSummary__icon sapFormSummary__icon--brand">
+                                    <i class="fa fa-clock-o"/>
+                                </div>
+                                <div>
+                                    <div class="sapFormSummary__label">Durasi</div>
+                                    <div class="sapFormSummary__value">
+                                        <field name="duration" readonly="1" string="jam"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sapFormSummary__item">
+                                <div class="sapFormSummary__icon sapFormSummary__icon--positive">
+                                    <i class="fa fa-money"/>
+                                </div>
+                                <div>
+                                    <div class="sapFormSummary__label">Estimasi Upah</div>
+                                    <div class="sapFormSummary__value">
+                                        <field name="overtime_pay" widget="monetary" readonly="1"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sapFormSummary__item">
+                                <div class="sapFormSummary__icon sapFormSummary__icon--critical">
+                                    <i class="fa fa-calendar"/>
+                                </div>
+                                <div>
+                                    <div class="sapFormSummary__label">Tanggal</div>
+                                    <div class="sapFormSummary__value">
+                                        <field name="overtime_date" readonly="1"/>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <group>
-                            <group string="Informasi Karyawan">
-                                <field name="employee_id"
-                                       readonly="state != 'draft'"/>
-                                <field name="department_id" readonly="1"/>
-                                <field name="job_id" readonly="1"/>
-                                <field name="manager_id" readonly="1"/>
-                            </group>
-                            <group string="Waktu Lembur">
-                                <field name="overtime_date"
-                                       readonly="state != 'draft'"/>
-                                <field name="overtime_type"
-                                       readonly="state != 'draft'"/>
-                                <field name="start_time" widget="float_time"
-                                       readonly="state != 'draft'"/>
-                                <field name="end_time" widget="float_time"
-                                       readonly="state != 'draft'"/>
-                                <field name="duration" readonly="1" string="Durasi (jam)"/>
-                                <field name="multiplier_first" readonly="1"/>
-                                <field name="multiplier_next" readonly="1"/>
-                                <field name="overtime_pay" widget="monetary" readonly="1"
-                                       string="Estimasi Upah Lembur (Rp)"/>
-                            </group>
-                        </group>
-
-                        <group string="Detail Kegiatan Lembur">
-                            <field name="reason" placeholder="Alasan singkat lembur..."
-                                   readonly="state != 'draft'"/>
-                        </group>
-
-                        <group>
-                            <field name="activity_description"
-                                   placeholder="Uraikan secara detail kegiatan yang dilakukan selama lembur. Contoh: Review laporan keuangan Q2, meeting dengan klien XYZ, pengerjaan fitur A untuk project B..."
-                                   widget="html"
-                                   readonly="state != 'draft'"
-                                   style="min-height: 120px;"/>
-                        </group>
-
-                        <group>
-                            <field name="result_output"
-                                   placeholder="Output/hasil yang dicapai selama lembur..."
-                                   readonly="state != 'draft'"/>
-                        </group>
-
-                        <group string="Informasi Persetujuan"
-                               invisible="state in ('draft', 'submitted')">
+                        <div class="sapFormSection">
+                            <div class="sapFormSection__title">Informasi Karyawan</div>
                             <group>
-                                <field name="approved_by" readonly="1"/>
-                                <field name="approved_date" readonly="1"/>
+                                <group>
+                                    <field name="employee_id"
+                                           readonly="state != 'draft'"/>
+                                    <field name="department_id" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="job_id" readonly="1"/>
+                                    <field name="manager_id" readonly="1"/>
+                                </group>
                             </group>
-                            <group invisible="state != 'rejected'">
-                                <field name="reject_reason" readonly="1"/>
+                        </div>
+
+                        <div class="sapFormSection">
+                            <div class="sapFormSection__title">Waktu Lembur</div>
+                            <group>
+                                <group>
+                                    <field name="overtime_date"
+                                           readonly="state != 'draft'"/>
+                                    <field name="overtime_type"
+                                           readonly="state != 'draft'"/>
+                                    <field name="start_time" widget="float_time"
+                                           readonly="state != 'draft'"/>
+                                    <field name="end_time" widget="float_time"
+                                           readonly="state != 'draft'"/>
+                                </group>
+                                <group>
+                                    <field name="duration" readonly="1" string="Durasi (jam)"/>
+                                    <field name="multiplier_first" readonly="1"/>
+                                    <field name="multiplier_next" readonly="1"/>
+                                    <field name="overtime_pay" widget="monetary" readonly="1"
+                                           string="Estimasi Upah Lembur (Rp)"/>
+                                </group>
                             </group>
-                        </group>
+                        </div>
 
-                        <group string="Payslip">
-                            <field name="payslip_id" readonly="1"/>
-                            <field name="is_included_payslip" readonly="1"/>
-                        </group>
+                        <div class="sapFormSection">
+                            <div class="sapFormSection__title">Detail Kegiatan Lembur</div>
+                            <group>
+                                <field name="reason" placeholder="Alasan singkat lembur..."
+                                       readonly="state != 'draft'"/>
+                            </group>
+                            <group>
+                                <field name="activity_description"
+                                       placeholder="Uraikan secara detail kegiatan yang dilakukan selama lembur. Contoh: Review laporan keuangan Q2, meeting dengan klien XYZ, pengerjaan fitur A untuk project B..."
+                                       widget="html"
+                                       readonly="state != 'draft'"
+                                       style="min-height: 120px;"/>
+                            </group>
+                            <group>
+                                <field name="result_output"
+                                       placeholder="Output/hasil yang dicapai selama lembur..."
+                                       readonly="state != 'draft'"/>
+                            </group>
+                        </div>
 
-                        <field name="notes" placeholder="Catatan tambahan..."/>
+                        <div class="sapFormSection"
+                             invisible="state in ('draft', 'submitted')">
+                            <div class="sapFormSection__title">Informasi Persetujuan</div>
+                            <group>
+                                <group>
+                                    <field name="approved_by" readonly="1"/>
+                                    <field name="approved_date" readonly="1"/>
+                                </group>
+                                <group invisible="state != 'rejected'">
+                                    <field name="reject_reason" readonly="1"/>
+                                </group>
+                            </group>
+                        </div>
+
+                        <div class="sapFormSection">
+                            <div class="sapFormSection__title">Payslip</div>
+                            <group>
+                                <field name="payslip_id" readonly="1"/>
+                                <field name="is_included_payslip" readonly="1"/>
+                            </group>
+                        </div>
+
+                        <div class="sapFormSection">
+                            <div class="sapFormSection__title">Catatan</div>
+                            <field name="notes" placeholder="Catatan tambahan..."/>
+                        </div>
 
                     </sheet>
                     <chatter/>
@@ -149,7 +230,7 @@
         </record>
 
         <!-- ================================================================
-             Overtime — Kanban View (Enhanced)
+             Overtime — Kanban View (SAP Fiori Clean Card Pattern)
              ================================================================ -->
 
         <record id="view_hr_overtime_kanban" model="ir.ui.view">
@@ -167,52 +248,75 @@
                     <field name="name"/>
                     <field name="overtime_type"/>
                     <field name="employee_id" widget="many2one_avatar_employee"/>
+                    <field name="start_time" widget="float_time"/>
+                    <field name="end_time" widget="float_time"/>
+                    <field name="manager_id"/>
                     <templates>
-                        <t t-name="kanban-card">
-                            <div class="oe_kanban_global_click o_kanban_record_has_image_fill">
-                                <div class="o_kanban_image_fill_left">
-                                    <div class="o_kanban_image_fill_left_unhover">
-                                        <img t-att-src="kanban_image('hr.employee', 'image_128', record.employee_id.raw_value)"
-                                             class="o_kanban_image_fill_left_round o_kanban_image_fill_left_round_face rounded-circle"
-                                             alt="Avatar"
-                                             style="width: 48px; height: 48px; object-fit: cover;"/>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click sapKanbanCard">
+                                <div class="sapKanbanCard__header">
+                                    <div class="sapKanbanCard__title">
+                                        <strong><field name="employee_id"/></strong>
                                     </div>
+                                    <span class="sapKanbanCard__badge"
+                                          t-att-class="{
+                                              'sapKanbanCard__badge--approved': record.state.raw_value === 'approved',
+                                              'sapKanbanCard__badge--submitted': record.state.raw_value === 'submitted',
+                                              'sapKanbanCard__badge--rejected': record.state.raw_value === 'rejected',
+                                              'sapKanbanCard__badge--draft': record.state.raw_value === 'draft',
+                                              'sapKanbanCard__badge--cancelled': record.state.raw_value === 'cancelled'
+                                          }">
+                                        <field name="state"/>
+                                    </span>
                                 </div>
-                                <div class="oe_kanban_details">
-                                    <div class="o_kanban_record_title mb-1">
-                                        <strong class="o_kanban_record_name"><field name="employee_id"/></strong>
-                                    </div>
-                                    <div class="mb-1">
-                                        <span class="badge rounded-pill"
-                                              t-att-class="{
-                                                  'text-bg-success': record.state.raw_value === 'approved',
-                                                  'text-bg-warning': record.state.raw_value === 'submitted',
-                                                  'text-bg-danger': record.state.raw_value === 'rejected',
-                                                  'text-bg-secondary': record.state.raw_value in ('draft', 'cancelled')
-                                              }">
-                                            <field name="state"/>
+                                <div class="sapKanbanCard__body">
+                                    <div class="sapKanbanCard__row">
+                                        <span class="sapKanbanCard__label">Tanggal</span>
+                                        <span class="sapKanbanCard__value">
+                                            <field name="overtime_date"/>
                                         </span>
                                     </div>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <small class="text-muted">
-                                                <i class="fa fa-calendar"/> <field name="overtime_date"/>
-                                            </small>
-                                        </div>
-                                        <div>
-                                            <small class="text-muted">
-                                                <i class="fa fa-clock-o"/> <field name="duration"/> jam
-                                            </small>
-                                        </div>
+                                    <div class="sapKanbanCard__row">
+                                        <span class="sapKanbanCard__label">Jam</span>
+                                        <span class="sapKanbanCard__value">
+                                            <field name="start_time" widget="float_time"/> - <field name="end_time" widget="float_time"/>
+                                        </span>
                                     </div>
-                                    <div class="mt-1">
-                                        <strong class="text-primary">
+                                    <div class="sapKanbanCard__row">
+                                        <span class="sapKanbanCard__label">Durasi</span>
+                                        <span class="sapKanbanCard__value">
+                                            <field name="duration"/> jam
+                                        </span>
+                                    </div>
+                                    <div class="sapKanbanCard__row">
+                                        <span class="sapKanbanCard__label">Upah</span>
+                                        <span class="sapKanbanCard__value sapKanbanCard__value--bold">
                                             <field name="overtime_pay" widget="monetary"/>
-                                        </strong>
+                                        </span>
                                     </div>
-                                    <div class="text-muted small mt-1">
-                                        <field name="reason"/>
+                                    <div class="sapKanbanCard__row" t-if="record.reason.raw_value">
+                                        <span class="sapKanbanCard__label">Alasan</span>
+                                        <span class="sapKanbanCard__value sapKanbanCard__value--truncate">
+                                            <field name="reason"/>
+                                        </span>
                                     </div>
+                                </div>
+                                <div class="sapKanbanCard__footer">
+                                    <button name="action_submit"
+                                            string="Submit"
+                                            type="object"
+                                            class="sapKanbanCard__btn sapKanbanCard__btn--primary"
+                                            invisible="state != 'draft'"/>
+                                    <button name="action_approve"
+                                            string="Setujui"
+                                            type="object"
+                                            class="sapKanbanCard__btn sapKanbanCard__btn--positive"
+                                            invisible="state != 'submitted'"/>
+                                    <button name="action_reject"
+                                            string="Tolak"
+                                            type="object"
+                                            class="sapKanbanCard__btn sapKanbanCard__btn--negative"
+                                            invisible="state != 'submitted'"/>
                                 </div>
                             </div>
                         </t>

@@ -3,7 +3,7 @@
     <data>
 
         <!-- ================================================================
-             Employee Form — Tab Informasi Indonesia (Modern Layout)
+             Employee Form — Tab Informasi Indonesia (SAP Fiori Pattern)
              ================================================================ -->
 
         <record id="view_employee_form_indonesia" model="ir.ui.view">
@@ -12,207 +12,131 @@
             <field name="inherit_id" ref="hr.view_employee_form"/>
             <field name="arch" type="xml">
 
-                <!-- Tambah tab Indonesia setelah tab "Private Information" -->
                 <xpath expr="//page[@name='personal_information']" position="after">
                     <page name="indonesia_info" string="Indonesia HR">
 
                         <!-- ═══ Section: Identitas & Perpajakan ═══ -->
-                        <div class="o_kanban_record_body mb-3">
-                            <div class="row">
-                                <div class="col-12">
-                                    <h5 class="mb-2">
-                                        <i class="fa fa-id-card text-primary"/> Identitas &amp; Perpajakan
-                                    </h5>
-                                </div>
+                        <div class="sapFormSection">
+                            <div class="sapFormSection__title">
+                                <i class="fa fa-id-card"/> Identitas &amp; Perpajakan
                             </div>
-                            <div class="row o_kanban_no_coverage">
+                            <div class="row">
                                 <div class="col-lg-6 col-md-6">
-                                    <div class="card border-primary mb-3">
-                                        <div class="card-body py-2">
-                                            <div class="row mb-1">
-                                                <div class="col-6">
-                                                    <small class="text-muted">NIK (KTP)</small>
-                                                    <field name="nik" placeholder="16 digit NIK"
-                                                           class="mb-0"/>
-                                                </div>
-                                                <div class="col-6">
-                                                    <small class="text-muted">NPWP</small>
-                                                    <field name="npwp" placeholder="XX.XXX.XXX.X-XXX.XXX"
-                                                           class="mb-0"/>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <small class="text-muted">Status NPWP</small>
-                                                    <field name="npwp_has" readonly="1" class="mb-0"/>
-                                                </div>
-                                                <div class="col-6">
-                                                    <small class="text-muted">Tipe Kontrak</small>
-                                                    <field name="employee_contract_type" class="mb-0"/>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div class="sapFormGroup">
+                                        <div class="sapFormGroup__label">NIK (KTP)</div>
+                                        <field name="nik" placeholder="16 digit NIK"/>
+                                    </div>
+                                    <div class="sapFormGroup">
+                                        <div class="sapFormGroup__label">NPWP</div>
+                                        <field name="npwp" placeholder="XX.XXX.XXX.X-XXX.XXX"/>
+                                    </div>
+                                    <div class="sapFormGroup">
+                                        <div class="sapFormGroup__label">Status NPWP</div>
+                                        <field name="npwp_has" readonly="1"/>
+                                    </div>
+                                    <div class="sapFormGroup">
+                                        <div class="sapFormGroup__label">Tipe Kontrak</div>
+                                        <field name="employee_contract_type"/>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6">
-                                    <div class="card border-warning mb-3">
-                                        <div class="card-body py-2">
-                                            <div class="row mb-1">
-                                                <div class="col-6">
-                                                    <small class="text-muted">Status PTKP</small>
-                                                    <field name="ptkp_status" class="mb-0"/>
-                                                </div>
-                                                <div class="col-6">
-                                                    <small class="text-muted">Nilai PTKP (Rp/tahun)</small>
-                                                    <field name="ptkp_amount" widget="monetary"
-                                                           readonly="1" class="mb-0"/>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div class="sapFormGroup">
+                                        <div class="sapFormGroup__label">Status PTKP</div>
+                                        <field name="ptkp_status"/>
+                                    </div>
+                                    <div class="sapFormGroup">
+                                        <div class="sapFormGroup__label">Nilai PTKP (Rp/tahun)</div>
+                                        <field name="ptkp_amount" widget="monetary" readonly="1"/>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- ═══ Section: BPJS Ketenagakerjaan ═══ -->
-                        <div class="o_kanban_record_body mb-3">
-                            <div class="row">
-                                <div class="col-12">
-                                    <h5 class="mb-2">
-                                        <i class="fa fa-shield text-success"/> BPJS Ketenagakerjaan
-                                    </h5>
-                                </div>
+                        <div class="sapFormSection">
+                            <div class="sapFormSection__title">
+                                <i class="fa fa-shield"/> BPJS Ketenagakerjaan
                             </div>
-                            <div class="row o_kanban_no_coverage">
+                            <div class="row">
                                 <div class="col-lg-6 col-md-6">
-                                    <div class="card border-success mb-3">
-                                        <div class="card-body py-2">
-                                            <div class="row mb-1">
-                                                <div class="col-6">
-                                                    <small class="text-muted">No. Peserta BPJS TK</small>
-                                                    <field name="bpjs_tk_no"
-                                                           placeholder="Nomor Peserta BPJS TK"
-                                                           class="mb-0"/>
-                                                </div>
-                                                <div class="col-6">
-                                                    <small class="text-muted">Kelompok Risiko JKK</small>
-                                                    <field name="bpjs_tk_jkk_class" class="mb-0"/>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <small class="text-muted">Rate JKK (%)</small>
-                                                    <field name="bpjs_tk_jkk_rate" readonly="1"
-                                                           class="mb-0"/>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div class="sapFormGroup">
+                                        <div class="sapFormGroup__label">No. Peserta BPJS TK</div>
+                                        <field name="bpjs_tk_no" placeholder="Nomor Peserta BPJS TK"/>
+                                    </div>
+                                    <div class="sapFormGroup">
+                                        <div class="sapFormGroup__label">Kelompok Risiko JKK</div>
+                                        <field name="bpjs_tk_jkk_class"/>
+                                    </div>
+                                    <div class="sapFormGroup">
+                                        <div class="sapFormGroup__label">Rate JKK (%)</div>
+                                        <field name="bpjs_tk_jkk_rate" readonly="1"/>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- ═══ Section: BPJS Kesehatan ═══ -->
-                        <div class="o_kanban_record_body mb-3">
-                            <div class="row">
-                                <div class="col-12">
-                                    <h5 class="mb-2">
-                                        <i class="fa fa-heartbeat text-danger"/> BPJS Kesehatan
-                                    </h5>
-                                </div>
+                        <div class="sapFormSection">
+                            <div class="sapFormSection__title">
+                                <i class="fa fa-heartbeat"/> BPJS Kesehatan
                             </div>
-                            <div class="row o_kanban_no_coverage">
+                            <div class="row">
                                 <div class="col-lg-6 col-md-6">
-                                    <div class="card border-danger mb-3">
-                                        <div class="card-body py-2">
-                                            <div class="row mb-1">
-                                                <div class="col-6">
-                                                    <small class="text-muted">No. Peserta BPJS Kes</small>
-                                                    <field name="bpjs_kes_no" class="mb-0"/>
-                                                </div>
-                                                <div class="col-6">
-                                                    <small class="text-muted">Kelas BPJS Kesehatan</small>
-                                                    <field name="bpjs_kes_class" class="mb-0"/>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div class="sapFormGroup">
+                                        <div class="sapFormGroup__label">No. Peserta BPJS Kes</div>
+                                        <field name="bpjs_kes_no"/>
+                                    </div>
+                                    <div class="sapFormGroup">
+                                        <div class="sapFormGroup__label">Kelas BPJS Kesehatan</div>
+                                        <field name="bpjs_kes_class"/>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- ═══ Section: Masa Kerja & THR ═══ -->
-                        <div class="o_kanban_record_body mb-3">
-                            <div class="row">
-                                <div class="col-12">
-                                    <h5 class="mb-2">
-                                        <i class="fa fa-calendar text-info"/> Masa Kerja &amp; THR
-                                    </h5>
-                                </div>
+                        <div class="sapFormSection">
+                            <div class="sapFormSection__title">
+                                <i class="fa fa-calendar"/> Masa Kerja &amp; THR
                             </div>
-                            <div class="row o_kanban_no_coverage">
+                            <div class="row">
                                 <div class="col-lg-6 col-md-6">
-                                    <div class="card border-info mb-3">
-                                        <div class="card-body py-2">
-                                            <div class="row mb-1">
-                                                <div class="col-6">
-                                                    <small class="text-muted">Tanggal Bergabung</small>
-                                                    <field name="join_date" class="mb-0"/>
-                                                </div>
-                                                <div class="col-6">
-                                                    <small class="text-muted">Masa Kerja (Bulan)</small>
-                                                    <field name="tenure_months" readonly="1"
-                                                           class="mb-0"/>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div class="sapFormGroup">
+                                        <div class="sapFormGroup__label">Tanggal Bergabung</div>
+                                        <field name="join_date"/>
+                                    </div>
+                                    <div class="sapFormGroup">
+                                        <div class="sapFormGroup__label">Masa Kerja (Bulan)</div>
+                                        <field name="tenure_months" readonly="1"/>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- ═══ Section: Data Bank ═══ -->
-                        <div class="o_kanban_record_body mb-3">
-                            <div class="row">
-                                <div class="col-12">
-                                    <h5 class="mb-2">
-                                        <i class="fa fa-university text-secondary"/> Data Bank (Transfer Gaji)
-                                    </h5>
-                                </div>
+                        <div class="sapFormSection">
+                            <div class="sapFormSection__title">
+                                <i class="fa fa-university"/> Data Bank (Transfer Gaji)
                             </div>
-                            <div class="row o_kanban_no_coverage">
+                            <div class="row">
                                 <div class="col-lg-6 col-md-6">
-                                    <div class="card border-secondary mb-3">
-                                        <div class="card-body py-2">
-                                            <div class="row mb-1">
-                                                <div class="col-6">
-                                                    <small class="text-muted">Nama Bank</small>
-                                                    <field name="bank_name"
-                                                           placeholder="BCA / Mandiri / BRI / BNI"
-                                                           class="mb-0"/>
-                                                </div>
-                                                <div class="col-6">
-                                                    <small class="text-muted">Cabang</small>
-                                                    <field name="bank_branch"
-                                                           placeholder="Cabang bank"
-                                                           class="mb-0"/>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <small class="text-muted">No. Rekening</small>
-                                                    <field name="bank_account_number"
-                                                           placeholder="Nomor rekening"
-                                                           class="mb-0"/>
-                                                </div>
-                                                <div class="col-6">
-                                                    <small class="text-muted">Atas Nama</small>
-                                                    <field name="bank_account_name"
-                                                           placeholder="Nama pemegang rekening"
-                                                           class="mb-0"/>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div class="sapFormGroup">
+                                        <div class="sapFormGroup__label">Nama Bank</div>
+                                        <field name="bank_name" placeholder="BCA / Mandiri / BRI / BNI"/>
+                                    </div>
+                                    <div class="sapFormGroup">
+                                        <div class="sapFormGroup__label">Cabang</div>
+                                        <field name="bank_branch" placeholder="Cabang bank"/>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="sapFormGroup">
+                                        <div class="sapFormGroup__label">No. Rekening</div>
+                                        <field name="bank_account_number" placeholder="Nomor rekening"/>
+                                    </div>
+                                    <div class="sapFormGroup">
+                                        <div class="sapFormGroup__label">Atas Nama</div>
+                                        <field name="bank_account_name" placeholder="Nama pemegang rekening"/>
                                     </div>
                                 </div>
                             </div>

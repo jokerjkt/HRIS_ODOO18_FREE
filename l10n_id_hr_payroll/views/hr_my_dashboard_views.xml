@@ -12,212 +12,215 @@
             <field name="arch" type="xml">
                 <form string="Dashboard Saya" create="false" edit="false">
                     <sheet>
-                        <div class="container-fluid">
-                        <div class="oe_title mb-4 text-center">
-                            <h1>
-                                <span>Selamat Datang, <field name="employee_name" readonly="1" nolabel="1"/></span>
-                            </h1>
-                            <p class="text-muted mb-1">
-                                <field name="employee_department" readonly="1" nolabel="1"/>
-                                <span> • </span>
-                                <field name="employee_job" readonly="1" nolabel="1"/>
-                                <span> • NIK: </span>
-                                <field name="employee_nik" readonly="1" nolabel="1"/>
-                            </p>
-                            <p class="text-muted mb-0">
-                                <span>NPWP: </span>
-                                <field name="employee_npwp" readonly="1" nolabel="1"/>
-                                <span> • PTKP: </span>
-                                <field name="employee_ptkp" readonly="1" nolabel="1"/>
-                                <span> • Bank: </span>
-                                <field name="employee_bank_name" readonly="1" nolabel="1"/>
-                                <span> • Rekening: </span>
-                                <field name="employee_bank_account" readonly="1" nolabel="1"/>
-                            </p>
-                        </div>
+                        <div class="l10n_id_dashboard">
 
-                        <!-- Trial Banner -->
-                        <div class="alert alert-danger text-center" role="alert"
-                             invisible="not trial_expired">
-                            <strong>Masa Uji Coba Berakhir</strong> — Hubungi vendor untuk lisensi.
-                        </div>
+                            <!-- Welcome Header -->
+                            <div class="sapFormHeader">
+                                <h1>
+                                    <span>Selamat Datang, <field name="employee_name" readonly="1" nolabel="1"/></span>
+                                </h1>
+                                <p>
+                                    <field name="employee_department" readonly="1" nolabel="1"/>
+                                    <span> • </span>
+                                    <field name="employee_job" readonly="1" nolabel="1"/>
+                                    <span> • NIK: </span>
+                                    <field name="employee_nik" readonly="1" nolabel="1"/>
+                                </p>
+                                <p>
+                                    <span>NPWP: </span>
+                                    <field name="employee_npwp" readonly="1" nolabel="1"/>
+                                    <span> • PTKP: </span>
+                                    <field name="employee_ptkp" readonly="1" nolabel="1"/>
+                                    <span> • Bank: </span>
+                                    <field name="employee_bank_name" readonly="1" nolabel="1"/>
+                                    <span> • Rekening: </span>
+                                    <field name="employee_bank_account" readonly="1" nolabel="1"/>
+                                </p>
+                            </div>
 
-                        <!-- ════════════════════════════════════════════════════════ -->
-                        <!-- ROW 1: Quick Stats                                        -->
-                        <!-- ════════════════════════════════════════════════════════ -->
-                        <div class="row mb-4">
-                            <!-- Slip Gaji -->
-                            <div class="col-lg-3 col-md-6 mb-3">
-                                <div class="card border-success h-100 shadow-sm">
-                                    <div class="card-body text-center">
-                                        <i class="fa fa-file-text-o fa-3x text-success mb-2"/>
-                                        <h2 class="mb-1 text-success">
-                                            <field name="my_payslip_count" readonly="1" nolabel="1"/>
-                                        </h2>
-                                        <small class="text-muted text-uppercase fw-bold">Slip Gaji</small>
-                                        <br/>
-                                        <span class="badge bg-warning text-dark">
+                            <!-- Trial Banner -->
+                            <div class="sapTrialBanner sapTrialBanner--danger" role="alert"
+                                 invisible="not trial_expired">
+                                <strong>Masa Uji Coba Berakhir</strong> — Hubungi vendor untuk lisensi.
+                            </div>
+
+                            <!-- ════════════════════════════════════════════════════════ -->
+                            <!-- ROW 1: KPI Tiles                                         -->
+                            <!-- ════════════════════════════════════════════════════════ -->
+                            <div class="sapKpiRow">
+
+                                <!-- Slip Gaji -->
+                                <div class="sapKpiTile sapKpiTile--positive">
+                                    <div class="sapKpiTile__title">Slip Gaji</div>
+                                    <div class="sapKpiTile__value">
+                                        <field name="my_payslip_count" readonly="1" nolabel="1"/>
+                                    </div>
+                                    <div class="sapKpiTile__subtitle">
+                                        <span class="sapKpiTile__detail">
                                             <field name="my_payslip_draft" readonly="1" nolabel="1"/> Draft
                                         </span>
-                                        <span class="badge bg-success">
+                                        <span class="sapKpiTile__detail">
                                             <field name="my_payslip_done" readonly="1" nolabel="1"/> Selesai
                                         </span>
                                     </div>
-                                    <div class="card-footer bg-transparent text-center py-2">
-                                        <a class="btn btn-outline-success btn-sm"
-                                           name="action_open_my_payslips" type="object">
-                                            <i class="fa fa-eye"/> Lihat Slip Gaji
-                                        </a>
+                                    <div class="sapKpiTile__trend">
+                                        <div class="sapQuickActions">
+                                            <a class="sapQuickAction"
+                                               name="action_open_my_payslips" type="object">
+                                                <span class="sapQuickAction__icon"><i class="fa fa-eye"/></span>
+                                                <span class="sapQuickAction__label">Lihat Slip Gaji</span>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <!-- Lembur -->
-                            <div class="col-lg-3 col-md-6 mb-3">
-                                <div class="card border-warning h-100 shadow-sm">
-                                    <div class="card-body text-center">
-                                        <i class="fa fa-clock-o fa-3x text-warning mb-2"/>
-                                        <h2 class="mb-1 text-warning">
-                                            <field name="my_overtime_total" readonly="1" nolabel="1"/>
-                                        </h2>
-                                        <small class="text-muted text-uppercase fw-bold">Lembur</small>
-                                        <br/>
-                                        <span class="badge bg-warning text-dark">
+                                <!-- Lembur -->
+                                <div class="sapKpiTile sapKpiTile--critical">
+                                    <div class="sapKpiTile__title">Lembur</div>
+                                    <div class="sapKpiTile__value">
+                                        <field name="my_overtime_total" readonly="1" nolabel="1"/>
+                                    </div>
+                                    <div class="sapKpiTile__subtitle">
+                                        <span class="sapKpiTile__detail">
                                             <field name="my_overtime_pending" readonly="1" nolabel="1"/> Pending
                                         </span>
-                                        <span class="badge bg-success">
+                                        <span class="sapKpiTile__detail">
                                             <field name="my_overtime_approved" readonly="1" nolabel="1"/> Disetujui
                                         </span>
                                     </div>
-                                    <div class="card-footer bg-transparent text-center py-2">
-                                        <a class="btn btn-outline-warning btn-sm"
-                                           name="action_create_overtime" type="object">
-                                            <i class="fa fa-plus"/> Buat Lembur
-                                        </a>
+                                    <div class="sapKpiTile__trend">
+                                        <div class="sapQuickActions">
+                                            <a class="sapQuickAction"
+                                               name="action_create_overtime" type="object">
+                                                <span class="sapQuickAction__icon"><i class="fa fa-plus"/></span>
+                                                <span class="sapQuickAction__label">Buat Lembur</span>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <!-- Cuti -->
-                            <div class="col-lg-3 col-md-6 mb-3">
-                                <div class="card border-info h-100 shadow-sm">
-                                    <div class="card-body text-center">
-                                        <i class="fa fa-calendar fa-3x text-info mb-2"/>
-                                        <h2 class="mb-1 text-info">
-                                            <field name="my_leave_total" readonly="1" nolabel="1"/>
-                                        </h2>
-                                        <small class="text-muted text-uppercase fw-bold">Cuti</small>
-                                        <br/>
-                                        <span class="badge bg-warning text-dark">
+                                <!-- Cuti -->
+                                <div class="sapKpiTile sapKpiTile--info">
+                                    <div class="sapKpiTile__title">Cuti</div>
+                                    <div class="sapKpiTile__value">
+                                        <field name="my_leave_total" readonly="1" nolabel="1"/>
+                                    </div>
+                                    <div class="sapKpiTile__subtitle">
+                                        <span class="sapKpiTile__detail">
                                             <field name="my_leave_pending" readonly="1" nolabel="1"/> Pending
                                         </span>
-                                        <span class="badge bg-info">
+                                        <span class="sapKpiTile__detail">
                                             <field name="my_leave_approved_days" readonly="1" nolabel="1"/> Hari Disetujui
                                         </span>
                                     </div>
-                                    <div class="card-footer bg-transparent text-center py-2">
-                                        <a class="btn btn-outline-info btn-sm"
-                                           name="action_create_leave" type="object">
-                                            <i class="fa fa-plus"/> Ajukan Cuti
-                                        </a>
+                                    <div class="sapKpiTile__trend">
+                                        <div class="sapQuickActions">
+                                            <a class="sapQuickAction"
+                                               name="action_create_leave" type="object">
+                                                <span class="sapQuickAction__icon"><i class="fa fa-plus"/></span>
+                                                <span class="sapQuickAction__label">Ajukan Cuti</span>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <!-- Expense -->
-                            <div class="col-lg-3 col-md-6 mb-3">
-                                <div class="card border-primary h-100 shadow-sm">
-                                    <div class="card-body text-center">
-                                        <i class="fa fa-receipt fa-3x text-primary mb-2"/>
-                                        <h2 class="mb-1 text-primary">
-                                            <field name="my_expense_total" readonly="1" nolabel="1"/>
-                                        </h2>
-                                        <small class="text-muted text-uppercase fw-bold">Expense</small>
-                                        <br/>
-                                        <span class="badge bg-warning text-dark">
+                                <!-- Expense -->
+                                <div class="sapKpiTile sapKpiTile--neutral">
+                                    <div class="sapKpiTile__title">Expense</div>
+                                    <div class="sapKpiTile__value">
+                                        <field name="my_expense_total" readonly="1" nolabel="1"/>
+                                    </div>
+                                    <div class="sapKpiTile__subtitle">
+                                        <span class="sapKpiTile__detail">
                                             <field name="my_expense_draft" readonly="1" nolabel="1"/> Draft
                                         </span>
                                     </div>
-                                    <div class="card-footer bg-transparent text-center py-2">
-                                        <a class="btn btn-outline-primary btn-sm"
-                                           name="action_create_expense" type="object">
-                                            <i class="fa fa-plus"/> Ajukan Expense
-                                        </a>
+                                    <div class="sapKpiTile__trend">
+                                        <div class="sapQuickActions">
+                                            <a class="sapQuickAction"
+                                               name="action_create_expense" type="object">
+                                                <span class="sapQuickAction__icon"><i class="fa fa-plus"/></span>
+                                                <span class="sapQuickAction__label">Ajukan Expense</span>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
 
-                        <!-- ════════════════════════════════════════════════════════ -->
-                        <!-- ROW 2: Attendance & Shift                                 -->
-                        <!-- ════════════════════════════════════════════════════════ -->
-                        <div class="row mb-4">
-                            <!-- Absensi -->
-                            <div class="col-lg-6 mb-3">
-                                <div class="card border-secondary h-100 shadow-sm">
-                                    <div class="card-header bg-secondary text-white">
-                                        <strong><i class="fa fa-clock-o"/> Absensi Saya</strong>
+                            </div>
+
+                            <!-- ════════════════════════════════════════════════════════ -->
+                            <!-- ROW 2: Data Cards — Attendance & Shift                    -->
+                            <!-- ════════════════════════════════════════════════════════ -->
+                            <div class="sapKpiRow">
+
+                                <!-- Absensi -->
+                                <div class="sapDataCard">
+                                    <div class="sapDataCard__header">
+                                        <span class="sapSectionTitle"><i class="fa fa-clock-o"/> Absensi Saya</span>
                                     </div>
-                                    <div class="card-body">
-                                        <div class="row text-center">
-                                            <div class="col-4">
-                                                <h3 class="mb-0">
+                                    <div class="sapDataCard__body">
+                                        <div class="sapDataCard__stats">
+                                            <div>
+                                                <div class="sapKpiTile__value">
                                                     <field name="my_attendance_count" readonly="1" nolabel="1"/>
-                                                </h3>
-                                                <small class="text-muted">Total Absensi</small>
+                                                </div>
+                                                <div class="sapKpiTile__subtitle">Total Absensi</div>
                                             </div>
-                                            <div class="col-4">
-                                                <h3 class="mb-0">
+                                            <div>
+                                                <div class="sapKpiTile__value">
                                                     <field name="my_total_work_hours" readonly="1" nolabel="1"/>
-                                                </h3>
-                                                <small class="text-muted">Jam Kerja</small>
+                                                </div>
+                                                <div class="sapKpiTile__subtitle">Jam Kerja</div>
                                             </div>
-                                            <div class="col-4">
-                                                <field name="my_last_checkin" readonly="1" nolabel="1"/>
-                                                <small class="text-muted d-block">Check-in Terakhir</small>
+                                            <div>
+                                                <div class="sapKpiTile__value">
+                                                    <field name="my_last_checkin" readonly="1" nolabel="1"/>
+                                                </div>
+                                                <div class="sapKpiTile__subtitle">Check-in Terakhir</div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="card-footer bg-transparent text-center py-2">
-                                        <a class="btn btn-outline-secondary btn-sm"
-                                           name="action_open_my_attendance" type="object">
-                                            <i class="fa fa-eye"/> Lihat Absensi
-                                        </a>
+                                    <div class="sapDataCard__header">
+                                        <div class="sapQuickActions">
+                                            <a class="sapQuickAction"
+                                               name="action_open_my_attendance" type="object">
+                                                <span class="sapQuickAction__icon"><i class="fa fa-eye"/></span>
+                                                <span class="sapQuickAction__label">Lihat Absensi</span>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <!-- Shift -->
-                            <div class="col-lg-6 mb-3">
-                                <div class="card border-dark h-100 shadow-sm">
-                                    <div class="card-header bg-dark text-white">
-                                        <strong><i class="fa fa-calendar"/> Shift Saya</strong>
+                                <!-- Shift -->
+                                <div class="sapDataCard">
+                                    <div class="sapDataCard__header">
+                                        <span class="sapSectionTitle"><i class="fa fa-calendar"/> Shift Saya</span>
                                     </div>
-                                    <div class="card-body">
-                                        <div class="row text-center">
-                                            <div class="col-4">
-                                                <h5 class="mb-0">
+                                    <div class="sapDataCard__body">
+                                        <div class="sapDataCard__stats">
+                                            <div>
+                                                <div class="sapKpiTile__value">
                                                     <field name="my_shift_name" readonly="1" nolabel="1"/>
-                                                </h5>
-                                                <small class="text-muted">Shift Saat Ini</small>
+                                                </div>
+                                                <div class="sapKpiTile__subtitle">Shift Saat Ini</div>
                                             </div>
-                                            <div class="col-4">
-                                                <h5 class="mb-0">
+                                            <div>
+                                                <div class="sapKpiTile__value">
                                                     <field name="my_shift_hours" readonly="1" nolabel="1"/>
-                                                </h5>
-                                                <small class="text-muted">Jam Kerja</small>
+                                                </div>
+                                                <div class="sapKpiTile__subtitle">Jam Kerja</div>
                                             </div>
-                                            <div class="col-4">
-                                                <h5 class="mb-0">
+                                            <div>
+                                                <div class="sapKpiTile__value">
                                                     <field name="my_shift_days" readonly="1" nolabel="1"/>
-                                                </h5>
-                                                <small class="text-muted">Hari Kerja</small>
+                                                </div>
+                                                <div class="sapKpiTile__subtitle">Hari Kerja</div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
-                        </div>
 
                         </div>
                     </sheet>

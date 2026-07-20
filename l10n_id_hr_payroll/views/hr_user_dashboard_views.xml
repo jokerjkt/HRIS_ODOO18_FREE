@@ -12,186 +12,153 @@
             <field name="arch" type="xml">
                 <form string="Dashboard HR" create="false" edit="false">
                     <sheet>
-                        <div class="container-fluid">
-                        <div class="oe_title mb-4 text-center">
-                            <h1>
-                                <span>Dashboard HR</span>
-                            </h1>
-                            <p class="text-muted">Ringkasan untuk Tim Human Resources</p>
-                        </div>
+                        <div class="l10n_id_dashboard">
 
-                        <!-- Trial Banner -->
-                        <div class="alert alert-danger" role="alert"
-                             invisible="not trial_expired">
-                            <strong>Masa Uji Coba Berakhir / Trial Expired</strong><br/>
-                            Fitur payroll terbatas (read-only). Hubungi vendor untuk lisensi.
-                            <br/>Email: susilo.cdv@gmail.com |
-                            LinkedIn: linkedin.com/in/susilo-raden-68a19049
-                        </div>
-                        <div class="alert alert-info" role="alert"
-                             invisible="trial_expired or trial_days_left >= 3">
-                            <strong>Sisa masa uji coba: </strong>
-                            <field name="trial_days_left" readonly="1" nolabel="1"/> hari
-                        </div>
-
-                        <!-- ════════════════════════════════════════════════════════ -->
-                        <!-- ROW 1: Overview (6 cards)                                -->
-                        <!-- ════════════════════════════════════════════════════════ -->
-                        <div class="row mb-4">
-                            <!-- Karyawan Aktif -->
-                            <div class="col-lg-2 col-md-4 mb-3">
-                                <div class="card border-primary h-100 shadow-sm">
-                                    <div class="card-body text-center">
-                                        <i class="fa fa-users fa-3x text-primary mb-2"/>
-                                        <h2 class="mb-1 text-primary">
-                                            <field name="employee_count" readonly="1" nolabel="1"/>
-                                        </h2>
-                                        <small class="text-muted text-uppercase fw-bold">Karyawan Aktif</small>
-                                    </div>
-                                </div>
+                            <!-- Trial Banner — Expired -->
+                            <div class="sapTrialBanner sapTrialBanner--danger" role="alert"
+                                 invisible="not trial_expired">
+                                <strong>Masa Uji Coba Berakhir / Trial Expired</strong><br/>
+                                Fitur payroll terbatas (read-only). Hubungi vendor untuk lisensi.
+                                <br/>Email: susilo.cdv@gmail.com |
+                                LinkedIn: linkedin.com/in/susilo-raden-68a19049
+                            </div>
+                            <!-- Trial Banner — Warning -->
+                            <div class="sapTrialBanner sapTrialBanner--warning" role="alert"
+                                 invisible="trial_expired or trial_days_left >= 3">
+                                <strong>Sisa masa uji coba: </strong>
+                                <field name="trial_days_left" readonly="1" nolabel="1"/> hari
                             </div>
 
-                            <!-- Hadir Hari Ini -->
-                            <div class="col-lg-2 col-md-4 mb-3">
-                                <div class="card border-success h-100 shadow-sm">
-                                    <div class="card-body text-center">
-                                        <i class="fa fa-check-circle fa-3x text-success mb-2"/>
-                                        <h2 class="mb-1 text-success">
-                                            <field name="hadir_hari_ini" readonly="1" nolabel="1"/>
-                                        </h2>
-                                        <small class="text-muted text-uppercase fw-bold">Hadir Hari Ini</small>
+                            <!-- ════════════════════════════════════════════════════════ -->
+                            <!-- KPI Row — Overview                                       -->
+                            <!-- ════════════════════════════════════════════════════════ -->
+                            <div class="sapKpiRow">
+
+                                <!-- Karyawan Aktif -->
+                                <div class="sapKpiTile sapKpiTile--info">
+                                    <div class="sapKpiTile__title">
+                                        <i class="fa fa-users"/> Karyawan Aktif
                                     </div>
-                                    <div class="card-footer bg-transparent text-center py-2">
-                                        <a class="btn btn-outline-success btn-sm"
-                                           name="action_open_attendance" type="object">
+                                    <div class="sapKpiTile__value">
+                                        <field name="employee_count" readonly="1" nolabel="1"/>
+                                    </div>
+                                    <div class="sapKpiTile__subtitle">Total aktif</div>
+                                </div>
+
+                                <!-- Hadir Hari Ini -->
+                                <div class="sapKpiTile sapKpiTile--positive">
+                                    <div class="sapKpiTile__title">
+                                        <i class="fa fa-check-circle"/> Hadir Hari Ini
+                                    </div>
+                                    <div class="sapKpiTile__value">
+                                        <field name="hadir_hari_ini" readonly="1" nolabel="1"/>
+                                    </div>
+                                    <div class="sapKpiTile__detail">
+                                        <a name="action_open_attendance" type="object">
                                             <i class="fa fa-eye"/> Lihat Absensi
                                         </a>
                                     </div>
                                 </div>
-                            </div>
 
-                            <!-- Tidak Hadir -->
-                            <div class="col-lg-2 col-md-4 mb-3">
-                                <div class="card border-danger h-100 shadow-sm">
-                                    <div class="card-body text-center">
-                                        <i class="fa fa-times-circle fa-3x text-danger mb-2"/>
-                                        <h2 class="mb-1 text-danger">
-                                            <field name="tidak_hadir_hari_ini" readonly="1" nolabel="1"/>
-                                        </h2>
-                                        <small class="text-muted text-uppercase fw-bold">Tidak Hadir</small>
+                                <!-- Tidak Hadir -->
+                                <div class="sapKpiTile sapKpiTile--negative">
+                                    <div class="sapKpiTile__title">
+                                        <i class="fa fa-times-circle"/> Tidak Hadir
                                     </div>
+                                    <div class="sapKpiTile__value">
+                                        <field name="tidak_hadir_hari_ini" readonly="1" nolabel="1"/>
+                                    </div>
+                                    <div class="sapKpiTile__subtitle">Absen hari ini</div>
                                 </div>
-                            </div>
 
-                            <!-- Cuti Pending -->
-                            <div class="col-lg-2 col-md-4 mb-3">
-                                <div class="card border-warning h-100 shadow-sm">
-                                    <div class="card-body text-center">
-                                        <i class="fa fa-hourglass-o fa-3x text-warning mb-2"/>
-                                        <h2 class="mb-1 text-warning">
-                                            <field name="cuti_pending" readonly="1" nolabel="1"/>
-                                        </h2>
-                                        <small class="text-muted text-uppercase fw-bold">Cuti Pending</small>
+                                <!-- Cuti Pending -->
+                                <div class="sapKpiTile sapKpiTile--critical">
+                                    <div class="sapKpiTile__title">
+                                        <i class="fa fa-hourglass-o"/> Cuti Pending
                                     </div>
-                                    <div class="card-footer bg-transparent text-center py-2">
-                                        <a class="btn btn-outline-warning btn-sm"
-                                           name="action_open_leave_pending" type="object">
+                                    <div class="sapKpiTile__value">
+                                        <field name="cuti_pending" readonly="1" nolabel="1"/>
+                                    </div>
+                                    <div class="sapKpiTile__detail">
+                                        <a name="action_open_leave_pending" type="object">
                                             <i class="fa fa-check"/> Review Cuti
                                         </a>
                                     </div>
                                 </div>
-                            </div>
 
-                            <!-- Cuti Sakit -->
-                            <div class="col-lg-2 col-md-4 mb-3">
-                                <div class="card border-secondary h-100 shadow-sm">
-                                    <div class="card-body text-center">
-                                        <i class="fa fa-medkit fa-3x text-secondary mb-2"/>
-                                        <h2 class="mb-1 text-secondary">
-                                            <field name="cuti_sakit" readonly="1" nolabel="1"/>
-                                        </h2>
-                                        <small class="text-muted text-uppercase fw-bold">Cuti Sakit</small>
+                                <!-- Cuti Sakit -->
+                                <div class="sapKpiTile sapKpiTile--neutral">
+                                    <div class="sapKpiTile__title">
+                                        <i class="fa fa-medkit"/> Cuti Sakit
                                     </div>
+                                    <div class="sapKpiTile__value">
+                                        <field name="cuti_sakit" readonly="1" nolabel="1"/>
+                                    </div>
+                                    <div class="sapKpiTile__subtitle">Sedang sakit</div>
                                 </div>
-                            </div>
 
-                            <!-- Slip Gaji Draft -->
-                            <div class="col-lg-2 col-md-4 mb-3">
-                                <div class="card border-info h-100 shadow-sm">
-                                    <div class="card-body text-center">
-                                        <i class="fa fa-file-text-o fa-3x text-info mb-2"/>
-                                        <h2 class="mb-1 text-info">
-                                            <field name="payslip_draft_count" readonly="1" nolabel="1"/>
-                                        </h2>
-                                        <small class="text-muted text-uppercase fw-bold">Slip Gaji Draft</small>
-                                        <br/>
-                                        <span class="badge bg-success">
-                                            <field name="payslip_computed_count" readonly="1" nolabel="1"/> Siap
-                                        </span>
+                                <!-- Slip Gaji Draft -->
+                                <div class="sapKpiTile sapKpiTile--info">
+                                    <div class="sapKpiTile__title">
+                                        <i class="fa fa-file-text-o"/> Slip Gaji Draft
                                     </div>
-                                    <div class="card-footer bg-transparent text-center py-2">
-                                        <a class="btn btn-outline-info btn-sm"
-                                           name="action_open_my_payslips" type="object">
+                                    <div class="sapKpiTile__value">
+                                        <field name="payslip_draft_count" readonly="1" nolabel="1"/>
+                                    </div>
+                                    <div class="sapKpiTile__subtitle">
+                                        <field name="payslip_computed_count" readonly="1" nolabel="1"/> siap
+                                    </div>
+                                    <div class="sapKpiTile__detail">
+                                        <a name="action_open_my_payslips" type="object">
                                             <i class="fa fa-eye"/> Lihat Slip Gaji
                                         </a>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
 
-                        <!-- ════════════════════════════════════════════════════════ -->
-                        <!-- ROW 2: Additional Stats                                  -->
-                        <!-- ════════════════════════════════════════════════════════ -->
-                        <div class="row mb-4">
-                            <!-- Lembur Pending -->
-                            <div class="col-lg-4 col-md-6 mb-3">
-                                <div class="card border-warning h-100 shadow-sm">
-                                    <div class="card-body text-center">
-                                        <i class="fa fa-clock-o fa-3x text-warning mb-2"/>
-                                        <h2 class="mb-1 text-warning">
-                                            <field name="overtime_pending_count" readonly="1" nolabel="1"/>
-                                        </h2>
-                                        <small class="text-muted text-uppercase fw-bold">Lembur Pending</small>
-                                    </div>
-                                    <div class="card-footer bg-transparent text-center py-2">
-                                        <a class="btn btn-outline-warning btn-sm"
-                                           name="action_open_overtime_pending" type="object">
-                                            <i class="fa fa-check"/> Review Lembur
-                                        </a>
-                                    </div>
-                                </div>
                             </div>
 
-                            <!-- THR -->
-                            <div class="col-lg-4 col-md-6 mb-3">
-                                <div class="card border-danger h-100 shadow-sm">
-                                    <div class="card-body text-center">
-                                        <i class="fa fa-gift fa-3x text-danger mb-2"/>
-                                        <h6 class="text-danger">THR</h6>
-                                        <p class="text-muted small mb-2">Kelola tunjangan hari raya</p>
-                                    </div>
-                                    <div class="card-footer bg-transparent text-center py-2">
-                                        <a class="btn btn-outline-danger btn-sm"
-                                           name="action_open_thr" type="object">
-                                            <i class="fa fa-eye"/> Lihat THR
-                                        </a>
-                                    </div>
-                                </div>
+                            <!-- ════════════════════════════════════════════════════════ -->
+                            <!-- Quick Actions — Lainnya                                  -->
+                            <!-- ════════════════════════════════════════════════════════ -->
+                            <div class="sapSectionTitle">
+                                <i class="fa fa-bolt"/> Lainnya
                             </div>
+                            <div class="sapQuickActions">
 
-                            <!-- Expense Pending -->
-                            <div class="col-lg-4 col-md-6 mb-3">
-                                <div class="card border-primary h-100 shadow-sm">
-                                    <div class="card-body text-center">
-                                        <i class="fa fa-receipt fa-3x text-primary mb-2"/>
-                                        <h2 class="mb-1 text-primary">
-                                            <field name="expense_pending" readonly="1" nolabel="1"/>
-                                        </h2>
-                                        <small class="text-muted text-uppercase fw-bold">Expense Pending</small>
+                                <!-- Lembur Pending -->
+                                <a class="sapQuickAction sapKpiTile--critical"
+                                   name="action_open_overtime_pending" type="object">
+                                    <div class="sapQuickAction__icon">
+                                        <i class="fa fa-clock-o"/>
+                                    </div>
+                                    <div class="sapQuickAction__label">Lembur Pending</div>
+                                    <div class="sapQuickAction__desc">
+                                        <field name="overtime_pending_count" readonly="1" nolabel="1"/> perlu review
+                                    </div>
+                                </a>
+
+                                <!-- THR -->
+                                <a class="sapQuickAction"
+                                   name="action_open_thr" type="object">
+                                    <div class="sapQuickAction__icon">
+                                        <i class="fa fa-gift"/>
+                                    </div>
+                                    <div class="sapQuickAction__label">THR</div>
+                                    <div class="sapQuickAction__desc">Kelola tunjangan hari raya</div>
+                                </a>
+
+                                <!-- Expense Pending -->
+                                <div class="sapQuickAction">
+                                    <div class="sapQuickAction__icon">
+                                        <i class="fa fa-receipt"/>
+                                    </div>
+                                    <div class="sapQuickAction__label">Expense Pending</div>
+                                    <div class="sapQuickAction__desc">
+                                        <field name="expense_pending" readonly="1" nolabel="1"/> menunggu
                                     </div>
                                 </div>
+
                             </div>
-                        </div>
 
                         </div>
                     </sheet>

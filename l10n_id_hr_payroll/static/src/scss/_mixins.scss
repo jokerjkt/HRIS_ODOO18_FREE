@@ -1,0 +1,268 @@
+// ============================================================================
+// Reusable SCSS Mixins — SAP Fiori Patterns
+// ============================================================================
+
+@use 'variables' as *;
+
+// ── KPI Tile ────────────────────────────────────────────────────────────────
+@mixin sap-kpi-tile($color: $sap-brand) {
+  background: $sap-bg-tile;
+  border-radius: $sap-radius;
+  box-shadow: $sap-shadow;
+  padding: $sap-spacing-m;
+  text-align: center;
+  transition: box-shadow $sap-transition, transform $sap-transition;
+  border-top: 3px solid $color;
+
+  &:hover {
+    box-shadow: $sap-shadow-md;
+    transform: translateY(-2px);
+  }
+
+  .sapKpiTile__title {
+    font-size: $sap-font-size-xs;
+    font-weight: $sap-font-weight-bold;
+    color: $sap-text-light;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: $sap-spacing-xs;
+  }
+
+  .sapKpiTile__value {
+    font-size: $sap-font-size-2xl;
+    font-weight: $sap-font-weight-bold;
+    color: $sap-text;
+    line-height: 1.2;
+  }
+
+  .sapKpiTile__subtitle {
+    font-size: $sap-font-size-xs;
+    color: $sap-text-muted;
+    margin-top: $sap-spacing-xxs;
+  }
+}
+
+// ── Semantic Status Badge ───────────────────────────────────────────────────
+@mixin sap-status-badge($type: 'neutral') {
+  display: inline-flex;
+  align-items: center;
+  gap: $sap-spacing-xxs;
+  padding: $sap-spacing-xxs $sap-spacing-xs;
+  border-radius: $sap-radius-sm;
+  font-size: $sap-font-size-xs;
+  font-weight: $sap-font-weight-bold;
+  line-height: 1;
+
+  @if $type == 'positive' {
+    background: $sap-positive-light;
+    color: $sap-positive;
+  } @else if $type == 'critical' {
+    background: $sap-critical-light;
+    color: $sap-critical;
+  } @else if $type == 'negative' {
+    background: $sap-negative-light;
+    color: $sap-negative;
+  } @else if $type == 'information' {
+    background: $sap-information-light;
+    color: $sap-information;
+  } @else {
+    background: $sap-neutral-light;
+    color: $sap-neutral;
+  }
+}
+
+// ── Form Section ────────────────────────────────────────────────────────────
+@mixin sap-form-section {
+  margin-bottom: $sap-spacing-m;
+  padding-bottom: $sap-spacing-m;
+  border-bottom: 1px solid $sap-border-light;
+
+  &:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+  }
+}
+
+@mixin sap-form-label {
+  font-size: $sap-font-size-xs;
+  font-weight: $sap-font-weight-bold;
+  color: $sap-text-light;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: $sap-spacing-xxs;
+}
+
+// ── Card ────────────────────────────────────────────────────────────────────
+@mixin sap-card {
+  background: $sap-bg-tile;
+  border-radius: $sap-radius;
+  box-shadow: $sap-shadow;
+  overflow: hidden;
+  transition: box-shadow $sap-transition;
+
+  &:hover {
+    box-shadow: $sap-shadow-md;
+  }
+}
+
+@mixin sap-card-header($color: $sap-brand) {
+  padding: $sap-spacing-s $sap-spacing;
+  border-bottom: 1px solid $sap-border-light;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .sapCardHeader__title {
+    font-size: $sap-font-size;
+    font-weight: $sap-font-weight-bold;
+    color: $sap-text;
+  }
+}
+
+@mixin sap-card-body {
+  padding: $sap-spacing;
+}
+
+// ── Page Header ─────────────────────────────────────────────────────────────
+@mixin sap-page-header {
+  background: $sap-shell;
+  color: $sap-shell-text;
+  padding: $sap-spacing-m $sap-spacing-l;
+  border-radius: $sap-radius;
+  margin-bottom: $sap-spacing-m;
+
+  .sapPageHeader__title {
+    font-size: $sap-font-size-xl;
+    font-weight: $sap-font-weight-bold;
+    margin: 0;
+  }
+
+  .sapPageHeader__subtitle {
+    font-size: $sap-font-size;
+    opacity: 0.85;
+    margin-top: $sap-spacing-xxs;
+  }
+}
+
+// ── Anchor Bar (Tab Navigation) ─────────────────────────────────────────────
+@mixin sap-anchor-bar {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid $sap-border-light;
+  margin-bottom: $sap-spacing-m;
+  padding: 0 $sap-spacing;
+
+  .sapAnchorBarItem {
+    padding: $sap-spacing-xs $sap-spacing;
+    font-size: $sap-font-size;
+    color: $sap-text-light;
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    transition: color $sap-transition, border-color $sap-transition;
+    cursor: pointer;
+
+    &:hover {
+      color: $sap-brand;
+    }
+
+    &.active {
+      color: $sap-brand;
+      border-bottom-color: $sap-brand;
+      font-weight: $sap-font-weight-bold;
+    }
+  }
+}
+
+// ── Table Enhancements ──────────────────────────────────────────────────────
+@mixin sap-table-header {
+  background: $sap-neutral-light;
+  font-weight: $sap-font-weight-bold;
+  font-size: $sap-font-size-s;
+  color: $sap-text;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+@mixin sap-table-row-hover {
+  &:hover {
+    background: $sap-bg-hover;
+  }
+}
+
+// ── Empty State ─────────────────────────────────────────────────────────────
+@mixin sap-empty-state {
+  text-align: center;
+  padding: $sap-spacing-xl $sap-spacing;
+  color: $sap-text-muted;
+
+  .sapEmptyState__icon {
+    font-size: 3rem;
+    margin-bottom: $sap-spacing;
+    opacity: 0.4;
+  }
+
+  .sapEmptyState__title {
+    font-size: $sap-font-size-m;
+    font-weight: $sap-font-weight-bold;
+    color: $sap-text;
+    margin-bottom: $sap-spacing-xs;
+  }
+
+  .sapEmptyState__description {
+    font-size: $sap-font-size;
+    max-width: 24rem;
+    margin: 0 auto $sap-spacing;
+  }
+}
+
+// ── Button Variants ─────────────────────────────────────────────────────────
+@mixin sap-btn-emphasized {
+  background: $sap-brand;
+  color: $sap-text-inverse;
+  border: none;
+  border-radius: $sap-radius-sm;
+  padding: $sap-spacing-xs $sap-spacing-m;
+  font-size: $sap-font-size;
+  font-weight: $sap-font-weight-bold;
+  cursor: pointer;
+  transition: background $sap-transition;
+
+  &:hover {
+    background: $sap-brand-hover;
+  }
+
+  &:active {
+    background: $sap-brand-active;
+  }
+}
+
+@mixin sap-btn-transparent {
+  background: transparent;
+  color: $sap-brand;
+  border: none;
+  border-radius: $sap-radius-sm;
+  padding: $sap-spacing-xs $sap-spacing-m;
+  font-size: $sap-font-size;
+  cursor: pointer;
+  transition: background $sap-transition;
+
+  &:hover {
+    background: $sap-bg-hover;
+  }
+}
+
+// ── Responsive Grid ─────────────────────────────────────────────────────────
+@mixin sap-grid($cols: 4, $gap: $sap-spacing-m) {
+  display: grid;
+  grid-template-columns: repeat($cols, 1fr);
+  gap: $gap;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+}

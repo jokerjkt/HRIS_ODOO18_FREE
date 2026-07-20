@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Indonesian HR Payroll (PPh 21 & BPJS)',
-    'version': '18.0.3.0.0',
+    'version': '18.0.4.0.0',
     'category': 'Human Resources/Payroll',
     'summary': 'Payroll Indonesia: PPh 21, BPJS, Lembur, THR, Shift Scheduling, Dashboard, Attendance Device Integration',
     'description': """
@@ -96,6 +96,11 @@ Fitur utama:
     'demo': [
         'data/hr_demo_data.xml',
     ],
+    'assets': {
+        'web.assets_backend': [
+            'l10n_id_hr_payroll/static/src/scss/l10n_id_hr_payroll.scss',
+        ],
+    },
     'post_init_hook': 'post_init_hook',
     'installable': True,
     'application': False,

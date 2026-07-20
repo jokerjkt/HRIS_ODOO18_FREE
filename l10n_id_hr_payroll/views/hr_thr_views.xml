@@ -25,45 +25,147 @@
                                statusbar_visible="draft,confirmed,paid"/>
                     </header>
                     <sheet>
-                        <div class="oe_title">
-                            <h1><field name="name" readonly="1"/></h1>
+                        <div class="sapFormHeader">
+                            <div class="sapFormHeader__left">
+                                <div class="sapFormHeader__avatar">
+                                    <i class="fa fa-gift fa-2x"/>
+                                </div>
+                                <div>
+                                    <div class="sapFormHeader__title">
+                                        <field name="name" readonly="1"/>
+                                    </div>
+                                    <div class="sapFormHeader__subtitle">Tunjangan Hari Raya</div>
+                                </div>
+                            </div>
+                            <div class="sapFormHeader__actions">
+                                <field name="state" widget="badge"
+                                       class="sapFormStatus sapFormStatus--draft"
+                                       invisible="state != 'draft'"/>
+                                <field name="state" widget="badge"
+                                       class="sapFormStatus sapFormStatus--confirmed"
+                                       invisible="state != 'confirmed'"/>
+                                <field name="state" widget="badge"
+                                       class="sapFormStatus sapFormStatus--paid"
+                                       invisible="state != 'paid'"/>
+                            </div>
                         </div>
-                        <group>
-                            <group string="Informasi Karyawan">
-                                <field name="employee_id"
-                                       readonly="state != 'draft'"/>
-                                <field name="department_id" readonly="1"/>
-                                <field name="join_date" readonly="1"/>
-                                <field name="tenure_months" readonly="1"/>
-                            </group>
-                            <group string="Detail THR">
-                                <field name="year"
-                                       readonly="state != 'draft'"/>
-                                <field name="religious_holiday"
-                                       readonly="state != 'draft'"/>
-                                <field name="thr_date"
-                                       readonly="state != 'draft'"/>
-                            </group>
-                        </group>
-                        <group string="Perhitungan THR">
+
+                        <div class="sapFormSummary">
+                            <div class="sapFormSummary__item">
+                                <div class="sapFormSummary__icon sapFormSummary__icon--brand">
+                                    <i class="fa fa-user"/>
+                                </div>
+                                <div class="sapFormSummary__label">Karyawan</div>
+                                <div class="sapFormSummary__value">
+                                    <field name="employee_id" readonly="1"/>
+                                </div>
+                            </div>
+                            <div class="sapFormSummary__item">
+                                <div class="sapFormSummary__icon sapFormSummary__icon--positive">
+                                    <i class="fa fa-building"/>
+                                </div>
+                                <div class="sapFormSummary__label">Departemen</div>
+                                <div class="sapFormSummary__value">
+                                    <field name="department_id" readonly="1"/>
+                                </div>
+                            </div>
+                            <div class="sapFormSummary__item">
+                                <div class="sapFormSummary__icon sapFormSummary__icon--critical">
+                                    <i class="fa fa-calendar"/>
+                                </div>
+                                <div class="sapFormSummary__label">Tahun</div>
+                                <div class="sapFormSummary__value">
+                                    <field name="year" readonly="1"/>
+                                </div>
+                            </div>
+                            <div class="sapFormSummary__item">
+                                <div class="sapFormSummary__icon sapFormSummary__icon--neutral">
+                                    <i class="fa fa-clock-o"/>
+                                </div>
+                                <div class="sapFormSummary__label">Masa Kerja</div>
+                                <div class="sapFormSummary__value">
+                                    <field name="tenure_months" readonly="1"/> bulan
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="sapStatButtons">
+                            <div class="sapStatButton">
+                                <div class="sapStatButton__icon"><i class="fa fa-money"/></div>
+                                <div class="sapStatButton__text">
+                                    <div class="sapStatButton__title">Gaji Pokok</div>
+                                    <div class="sapStatButton__value">
+                                        <field name="monthly_wage" widget="monetary" readonly="1"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sapStatButton">
+                                <div class="sapStatButton__icon"><i class="fa fa-calculator"/></div>
+                                <div class="sapStatButton__text">
+                                    <div class="sapStatButton__title">THR Kalkulasi</div>
+                                    <div class="sapStatButton__value">
+                                        <field name="thr_amount" widget="monetary" readonly="1"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sapStatButton">
+                                <div class="sapStatButton__icon"><i class="fa fa-check-circle"/></div>
+                                <div class="sapStatButton__text">
+                                    <div class="sapStatButton__title">THR Final</div>
+                                    <div class="sapStatButton__value">
+                                        <field name="thr_final" widget="monetary" readonly="1"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="sapFormSection">
+                            <div class="sapFormSection__title">Informasi Karyawan</div>
                             <group>
-                                <field name="monthly_wage" widget="monetary" readonly="1"/>
-                                <field name="thr_proportion" string="Proporsi (0.0 - 1.0)"
-                                       readonly="1"/>
-                                <field name="thr_amount" widget="monetary" readonly="1"
-                                       string="THR Kalkulasi (Rp)"/>
+                                <group>
+                                    <field name="employee_id"
+                                           readonly="state != 'draft'"/>
+                                    <field name="department_id" readonly="1"/>
+                                    <field name="join_date" readonly="1"/>
+                                    <field name="tenure_months" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="year"
+                                           readonly="state != 'draft'"/>
+                                    <field name="religious_holiday"
+                                           readonly="state != 'draft'"/>
+                                    <field name="thr_date"
+                                           readonly="state != 'draft'"/>
+                                </group>
                             </group>
+                        </div>
+
+                        <div class="sapFormSection">
+                            <div class="sapFormSection__title">Perhitungan THR</div>
                             <group>
-                                <field name="thr_amount_manual" widget="monetary"
-                                       readonly="state != 'draft'"
-                                       string="Override Manual (opsional)"/>
-                                <field name="thr_final" widget="monetary" readonly="1"
-                                       string="THR Final (Rp)"/>
+                                <group>
+                                    <field name="monthly_wage" widget="monetary" readonly="1"/>
+                                    <field name="thr_proportion" string="Proporsi (0.0 - 1.0)"
+                                           readonly="1"/>
+                                    <field name="thr_amount" widget="monetary" readonly="1"
+                                           string="THR Kalkulasi (Rp)"/>
+                                </group>
+                                <group>
+                                    <field name="thr_amount_manual" widget="monetary"
+                                           readonly="state != 'draft'"
+                                           string="Override Manual (opsional)"/>
+                                    <field name="thr_final" widget="monetary" readonly="1"
+                                           string="THR Final (Rp)"/>
+                                </group>
                             </group>
-                        </group>
-                        <group>
-                            <field name="note" placeholder="Keterangan tambahan..."/>
-                        </group>
+                        </div>
+
+                        <div class="sapFormSection">
+                            <div class="sapFormSection__title">Keterangan</div>
+                            <group>
+                                <field name="note" placeholder="Keterangan tambahan..."/>
+                            </group>
+                        </div>
                     </sheet>
                     <chatter/>
                 </form>

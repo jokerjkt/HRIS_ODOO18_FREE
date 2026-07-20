@@ -3,7 +3,7 @@
     <data>
 
         <!-- ================================================================
-             Dashboard Admin — Form View (Indonesian-styled)
+             Dashboard Admin — SAP Fiori Overview Page
              ================================================================ -->
 
         <record id="view_indonesia_hr_dashboard_form" model="ir.ui.view">
@@ -12,445 +12,326 @@
             <field name="arch" type="xml">
                 <form string="Dashboard Payroll Indonesia" create="false" edit="false">
                     <sheet>
-                        <div class="container-fluid">
-                        <div class="oe_title mb-4 text-center">
-                            <h1>
-                                <span>Dashboard Payroll Indonesia</span>
-                            </h1>
-                            <p class="text-muted">Ringkasan Absensi, Cuti, Payroll, Expense &amp; Skill</p>
-                        </div>
+                        <div class="l10n_id_dashboard">
+                            <div class="oe_title mb-4 text-center">
+                                <h1>
+                                    <span>Dashboard Payroll Indonesia</span>
+                                </h1>
+                                <p class="text-muted">Ringkasan Absensi, Cuti, Payroll, Expense &amp; Skill</p>
+                            </div>
 
-                        <!-- Trial Banner -->
-                        <div class="alert alert-danger" role="alert"
-                             invisible="not trial_expired">
-                            <strong>Masa Uji Coba Berakhir / Trial Expired</strong><br/>
-                            Fitur payroll terbatas (read-only). Hubungi vendor untuk lisensi penuh.<br/>
-                            Email: susilo.cdv@gmail.com |
-                            LinkedIn: linkedin.com/in/susilo-raden-68a19049
-                        </div>
-                        <div class="alert alert-warning" role="alert"
-                             invisible="trial_expired or trial_days_left >= 3">
-                            <strong>Sisa masa uji coba: </strong>
-                            <field name="trial_days_left" readonly="1" nolabel="1"/> hari
-                            — Hubungi vendor untuk lisensi penuh.
-                        </div>
+                            <!-- Trial Banners -->
+                            <div class="sapTrialBanner sapTrialBanner--danger" role="alert"
+                                 invisible="not trial_expired">
+                                <i class="fa fa-exclamation-circle"/>
+                                <div>
+                                    <strong>Masa Uji Coba Berakhir / Trial Expired</strong><br/>
+                                    Fitur payroll terbatas (read-only). Hubungi vendor untuk lisensi penuh.<br/>
+                                    Email: susilo.cdv@gmail.com |
+                                    LinkedIn: linkedin.com/in/susilo-raden-68a19049
+                                </div>
+                            </div>
+                            <div class="sapTrialBanner sapTrialBanner--warning" role="alert"
+                                 invisible="trial_expired or trial_days_left >= 3">
+                                <i class="fa fa-exclamation-triangle"/>
+                                <div>
+                                    <strong>Sisa masa uji coba: </strong>
+                                    <field name="trial_days_left" readonly="1" nolabel="1"/> hari
+                                    — Hubungi vendor untuk lisensi penuh.
+                                </div>
+                            </div>
 
-                        <!-- ════════════════════════════════════════════════════════ -->
-                        <!-- ROW 1: Attendance & Leave                                -->
-                        <!-- ════════════════════════════════════════════════════════ -->
-                        <div class="row mb-4">
-                            <!-- Hadir Hari Ini -->
-                            <div class="col-lg-2 col-md-4 mb-3">
-                                <div class="card border-success h-100 shadow-sm">
-                                    <div class="card-body text-center">
-                                        <i class="fa fa-check-circle fa-3x text-success mb-2"/>
-                                        <h2 class="mb-1 text-success">
-                                            <field name="hadir_hari_ini" readonly="1" nolabel="1"/>
-                                        </h2>
-                                        <small class="text-muted text-uppercase fw-bold">Hadir Hari Ini</small>
+                            <!-- ════════════════════════════════════════════════════════ -->
+                            <!-- SECTION: Attendance & Leave                              -->
+                            <!-- ════════════════════════════════════════════════════════ -->
+                            <div class="sapSectionTitle">
+                                <i class="fa fa-clock-o"/> Absensi &amp; Cuti
+                            </div>
+                            <div class="sapKpiRow">
+                                <!-- Hadir Hari Ini -->
+                                <div class="sapKpiTile sapKpiTile--positive">
+                                    <div class="sapKpiTile__title">Hadir Hari Ini</div>
+                                    <div class="sapKpiTile__value">
+                                        <field name="hadir_hari_ini" readonly="1" nolabel="1"/>
                                     </div>
-                                    <div class="card-footer bg-transparent text-center py-2">
-                                        <a class="btn btn-outline-success btn-sm"
-                                           name="action_open_attendance" type="object">
-                                            <i class="fa fa-eye"/> Lihat Absensi
-                                        </a>
+                                    <div class="sapKpiTile__subtitle">Karyawan hadir</div>
+                                    <div class="sapKpiTile__detail">
+                                        <a name="action_open_attendance" type="object">Lihat Absensi</a>
+                                    </div>
+                                </div>
+
+                                <!-- Tidak Hadir -->
+                                <div class="sapKpiTile sapKpiTile--negative">
+                                    <div class="sapKpiTile__title">Tidak Hadir</div>
+                                    <div class="sapKpiTile__value">
+                                        <field name="tidak_hadir_hari_ini" readonly="1" nolabel="1"/>
+                                    </div>
+                                    <div class="sapKpiTile__subtitle">Alpha hari ini</div>
+                                </div>
+
+                                <!-- Jam Lembur -->
+                                <div class="sapKpiTile sapKpiTile--critical">
+                                    <div class="sapKpiTile__title">Jam Lembur</div>
+                                    <div class="sapKpiTile__value">
+                                        <field name="jam_lembur_bulan_ini" readonly="1" nolabel="1"/>
+                                    </div>
+                                    <div class="sapKpiTile__subtitle">Bulan ini</div>
+                                </div>
+
+                                <!-- Cuti Disetujui -->
+                                <div class="sapKpiTile sapKpiTile--info">
+                                    <div class="sapKpiTile__title">Cuti Disetujui</div>
+                                    <div class="sapKpiTile__value">
+                                        <field name="cuti_disetujui" readonly="1" nolabel="1"/>
+                                    </div>
+                                    <div class="sapKpiTile__subtitle">Terapproved</div>
+                                    <div class="sapKpiTile__detail">
+                                        <a name="action_open_leave_all" type="object">Lihat Cuti</a>
+                                    </div>
+                                </div>
+
+                                <!-- Cuti Sakit -->
+                                <div class="sapKpiTile sapKpiTile--info">
+                                    <div class="sapKpiTile__title">Cuti Sakit</div>
+                                    <div class="sapKpiTile__value">
+                                        <field name="cuti_sakit" readonly="1" nolabel="1"/>
+                                    </div>
+                                    <div class="sapKpiTile__subtitle">Sakit</div>
+                                </div>
+
+                                <!-- Cuti Tanpa Gaji -->
+                                <div class="sapKpiTile sapKpiTile--negative">
+                                    <div class="sapKpiTile__title">Potong Cuti</div>
+                                    <div class="sapKpiTile__value">
+                                        <field name="cuti_tanpa_gaji" readonly="1" nolabel="1"/>
+                                    </div>
+                                    <div class="sapKpiTile__subtitle">Tanpa gaji</div>
+                                </div>
+                            </div>
+
+                            <!-- ════════════════════════════════════════════════════════ -->
+                            <!-- SECTION: Payroll KPIs                                    -->
+                            <!-- ════════════════════════════════════════════════════════ -->
+                            <div class="sapSectionTitle">
+                                <i class="fa fa-money"/> Payroll &amp; THR
+                            </div>
+                            <div class="sapKpiRow">
+                                <!-- Karyawan Aktif -->
+                                <div class="sapKpiTile sapKpiTile--info">
+                                    <div class="sapKpiTile__title">Karyawan Aktif</div>
+                                    <div class="sapKpiTile__value">
+                                        <field name="employee_count" readonly="1" nolabel="1"/>
+                                    </div>
+                                    <div class="sapKpiTile__subtitle">Total aktif</div>
+                                    <div class="sapKpiTile__detail">
+                                        <a name="action_open_employees" type="object">Lihat Karyawan</a>
+                                    </div>
+                                </div>
+
+                                <!-- Total Slip Gaji -->
+                                <div class="sapKpiTile sapKpiTile--positive">
+                                    <div class="sapKpiTile__title">Total Slip Gaji</div>
+                                    <div class="sapKpiTile__value">
+                                        <field name="payslip_count" readonly="1" nolabel="1"/>
+                                    </div>
+                                    <div class="sapKpiTile__subtitle">
+                                        <field name="payslip_draft_count" readonly="1" nolabel="1"/> Draft
+                                    </div>
+                                    <div class="sapKpiTile__detail">
+                                        <a name="action_open_payslips" type="object">Semua Slip Gaji</a>
+                                    </div>
+                                </div>
+
+                                <!-- Lembur Pending -->
+                                <div class="sapKpiTile sapKpiTile--critical">
+                                    <div class="sapKpiTile__title">Lembur Pending</div>
+                                    <div class="sapKpiTile__value">
+                                        <field name="overtime_pending_count" readonly="1" nolabel="1"/>
+                                    </div>
+                                    <div class="sapKpiTile__subtitle">
+                                        <field name="overtime_approved_count" readonly="1" nolabel="1"/> Belum di Payslip
+                                    </div>
+                                    <div class="sapKpiTile__detail">
+                                        <a name="action_open_overtime_pending" type="object">Review Lembur</a>
+                                    </div>
+                                </div>
+
+                                <!-- THR -->
+                                <div class="sapKpiTile sapKpiTile--negative">
+                                    <div class="sapKpiTile__title">Total THR</div>
+                                    <div class="sapKpiTile__value">
+                                        <field name="thr_count" readonly="1" nolabel="1"/>
+                                    </div>
+                                    <div class="sapKpiTile__subtitle">
+                                        <field name="thr_pending_count" readonly="1" nolabel="1"/> Draft
+                                    </div>
+                                    <div class="sapKpiTile__detail">
+                                        <a name="action_open_thr" type="object">Daftar THR</a>
+                                    </div>
+                                </div>
+
+                                <!-- Total Penghasilan -->
+                                <div class="sapKpiTile sapKpiTile--info">
+                                    <div class="sapKpiTile__title">Total Penghasilan</div>
+                                    <div class="sapKpiTile__value">
+                                        <field name="total_penghasilan" readonly="1" nolabel="1"/>
+                                    </div>
+                                    <div class="sapKpiTile__subtitle">Bulan ini</div>
+                                </div>
+
+                                <!-- Cuti Pending -->
+                                <div class="sapKpiTile sapKpiTile--critical">
+                                    <div class="sapKpiTile__title">Cuti Pending</div>
+                                    <div class="sapKpiTile__value">
+                                        <field name="cuti_pending" readonly="1" nolabel="1"/>
+                                    </div>
+                                    <div class="sapKpiTile__subtitle">Menunggu review</div>
+                                    <div class="sapKpiTile__detail">
+                                        <a name="action_open_leave_pending" type="object">Review Cuti</a>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Tidak Hadir -->
-                            <div class="col-lg-2 col-md-4 mb-3">
-                                <div class="card border-danger h-100 shadow-sm">
-                                    <div class="card-body text-center">
-                                        <i class="fa fa-times-circle fa-3x text-danger mb-2"/>
-                                        <h2 class="mb-1 text-danger">
-                                            <field name="tidak_hadir_hari_ini" readonly="1" nolabel="1"/>
-                                        </h2>
-                                        <small class="text-muted text-uppercase fw-bold">Tidak Hadir</small>
+                            <!-- ════════════════════════════════════════════════════════ -->
+                            <!-- SECTION: Expense & Skills                                -->
+                            <!-- ════════════════════════════════════════════════════════ -->
+                            <div class="sapSectionTitle">
+                                <i class="fa fa-receipt"/> Expense &amp; Skill
+                            </div>
+                            <div class="sapKpiRow">
+                                <!-- Expense Pending -->
+                                <div class="sapKpiTile sapKpiTile--critical">
+                                    <div class="sapKpiTile__title">Expense Pending</div>
+                                    <div class="sapKpiTile__value">
+                                        <field name="expense_pending" readonly="1" nolabel="1"/>
+                                    </div>
+                                    <div class="sapKpiTile__subtitle">Menunggu approval</div>
+                                    <div class="sapKpiTile__detail">
+                                        <a name="action_open_expense_pending" type="object">Review Expense</a>
+                                    </div>
+                                </div>
+
+                                <!-- Expense Approved -->
+                                <div class="sapKpiTile sapKpiTile--positive">
+                                    <div class="sapKpiTile__title">Expense Approved</div>
+                                    <div class="sapKpiTile__value">
+                                        <field name="expense_approved" readonly="1" nolabel="1"/>
+                                    </div>
+                                    <div class="sapKpiTile__subtitle">Disetujui</div>
+                                    <div class="sapKpiTile__detail">
+                                        <a name="action_open_expense_approved" type="object">Lihat Approved</a>
+                                    </div>
+                                </div>
+
+                                <!-- Total Expense -->
+                                <div class="sapKpiTile sapKpiTile--info">
+                                    <div class="sapKpiTile__title">Total Expense</div>
+                                    <div class="sapKpiTile__value">
+                                        <field name="expense_total_amount" readonly="1" nolabel="1"/>
+                                    </div>
+                                    <div class="sapKpiTile__subtitle">Rp</div>
+                                </div>
+
+                                <!-- Skills -->
+                                <div class="sapKpiTile sapKpiTile--positive">
+                                    <div class="sapKpiTile__title">Karyawan + Skill</div>
+                                    <div class="sapKpiTile__value">
+                                        <field name="karyawan_with_skill" readonly="1" nolabel="1"/>
+                                    </div>
+                                    <div class="sapKpiTile__subtitle">
+                                        <field name="total_skill_types" readonly="1" nolabel="1"/> Jenis Skill
+                                    </div>
+                                    <div class="sapKpiTile__detail">
+                                        <a name="action_open_skills" type="object">Lihat Skill</a>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Jam Lembur -->
-                            <div class="col-lg-2 col-md-4 mb-3">
-                                <div class="card border-warning h-100 shadow-sm">
-                                    <div class="card-body text-center">
-                                        <i class="fa fa-clock-o fa-3x text-warning mb-2"/>
-                                        <h2 class="mb-1 text-warning">
-                                            <field name="jam_lembur_bulan_ini" readonly="1" nolabel="1"/>
-                                        </h2>
-                                        <small class="text-muted text-uppercase fw-bold">Jam Lembur</small>
+                            <!-- ════════════════════════════════════════════════════════ -->
+                            <!-- SECTION: Quick Actions                                   -->
+                            <!-- ════════════════════════════════════════════════════════ -->
+                            <div class="sapSectionTitle">
+                                <i class="fa fa-bolt"/> Quick Actions
+                            </div>
+                            <div class="sapQuickActions">
+                                <!-- Buat Slip Gaji -->
+                                <a class="sapQuickAction" name="action_hr_payslip" type="action">
+                                    <div class="sapQuickAction__icon">
+                                        <i class="fa fa-plus-circle"/>
                                     </div>
+                                    <div class="sapQuickAction__label">Buat Slip Gaji Baru</div>
+                                    <div class="sapQuickAction__desc">Hitung PPh 21 &amp; BPJS otomatis</div>
+                                </a>
+
+                                <!-- Generate THR -->
+                                <a class="sapQuickAction"
+                                   name="%(l10n_id_hr_payroll.action_hr_thr_wizard)d"
+                                   type="action">
+                                    <div class="sapQuickAction__icon">
+                                        <i class="fa fa-magic"/>
+                                    </div>
+                                    <div class="sapQuickAction__label">Generate THR Massal</div>
+                                    <div class="sapQuickAction__desc">Buat THR untuk semua karyawan</div>
+                                </a>
+
+                                <!-- Tarif BPJS -->
+                                <a class="sapQuickAction" name="action_open_bpjs_settings" type="object">
+                                    <div class="sapQuickAction__icon">
+                                        <i class="fa fa-shield"/>
+                                    </div>
+                                    <div class="sapQuickAction__label">Setting Tarif BPJS</div>
+                                    <div class="sapQuickAction__desc">
+                                        <field name="bpjs_rate_count" readonly="1" nolabel="1"/> kelompok risiko aktif
+                                    </div>
+                                </a>
+
+                                <!-- Rekap BPJS -->
+                                <a class="sapQuickAction"
+                                   name="%(l10n_id_hr_payroll.action_report_bpjs_rekap)d"
+                                   type="action">
+                                    <div class="sapQuickAction__icon">
+                                        <i class="fa fa-print"/>
+                                    </div>
+                                    <div class="sapQuickAction__label">Cetak Laporan</div>
+                                    <div class="sapQuickAction__desc">Bukti Potong &amp; Rekap BPJS</div>
+                                </a>
+                            </div>
+
+                            <!-- ════════════════════════════════════════════════════════ -->
+                            <!-- SECTION: Info Cards                                      -->
+                            <!-- ════════════════════════════════════════════════════════ -->
+                            <div class="sapDataCard">
+                                <div class="sapDataCard__header">
+                                    <i class="fa fa-info-circle"/> Modul Payroll Indonesia
+                                </div>
+                                <div class="sapDataCard__body">
+                                    <h6>Fitur Utama:</h6>
+                                    <ul class="mb-0">
+                                        <li>PPh 21 otomatis — tarif progresif 5%–35% (UU HPP No. 7/2021)</li>
+                                        <li>BPJS Ketenagakerjaan — JKK, JKM, JHT, JP sesuai PP 44/2015</li>
+                                        <li>BPJS Kesehatan — 1% karyawan, 4% perusahaan</li>
+                                        <li>Manajemen Lembur — workflow submit → approve → payslip</li>
+                                        <li>THR otomatis — proporsional masa kerja (PP 36/2021)</li>
+                                        <li>Bukti Potong 1721-A1 / A2</li>
+                                        <li>Expense management untuk uang makan &amp; reimburse</li>
+                                    </ul>
                                 </div>
                             </div>
 
-                            <!-- Cuti Disetujui -->
-                            <div class="col-lg-2 col-md-4 mb-3">
-                                <div class="card border-info h-100 shadow-sm">
-                                    <div class="card-body text-center">
-                                        <i class="fa fa-calendar-check-o fa-3x text-info mb-2"/>
-                                        <h2 class="mb-1 text-info">
-                                            <field name="cuti_disetujui" readonly="1" nolabel="1"/>
-                                        </h2>
-                                        <small class="text-muted text-uppercase fw-bold">Cuti Disetujui</small>
-                                    </div>
-                                    <div class="card-footer bg-transparent text-center py-2">
-                                        <a class="btn btn-outline-info btn-sm"
-                                           name="action_open_leave_all" type="object">
-                                            <i class="fa fa-eye"/> Lihat Cuti
-                                        </a>
-                                    </div>
+                            <div class="sapDataCard">
+                                <div class="sapDataCard__header">
+                                    <i class="fa fa-file-text-o"/> Laporan Tersedia
+                                </div>
+                                <div class="sapDataCard__body">
+                                    <h6>Cetak Laporan:</h6>
+                                    <ul class="mb-0">
+                                        <li>Slip Gaji Indonesia — format khusus PPh 21 &amp; BPJS</li>
+                                        <li>Bukti Potong PPh 21 — Formulir 1721-A1/A2</li>
+                                        <li>Rekap Iuran BPJS — ringkasan iuran per karyawan</li>
+                                        <li>Daftar Pembayaran Gaji via Bank Transfer</li>
+                                    </ul>
                                 </div>
                             </div>
-
-                            <!-- Cuti Sakit -->
-                            <div class="col-lg-2 col-md-4 mb-3">
-                                <div class="card border-secondary h-100 shadow-sm">
-                                    <div class="card-body text-center">
-                                        <i class="fa fa-medkit fa-3x text-secondary mb-2"/>
-                                        <h2 class="mb-1 text-secondary">
-                                            <field name="cuti_sakit" readonly="1" nolabel="1"/>
-                                        </h2>
-                                        <small class="text-muted text-uppercase fw-bold">Cuti Sakit</small>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Cuti Tanpa Gaji -->
-                            <div class="col-lg-2 col-md-4 mb-3">
-                                <div class="card border-dark h-100 shadow-sm">
-                                    <div class="card-body text-center">
-                                        <i class="fa fa-calendar-minus-o fa-3x text-dark mb-2"/>
-                                        <h2 class="mb-1 text-dark">
-                                            <field name="cuti_tanpa_gaji" readonly="1" nolabel="1"/>
-                                        </h2>
-                                        <small class="text-muted text-uppercase fw-bold">Potong Cuti</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- ════════════════════════════════════════════════════════ -->
-                        <!-- ROW 2: Payroll KPIs                                      -->
-                        <!-- ════════════════════════════════════════════════════════ -->
-                        <div class="row mb-4">
-                            <!-- Karyawan Aktif -->
-                            <div class="col-lg-2 col-md-4 mb-3">
-                                <div class="card border-primary h-100 shadow-sm">
-                                    <div class="card-body text-center">
-                                        <i class="fa fa-users fa-3x text-primary mb-2"/>
-                                        <h2 class="mb-1 text-primary">
-                                            <field name="employee_count" readonly="1" nolabel="1"/>
-                                        </h2>
-                                        <small class="text-muted text-uppercase fw-bold">Karyawan Aktif</small>
-                                    </div>
-                                    <div class="card-footer bg-transparent text-center py-2">
-                                        <a class="btn btn-outline-primary btn-sm"
-                                           name="action_open_employees" type="object">
-                                            <i class="fa fa-eye"/> Lihat Karyawan
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Total Slip Gaji -->
-                            <div class="col-lg-2 col-md-4 mb-3">
-                                <div class="card border-success h-100 shadow-sm">
-                                    <div class="card-body text-center">
-                                        <i class="fa fa-file-text-o fa-3x text-success mb-2"/>
-                                        <h2 class="mb-1 text-success">
-                                            <field name="payslip_count" readonly="1" nolabel="1"/>
-                                        </h2>
-                                        <small class="text-muted text-uppercase fw-bold">Total Slip Gaji</small>
-                                        <br/>
-                                        <span class="badge bg-warning text-dark">
-                                            <field name="payslip_draft_count" readonly="1" nolabel="1"/> Draft
-                                        </span>
-                                    </div>
-                                    <div class="card-footer bg-transparent text-center py-2">
-                                        <a class="btn btn-outline-success btn-sm"
-                                           name="action_open_payslips" type="object">
-                                            <i class="fa fa-list"/> Semua Slip Gaji
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Lembur Perlu Approve -->
-                            <div class="col-lg-2 col-md-4 mb-3">
-                                <div class="card border-warning h-100 shadow-sm">
-                                    <div class="card-body text-center">
-                                        <i class="fa fa-hourglass-half fa-3x text-warning mb-2"/>
-                                        <h2 class="mb-1 text-warning">
-                                            <field name="overtime_pending_count" readonly="1" nolabel="1"/>
-                                        </h2>
-                                        <small class="text-muted text-uppercase fw-bold">Lembur Pending</small>
-                                        <br/>
-                                        <span class="badge bg-info">
-                                            <field name="overtime_approved_count" readonly="1" nolabel="1"/> Belum di Payslip
-                                        </span>
-                                    </div>
-                                    <div class="card-footer bg-transparent text-center py-2">
-                                        <a class="btn btn-outline-warning btn-sm"
-                                           name="action_open_overtime_pending" type="object">
-                                            <i class="fa fa-check"/> Review Lembur
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- THR -->
-                            <div class="col-lg-2 col-md-4 mb-3">
-                                <div class="card border-danger h-100 shadow-sm">
-                                    <div class="card-body text-center">
-                                        <i class="fa fa-gift fa-3x text-danger mb-2"/>
-                                        <h2 class="mb-1 text-danger">
-                                            <field name="thr_count" readonly="1" nolabel="1"/>
-                                        </h2>
-                                        <small class="text-muted text-uppercase fw-bold">Total THR</small>
-                                        <br/>
-                                        <span class="badge bg-warning text-dark">
-                                            <field name="thr_pending_count" readonly="1" nolabel="1"/> Draft
-                                        </span>
-                                    </div>
-                                    <div class="card-footer bg-transparent text-center py-2">
-                                        <a class="btn btn-outline-danger btn-sm"
-                                           name="action_open_thr" type="object">
-                                            <i class="fa fa-list"/> Daftar THR
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Total Penghasilan -->
-                            <div class="col-lg-2 col-md-4 mb-3">
-                                <div class="card border-info h-100 shadow-sm">
-                                    <div class="card-body text-center">
-                                        <i class="fa fa-money fa-3x text-info mb-2"/>
-                                        <h2 class="mb-1 text-info">
-                                            <field name="total_penghasilan" readonly="1" nolabel="1"/>
-                                        </h2>
-                                        <small class="text-muted text-uppercase fw-bold">Total Penghasilan</small>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Cuti Pending -->
-                            <div class="col-lg-2 col-md-4 mb-3">
-                                <div class="card border-warning h-100 shadow-sm">
-                                    <div class="card-body text-center">
-                                        <i class="fa fa-hourglass-o fa-3x text-warning mb-2"/>
-                                        <h2 class="mb-1 text-warning">
-                                            <field name="cuti_pending" readonly="1" nolabel="1"/>
-                                        </h2>
-                                        <small class="text-muted text-uppercase fw-bold">Cuti Pending</small>
-                                    </div>
-                                    <div class="card-footer bg-transparent text-center py-2">
-                                        <a class="btn btn-outline-warning btn-sm"
-                                           name="action_open_leave_pending" type="object">
-                                            <i class="fa fa-check"/> Review Cuti
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- ════════════════════════════════════════════════════════ -->
-                        <!-- ROW 3: Expense & Skills                                  -->
-                        <!-- ════════════════════════════════════════════════════════ -->
-                        <div class="row mb-4">
-                            <!-- Expense Pending -->
-                            <div class="col-lg-3 col-md-6 mb-3">
-                                <div class="card border-primary h-100 shadow-sm">
-                                    <div class="card-body text-center">
-                                        <i class="fa fa-receipt fa-3x text-primary mb-2"/>
-                                        <h2 class="mb-1 text-primary">
-                                            <field name="expense_pending" readonly="1" nolabel="1"/>
-                                        </h2>
-                                        <small class="text-muted text-uppercase fw-bold">Expense Pending</small>
-                                    </div>
-                                    <div class="card-footer bg-transparent text-center py-2">
-                                        <a class="btn btn-outline-primary btn-sm"
-                                           name="action_open_expense_pending" type="object">
-                                            <i class="fa fa-eye"/> Review Expense
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Expense Approved -->
-                            <div class="col-lg-3 col-md-6 mb-3">
-                                <div class="card border-success h-100 shadow-sm">
-                                    <div class="card-body text-center">
-                                        <i class="fa fa-check-square fa-3x text-success mb-2"/>
-                                        <h2 class="mb-1 text-success">
-                                            <field name="expense_approved" readonly="1" nolabel="1"/>
-                                        </h2>
-                                        <small class="text-muted text-uppercase fw-bold">Expense Approved</small>
-                                    </div>
-                                    <div class="card-footer bg-transparent text-center py-2">
-                                        <a class="btn btn-outline-success btn-sm"
-                                           name="action_open_expense_approved" type="object">
-                                            <i class="fa fa-eye"/> Lihat Approved
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Total Expense -->
-                            <div class="col-lg-3 col-md-6 mb-3">
-                                <div class="card border-info h-100 shadow-sm">
-                                    <div class="card-body text-center">
-                                        <i class="fa fa-calculator fa-3x text-info mb-2"/>
-                                        <h2 class="mb-1 text-info">
-                                            <field name="expense_total_amount" readonly="1" nolabel="1"/>
-                                        </h2>
-                                        <small class="text-muted text-uppercase fw-bold">Total Expense (Rp)</small>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Skills -->
-                            <div class="col-lg-3 col-md-6 mb-3">
-                                <div class="card border-secondary h-100 shadow-sm">
-                                    <div class="card-body text-center">
-                                        <i class="fa fa-star fa-3x text-secondary mb-2"/>
-                                        <h2 class="mb-1 text-secondary">
-                                            <field name="karyawan_with_skill" readonly="1" nolabel="1"/>
-                                        </h2>
-                                        <small class="text-muted text-uppercase fw-bold">Karyawan + Skill</small>
-                                        <br/>
-                                        <span class="badge bg-secondary">
-                                            <field name="total_skill_types" readonly="1" nolabel="1"/> Jenis Skill
-                                        </span>
-                                    </div>
-                                    <div class="card-footer bg-transparent text-center py-2">
-                                        <a class="btn btn-outline-secondary btn-sm"
-                                           name="action_open_skills" type="object">
-                                            <i class="fa fa-eye"/> Lihat Skill
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- ════════════════════════════════════════════════════════ -->
-                        <!-- ROW 4: Quick Actions                                      -->
-                        <!-- ════════════════════════════════════════════════════════ -->
-                        <div class="row mb-4">
-                            <!-- Buat Slip Gaji -->
-                            <div class="col-lg-3 col-md-6 mb-3">
-                                <div class="card border-secondary h-100 shadow-sm">
-                                    <div class="card-body text-center">
-                                        <i class="fa fa-plus-circle fa-3x text-secondary mb-2"/>
-                                        <h6>Buat Slip Gaji Baru</h6>
-                                        <p class="text-muted small mb-2">Hitung PPh 21 &amp; BPJS otomatis</p>
-                                    </div>
-                                    <div class="card-footer bg-transparent text-center py-2">
-                                        <a class="btn btn-outline-secondary btn-sm"
-                                           name="action_hr_payslip" type="action">
-                                            <i class="fa fa-plus"/> Buat Slip Gaji
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Generate THR -->
-                            <div class="col-lg-3 col-md-6 mb-3">
-                                <div class="card border-secondary h-100 shadow-sm">
-                                    <div class="card-body text-center">
-                                        <i class="fa fa-magic fa-3x text-secondary mb-2"/>
-                                        <h6>Generate THR Massal</h6>
-                                        <p class="text-muted small mb-2">Buat THR untuk semua karyawan</p>
-                                    </div>
-                                    <div class="card-footer bg-transparent text-center py-2">
-                                        <a class="btn btn-outline-secondary btn-sm"
-                                           name="%(l10n_id_hr_payroll.action_hr_thr_wizard)d"
-                                           type="action">
-                                            <i class="fa fa-cogs"/> Generate THR
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Tarif BPJS -->
-                            <div class="col-lg-3 col-md-6 mb-3">
-                                <div class="card border-secondary h-100 shadow-sm">
-                                    <div class="card-body text-center">
-                                        <i class="fa fa-shield fa-3x text-secondary mb-2"/>
-                                        <h6>Setting Tarif BPJS</h6>
-                                        <p class="text-muted small mb-2">
-                                            <field name="bpjs_rate_count" readonly="1" nolabel="1"/> kelompok risiko aktif
-                                        </p>
-                                    </div>
-                                    <div class="card-footer bg-transparent text-center py-2">
-                                        <a class="btn btn-outline-secondary btn-sm"
-                                           name="action_open_bpjs_settings" type="object">
-                                            <i class="fa fa-cog"/> Kelola Tarif
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Rekap BPJS -->
-                            <div class="col-lg-3 col-md-6 mb-3">
-                                <div class="card border-secondary h-100 shadow-sm">
-                                    <div class="card-body text-center">
-                                        <i class="fa fa-print fa-3x text-secondary mb-2"/>
-                                        <h6>Cetak Laporan</h6>
-                                        <p class="text-muted small mb-2">Bukti Potong &amp; Rekap BPJS</p>
-                                    </div>
-                                    <div class="card-footer bg-transparent text-center py-2">
-                                        <a class="btn btn-outline-secondary btn-sm"
-                                           name="%(l10n_id_hr_payroll.action_report_bpjs_rekap)d"
-                                           type="action">
-                                            <i class="fa fa-print"/> Rekap BPJS
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- ════════════════════════════════════════════════════════ -->
-                        <!-- ROW 5: Info                                               -->
-                        <!-- ════════════════════════════════════════════════════════ -->
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="card">
-                                    <div class="card-header bg-primary text-white">
-                                        <strong><i class="fa fa-info-circle"/> Modul Payroll Indonesia</strong>
-                                    </div>
-                                    <div class="card-body">
-                                        <h6>Fitur Utama:</h6>
-                                        <ul class="mb-0">
-                                            <li>PPh 21 otomatis — tarif progresif 5%–35% (UU HPP No. 7/2021)</li>
-                                            <li>BPJS Ketenagakerjaan — JKK, JKM, JHT, JP sesuai PP 44/2015</li>
-                                            <li>BPJS Kesehatan — 1% karyawan, 4% perusahaan</li>
-                                            <li>Manajemen Lembur — workflow submit → approve → payslip</li>
-                                            <li>THR otomatis — proporsional masa kerja (PP 36/2021)</li>
-                                            <li>Bukti Potong 1721-A1 / A2</li>
-                                            <li>Expense management untuk uang makan &amp; reimburse</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="card">
-                                    <div class="card-header bg-success text-white">
-                                        <strong><i class="fa fa-file-text-o"/> Laporan Tersedia</strong>
-                                    </div>
-                                    <div class="card-body">
-                                        <h6>Cetak Laporan:</h6>
-                                        <ul class="mb-0">
-                                            <li>Slip Gaji Indonesia — format khusus PPh 21 &amp; BPJS</li>
-                                            <li>Bukti Potong PPh 21 — Formulir 1721-A1/A2</li>
-                                            <li>Rekap Iuran BPJS — ringkasan iuran per karyawan</li>
-                                            <li>Daftar Pembayaran Gaji via Bank Transfer</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
                         </div>
                     </sheet>

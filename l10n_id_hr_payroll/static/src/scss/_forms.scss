@@ -1,0 +1,288 @@
+// ============================================================================
+// Form Styles — SAP Fiori Object Page Pattern
+// ============================================================================
+
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// ── Form Header (above sheet) ───────────────────────────────────────────────
+.sapFormHeader {
+  @include sap-page-header;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: $sap-spacing;
+
+  &__left {
+    display: flex;
+    align-items: center;
+    gap: $sap-spacing;
+  }
+
+  &__avatar {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: $sap-radius-round;
+    background: rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: $sap-font-size-xl;
+    color: $sap-shell-text;
+  }
+
+  &__title {
+    font-size: $sap-font-size-xl;
+    font-weight: $sap-font-weight-bold;
+    margin: 0;
+    color: $sap-shell-text;
+  }
+
+  &__subtitle {
+    font-size: $sap-font-size-s;
+    opacity: 0.85;
+    margin-top: $sap-spacing-xxs;
+    color: $sap-shell-text;
+  }
+
+  &__actions {
+    display: flex;
+    gap: $sap-spacing-xs;
+    flex-wrap: wrap;
+  }
+}
+
+// ── Status Badge in Header ──────────────────────────────────────────────────
+.sapFormStatus {
+  @include sap-status-badge('neutral');
+  font-size: $sap-font-size-s;
+  padding: $sap-spacing-xxs $sap-spacing-s;
+
+  &--draft { @include sap-status-badge('neutral'); }
+  &--computed { @include sap-status-badge('information'); }
+  &--submitted { @include sap-status-badge('critical'); }
+  &--confirmed { @include sap-status-badge('information'); }
+  &--approved { @include sap-status-badge('positive'); }
+  &--done { @include sap-status-badge('positive'); }
+  &--paid { @include sap-status-badge('positive'); }
+  &--rejected { @include sap-status-badge('negative'); }
+  &--cancelled { @include sap-status-badge('neutral'); }
+  &--error { @include sap-status-badge('negative'); }
+}
+
+// ── Form Summary Bar (KPIs above form) ──────────────────────────────────────
+.sapFormSummary {
+  display: flex;
+  gap: $sap-spacing-m;
+  margin-bottom: $sap-spacing-m;
+  padding: $sap-spacing-s $sap-spacing;
+  background: $sap-bg-tile;
+  border-radius: $sap-radius;
+  box-shadow: $sap-shadow;
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: $sap-spacing-xs;
+    padding-right: $sap-spacing-m;
+    border-right: 1px solid $sap-border-light;
+
+    &:last-child {
+      border-right: none;
+      padding-right: 0;
+    }
+  }
+
+  &__icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: $sap-radius;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: $sap-font-size-m;
+
+    &--brand { background: $sap-information-light; color: $sap-brand; }
+    &--positive { background: $sap-positive-light; color: $sap-positive; }
+    &--critical { background: $sap-critical-light; color: $sap-critical; }
+    &--negative { background: $sap-negative-light; color: $sap-negative; }
+    &--neutral { background: $sap-neutral-light; color: $sap-neutral; }
+  }
+
+  &__label {
+    font-size: $sap-font-size-xs;
+    color: $sap-text-muted;
+    text-transform: uppercase;
+  }
+
+  &__value {
+    font-size: $sap-font-size;
+    font-weight: $sap-font-weight-bold;
+    color: $sap-text;
+  }
+}
+
+// ── Form Section ────────────────────────────────────────────────────────────
+.sapFormSection {
+  @include sap-form-section;
+
+  &__title {
+    font-size: $sap-font-size;
+    font-weight: $sap-font-weight-bold;
+    color: $sap-text;
+    margin-bottom: $sap-spacing-s;
+    display: flex;
+    align-items: center;
+    gap: $sap-spacing-xs;
+
+    &::before {
+      content: '';
+      width: 3px;
+      height: 1rem;
+      background: $sap-brand;
+      border-radius: 2px;
+    }
+  }
+}
+
+// ── Form Group (field cluster) ──────────────────────────────────────────────
+.sapFormGroup {
+  margin-bottom: $sap-spacing;
+
+  &__label {
+    @include sap-form-label;
+  }
+}
+
+// ── Stat Button Box ─────────────────────────────────────────────────────────
+.sapStatButtons {
+  display: flex;
+  gap: $sap-spacing-xs;
+  margin-bottom: $sap-spacing-m;
+}
+
+.sapStatButton {
+  @include sap-card;
+  @include sap-card-body;
+  display: flex;
+  align-items: center;
+  gap: $sap-spacing-s;
+  padding: $sap-spacing-s $sap-spacing;
+  text-decoration: none;
+  color: $sap-text;
+  min-width: 10rem;
+
+  &:hover {
+    color: $sap-brand;
+
+    .sapStatButton__icon {
+      background: $sap-brand;
+      color: $sap-text-inverse;
+    }
+  }
+
+  &__icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: $sap-radius;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: $sap-font-size-m;
+    background: $sap-neutral-light;
+    color: $sap-text-light;
+    transition: background $sap-transition, color $sap-transition;
+  }
+
+  &__text {
+    flex: 1;
+  }
+
+  &__title {
+    font-size: $sap-font-size-s;
+    font-weight: $sap-font-weight-bold;
+  }
+
+  &__value {
+    font-size: $sap-font-size-xs;
+    color: $sap-text-muted;
+  }
+}
+
+// ── Notebook Tabs (override to SAP anchor bar style) ────────────────────────
+.o_notebook {
+  border: none !important;
+
+  .nav-tabs {
+    @include sap-anchor-bar;
+    border-bottom: none;
+    padding: 0;
+
+    .nav-link {
+      border: none;
+      border-bottom: 2px solid transparent;
+      border-radius: 0;
+      padding: $sap-spacing-xs $sap-spacing;
+      color: $sap-text-light;
+      font-size: $sap-font-size;
+      transition: color $sap-transition, border-color $sap-transition;
+
+      &:hover {
+        color: $sap-brand;
+        border-color: transparent;
+      }
+
+      &.active {
+        color: $sap-brand;
+        border-bottom-color: $sap-brand;
+        font-weight: $sap-font-weight-bold;
+        background: transparent;
+      }
+    }
+  }
+
+  .tab-content {
+    padding-top: $sap-spacing-m;
+  }
+}
+
+// ── Chatter area ────────────────────────────────────────────────────────────
+.o_chatter {
+  margin-top: $sap-spacing-m;
+  border-top: 1px solid $sap-border-light;
+  padding-top: $sap-spacing-m;
+}
+
+// ── Responsive ──────────────────────────────────────────────────────────────
+@media (max-width: 768px) {
+  .sapFormSummary {
+    flex-direction: column;
+    gap: $sap-spacing-xs;
+
+    &__item {
+      border-right: none;
+      padding-right: 0;
+      padding-bottom: $sap-spacing-xxs;
+      border-bottom: 1px solid $sap-border-light;
+
+      &:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+    }
+  }
+
+  .sapFormHeader {
+    flex-direction: column;
+    align-items: flex-start;
+
+    &__actions {
+      width: 100%;
+    }
+  }
+
+  .sapStatButtons {
+    flex-wrap: wrap;
+  }
+}

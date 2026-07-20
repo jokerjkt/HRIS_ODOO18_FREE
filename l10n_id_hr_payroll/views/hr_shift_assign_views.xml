@@ -25,28 +25,114 @@
                                statusbar_visible="draft,confirmed,done"/>
                     </header>
                     <sheet>
-                        <group>
-                            <group string="Informasi Karyawan">
-                                <field name="employee_id"/>
-                                <field name="department_id" readonly="1"/>
-                            </group>
-                            <group string="Pengaturan Shift">
-                                <field name="rotation_id"/>
-                                <field name="date_from"/>
-                                <field name="date_to"/>
-                                <field name="daily_count" readonly="1"/>
-                            </group>
-                        </group>
-                    </sheet>
-                    <div class="oe_button_box" name="buttons">
-                        <button name="%(action_hr_shift_daily)d" type="action"
-                                class="oe_stat_button" icon="fa-calendar">
-                            <div class="o_stat_info">
-                                <field name="daily_count" class="o_stat_value"/>
-                                <span class="o_stat_text">Jadwal</span>
+                        <div class="oe_button_box" name="buttons">
+                            <button name="%(action_hr_shift_daily)d" type="action"
+                                    class="oe_stat_button" icon="fa-calendar">
+                                <div class="o_stat_info">
+                                    <field name="daily_count" class="o_stat_value"/>
+                                    <span class="o_stat_text">Jadwal</span>
+                                </div>
+                            </button>
+                        </div>
+
+                        <div class="sapFormHeader">
+                            <div class="sapFormHeader__left">
+                                <div class="sapFormHeader__avatar">
+                                    <i class="fa fa-calendar-check-o fa-2x"/>
+                                </div>
+                                <div>
+                                    <div class="sapFormHeader__title">
+                                        <field name="employee_id" readonly="1"/>
+                                    </div>
+                                    <div class="sapFormHeader__subtitle">Assign Shift</div>
+                                </div>
                             </div>
-                        </button>
-                    </div>
+                            <div class="sapFormHeader__actions">
+                                <field name="state" widget="badge"
+                                       class="sapFormStatus sapFormStatus--draft"
+                                       invisible="state != 'draft'"/>
+                                <field name="state" widget="badge"
+                                       class="sapFormStatus sapFormStatus--confirmed"
+                                       invisible="state != 'confirmed'"/>
+                                <field name="state" widget="badge"
+                                       class="sapFormStatus sapFormStatus--done"
+                                       invisible="state != 'done'"/>
+                            </div>
+                        </div>
+
+                        <div class="sapFormSummary">
+                            <div class="sapFormSummary__item">
+                                <div class="sapFormSummary__icon sapFormSummary__icon--brand">
+                                    <i class="fa fa-user"/>
+                                </div>
+                                <div class="sapFormSummary__label">Karyawan</div>
+                                <div class="sapFormSummary__value">
+                                    <field name="employee_id" readonly="1"/>
+                                </div>
+                            </div>
+                            <div class="sapFormSummary__item">
+                                <div class="sapFormSummary__icon sapFormSummary__icon--positive">
+                                    <i class="fa fa-building"/>
+                                </div>
+                                <div class="sapFormSummary__label">Departemen</div>
+                                <div class="sapFormSummary__value">
+                                    <field name="department_id" readonly="1"/>
+                                </div>
+                            </div>
+                            <div class="sapFormSummary__item">
+                                <div class="sapFormSummary__icon sapFormSummary__icon--critical">
+                                    <i class="fa fa-clock-o"/>
+                                </div>
+                                <div class="sapFormSummary__label">Pola Rotasi</div>
+                                <div class="sapFormSummary__value">
+                                    <field name="rotation_id" readonly="1"/>
+                                </div>
+                            </div>
+                            <div class="sapFormSummary__item">
+                                <div class="sapFormSummary__icon sapFormSummary__icon--neutral">
+                                    <i class="fa fa-calendar"/>
+                                </div>
+                                <div class="sapFormSummary__label">Periode</div>
+                                <div class="sapFormSummary__value">
+                                    <field name="date_from" readonly="1"/> - <field name="date_to" readonly="1"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="sapStatButtons">
+                            <div class="sapStatButton">
+                                <div class="sapStatButton__icon"><i class="fa fa-calendar"/></div>
+                                <div class="sapStatButton__text">
+                                    <div class="sapStatButton__title">Jadwal Harian</div>
+                                    <div class="sapStatButton__value">
+                                        <field name="daily_count" readonly="1"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="sapFormSection">
+                            <div class="sapFormSection__title">Informasi Karyawan</div>
+                            <group>
+                                <group>
+                                    <field name="employee_id"/>
+                                    <field name="department_id" readonly="1"/>
+                                </group>
+                            </group>
+                        </div>
+
+                        <div class="sapFormSection">
+                            <div class="sapFormSection__title">Pengaturan Shift</div>
+                            <group>
+                                <group>
+                                    <field name="rotation_id"/>
+                                    <field name="date_from"/>
+                                    <field name="date_to"/>
+                                    <field name="daily_count" readonly="1"/>
+                                </group>
+                            </group>
+                        </div>
+                    </sheet>
                 </form>
             </field>
         </record>
