@@ -6,19 +6,21 @@
              Indonesian HR — Integrated under Odoo 18 HR App
              ================================================================ -->
 
-        <!-- ── My Dashboard — Top-level navbar (before Dashboard HR) ──── -->
+        <!-- ── My Dashboard — inside HR menu ────────────────────────────── -->
 
         <menuitem id="menu_hr_my_dashboard"
                   name="Dashboard Saya"
+                  parent="hr.menu_hr_root"
                   action="action_hr_my_dashboard"
-                  sequence="175"/>
+                  sequence="2"/>
 
-        <!-- ── Dashboard HR — Top-level navbar ────────────────────────── -->
+        <!-- ── Dashboard HR — inside HR menu ──────────────────────────── -->
 
         <menuitem id="menu_hr_user_dashboard"
                   name="Dashboard HR"
+                  parent="hr.menu_hr_root"
                   action="action_hr_user_dashboard"
-                  sequence="180"/>
+                  sequence="3"/>
 
         <!-- ── Dashboard Admin (inside Employees menu) ──────────────── -->
 
