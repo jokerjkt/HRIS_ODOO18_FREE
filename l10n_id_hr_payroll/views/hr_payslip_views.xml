@@ -418,5 +418,21 @@
             </field>
         </record>
 
+        <!-- Action: Slip Gaji Saya (for regular employees) -->
+        <record id="action_hr_my_payslip" model="ir.actions.act_window">
+            <field name="name">Slip Gaji Saya</field>
+            <field name="res_model">hr.payslip</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="view_hr_payslip_search"/>
+            <field name="domain">[('employee_id.user_id', '=', uid)]</field>
+            <field name="context">{'search_default_filter_mine': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Belum ada slip gaji untuk Anda
+                </p>
+                <p>Slip gaji Anda akan muncul di sini setelah dihitung oleh HR.</p>
+            </field>
+        </record>
+
     </data>
 </odoo>

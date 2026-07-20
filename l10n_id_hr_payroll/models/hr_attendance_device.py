@@ -56,6 +56,11 @@ class HrAttendanceDevice(models.Model):
         string='Lokasi',
         help='Lokasi pemasangan mesin',
     )
+    assigned_zone_id = fields.Many2one(
+        'hr.attendance.geo.fence',
+        string='Zona Geofence',
+        help='Zona geofence default untuk mesin ini',
+    )
     department_ids = fields.Many2many(
         'hr.department',
         string='Departemen Terkait',

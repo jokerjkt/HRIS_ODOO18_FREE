@@ -311,11 +311,13 @@
                                             string="Setujui"
                                             type="object"
                                             class="sapKanbanCard__btn sapKanbanCard__btn--positive"
+                                            groups="l10n_id_hr_payroll.group_hr_overtime_manager"
                                             invisible="state != 'submitted'"/>
                                     <button name="action_reject"
                                             string="Tolak"
                                             type="object"
                                             class="sapKanbanCard__btn sapKanbanCard__btn--negative"
+                                            groups="l10n_id_hr_payroll.group_hr_overtime_manager"
                                             invisible="state != 'submitted'"/>
                                 </div>
                             </div>

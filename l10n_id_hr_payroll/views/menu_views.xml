@@ -29,7 +29,15 @@
                   sequence="1"
                   groups="l10n_id_hr_payroll.group_hr_full_admin"/>
 
-        <!-- ── Payroll ────────────────────────────────────────────────────── -->
+        <!-- ── My Payslip — visible to all employees ──────────────────────── -->
+
+        <menuitem id="menu_hr_my_payslip"
+                  name="Slip Gaji Saya"
+                  parent="hr.menu_hr_root"
+                  action="action_hr_my_payslip"
+                  sequence="45"/>
+
+        <!-- ── Payroll (admin only) ────────────────────────────────────────── -->
 
         <menuitem id="menu_indonesia_hr_payslip"
                   name="Payroll"
@@ -82,7 +90,15 @@
                   sequence="30"
                   groups="l10n_id_hr_payroll.group_hr_admin"/>
 
-        <!-- ── THR ────────────────────────────────────────────────────────── -->
+        <!-- ── My THR — visible to all employees ──────────────────────────── -->
+
+        <menuitem id="menu_hr_my_thr"
+                  name="THR Saya"
+                  parent="hr.menu_hr_root"
+                  action="action_hr_my_thr"
+                  sequence="62"/>
+
+        <!-- ── THR (admin only) ────────────────────────────────────────────── -->
 
         <menuitem id="menu_indonesia_hr_thr"
                   name="THR"
@@ -153,6 +169,12 @@
                   parent="menu_indonesia_hr_attendance_device"
                   action="action_hr_attendance_import_wizard"
                   sequence="30"/>
+
+        <menuitem id="menu_hr_attendance_geo_fence"
+                  name="Zona Geofence"
+                  parent="menu_indonesia_hr_attendance_device"
+                  action="action_hr_attendance_geo_fence"
+                  sequence="40"/>
 
         <!-- ── Reporting (under existing HR Reporting) ─────────────────────── -->
 

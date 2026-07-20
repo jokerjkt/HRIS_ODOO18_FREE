@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================================ -->
+    <!-- SEARCH VIEW (define BEFORE action that references it)         -->
+    <!-- ============================================================ -->
+    <record id="view_hr_attendance_geo_fence_search" model="ir.ui.view">
+        <field name="name">hr.attendance.geo.fence.search</field>
+        <field name="model">hr.attendance.geo.fence</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="code"/>
+                <filter name="filter_active" string="Aktif" domain="[('active', '=', True)]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="Perusahaan" name="group_company"
+                            context="{'group_by': 'company_id'}"/>
+                    <filter string="Aktif" name="group_active"
+                            context="{'group_by': 'active'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- ACTION                                                        -->
+    <!-- ============================================================ -->
+    <record id="action_hr_attendance_geo_fence" model="ir.actions.act_window">
+        <field name="name">Zona Geofence</field>
+        <field name="res_model">hr.attendance.geo.fence</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_hr_attendance_geo_fence_search"/>
+        <field name="context">{'search_default_filter_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Belum ada zona geofence
+            </p>
+            <p>
+                Buat zona geofence untuk mendefinisikan lokasi absensi yang valid.
+                Setiap zona memiliki koordinat pusat dan radius tertentu.
+                Karyawan harus berada dalam zona ini saat melakukan absensi.
+            </p>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- LIST VIEW                                                     -->
+    <!-- ============================================================ -->
+    <record id="view_hr_attendance_geo_fence_list" model="ir.ui.view">
+        <field name="name">hr.attendance.geo.fence.list</field>
+        <field name="model">hr.attendance.geo.fence</field>
+        <field name="arch" type="xml">
+            <list string="Zona Geofence">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="latitude" string="Lintang"/>
+                <field name="longitude" string="Bujur"/>
+                <field name="radius_m" string="Radius (m)"/>
+                <field name="department_ids" widget="many2many_tags"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- FORM VIEW                                                     -->
+    <!-- ============================================================ -->
+    <record id="view_hr_attendance_geo_fence_form" model="ir.ui.view">
+        <field name="name">hr.attendance.geo.fence.form</field>
+        <field name="model">hr.attendance.geo.fence</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="sapFormHeader">
+                        <div class="sapFormHeader__left">
+                            <div class="sapFormHeader__avatar">
+                                <i class="fa fa-map-marker fa-2x"/>
+                            </div>
+                            <div>
+                                <div class="sapFormHeader__title">
+                                    <field name="name" placeholder="Nama Zona Geofence"/>
+                                </div>
+                                <div class="sapFormHeader__subtitle">
+                                    Kode: <field name="code" placeholder="KODE_ZONA"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sapFormHeader__actions">
+                            <field name="active" widget="boolean_toggle"/>
+                        </div>
+                    </div>
+
+                    <div class="sapFormSummary">
+                        <div class="sapFormSummary__item">
+                            <div class="sapFormSummary__icon sapFormSummary__icon--brand">
+                                <i class="fa fa-arrows-alt"/>
+                            </div>
+                            <div>
+                                <div class="sapFormSummary__label">Radius</div>
+                                <div class="sapFormSummary__value">
+                                    <field name="radius_m" readonly="1"/> meter
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sapFormSummary__item">
+                            <div class="sapFormSummary__icon sapFormSummary__icon--positive">
+                                <i class="fa fa-users"/>
+                            </div>
+                            <div>
+                                <div class="sapFormSummary__label">Departemen</div>
+                                <div class="sapFormSummary__value">
+                                    <field name="department_ids" readonly="1" nolabel="1"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sapFormSection">
+                        <div class="sapFormSection__title">Koordinat Pusat Zona</div>
+                        <group>
+                            <group>
+                                <field name="latitude" widget="float"
+                                       digits="(10,7)"/>
+                                <field name="longitude" widget="float"
+                                       digits="(10,7)"/>
+                            </group>
+                            <group>
+                                <field name="radius_m"/>
+                                <field name="company_id"/>
+                            </group>
+                        </group>
+                    </div>
+
+                    <div class="sapFormSection">
+                        <div class="sapFormSection__title">Pengaturan Zona</div>
+                        <group>
+                            <group>
+                                <field name="department_ids" widget="many2many_tags"/>
+                            </group>
+                            <group>
+                                <field name="employee_ids" widget="many2many_tags"
+                                       placeholder="Kosongkan = semua karyawan"/>
+                            </group>
+                        </group>
+                    </div>
+
+                    <div class="sapFormSection">
+                        <div class="sapFormSection__title">Catatan</div>
+                        <field name="note" placeholder="Catatan tentang zona ini..."/>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

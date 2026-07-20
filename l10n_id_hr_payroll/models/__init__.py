@@ -23,4 +23,5 @@ from . import (
     hr_attendance_connector,
     hr_attendance_connector_csv,
     hr_attendance_connector_zkteco,
+    hr_attendance_geo_fence,
 )

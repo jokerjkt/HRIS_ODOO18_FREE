@@ -359,6 +359,186 @@ def iclock_inspect():
     )
 
 
+# ─── Mobile GPS Check-In/Out API ───────────────────────────────────────────
+
+@app.route('/api/v1/attendance/checkin', methods=['POST'])
+def api_attendance_checkin():
+    """
+    Mobile GPS Check-In/Out endpoint.
+
+    POST JSON:
+      {
+        "employee_pin": "1234",
+        "latitude": -6.1234567,
+        "longitude": 106.1234567,
+        "device_sn": "optional-device-sn"
+      }
+
+    Returns:
+      200: {"success": true, "zone": "...", "inside_fence": true/false}
+      400: {"success": false, "error": "..."}
+    """
+    if not verify_api_key():
+        return Response(
+            json.dumps({"success": False, "error": "Unauthorized"}),
+            status=401, mimetype='application/json',
+        )
+
+    try:
+        data = request.get_json(force=True)
+    except Exception:
+        return Response(
+            json.dumps({"success": False, "error": "Invalid JSON"}),
+            status=400, mimetype='application/json',
+        )
+
+    employee_pin = data.get('employee_pin', '')
+    latitude = data.get('latitude')
+    longitude = data.get('longitude')
+    device_sn = data.get('device_sn', '')
+
+    if not employee_pin or latitude is None or longitude is None:
+        return Response(
+            json.dumps({"success": False, "error": "employee_pin, latitude, longitude are required"}),
+            status=400, mimetype='application/json',
+        )
+
+    try:
+        latitude = float(latitude)
+        longitude = float(longitude)
+    except (ValueError, TypeError):
+        return Response(
+            json.dumps({"success": False, "error": "latitude/longitude must be numbers"}),
+            status=400, mimetype='application/json',
+        )
+
+    config = get_config()
+
+    try:
+        import xmlrpc.client
+
+        sock = xmlrpc.client.ServerProxy(
+            f'{config.ODOO_URL}/xmlrpc/2/object',
+            allow_none=True,
+            use_datetime=True,
+        )
+
+        uid = sock.execute(
+            config.ODOO_DB, config.ODOO_USER, config.ODOO_PASSWORD,
+            'authenticate',
+            config.ODOO_DB, config.ODOO_USER, config.ODOO_PASSWORD,
+            {},
+        )
+
+        if not uid:
+            return Response(
+                json.dumps({"success": False, "error": "Odoo auth failed"}),
+                status=500, mimetype='application/json',
+            )
+
+        # Find employee by PIN
+        emp_ids = sock.execute(
+            config.ODOO_DB, uid, config.ODOO_PASSWORD,
+            'hr.employee', 'search_read',
+            [('pin', '=', str(employee_pin)), ('active', '=', True)],
+            ['id', 'name', 'user_id'],
+            0, 1,
+        )
+
+        if not emp_ids:
+            return Response(
+                json.dumps({"success": False, "error": "Employee not found"}),
+                status=404, mimetype='application/json',
+            )
+
+        employee_id = emp_ids[0]['id']
+        employee_name = emp_ids[0]['name']
+
+        # Find zone
+        zone_name = False
+        inside_fence = False
+        zones = sock.execute(
+            config.ODOO_DB, uid, config.ODOO_PASSWORD,
+            'hr.attendance.geo.fence', 'search_read',
+            [('active', '=', True)],
+            ['id', 'name', 'latitude', 'longitude', 'radius_m'],
+        )
+
+        for zone in zones:
+            # Haversine calculation
+            import math
+            R = 6371000
+            phi1 = math.radians(latitude)
+            phi2 = math.radians(zone['latitude'])
+            dphi = math.radians(zone['latitude'] - latitude)
+            dlam = math.radians(zone['longitude'] - longitude)
+            a = math.sin(dphi/2)**2 + math.cos(phi1)*math.cos(phi2)*math.sin(dlam/2)**2
+            c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
+            dist = R * c
+
+            if dist <= zone['radius_m']:
+                zone_name = zone['name']
+                inside_fence = True
+                break
+
+        # Find device
+        device_id = False
+        if device_sn:
+            dev_ids = sock.execute(
+                config.ODOO_DB, uid, config.ODOO_PASSWORD,
+                'hr.attendance.device', 'search_read',
+                [('serial_number', '=', device_sn)],
+                ['id'],
+                0, 1,
+            )
+            if dev_ids:
+                device_id = dev_ids[0]['id']
+
+        # Create device log
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        log_vals = {
+            'employee_id': employee_id,
+            'employee_pin': str(employee_pin),
+            'timestamp': now,
+            'punch_type': '0',  # Default check-in
+            'verify_mode': '0',  # Mobile
+            'raw_data': f"MOBILE PIN={employee_pin} LAT={latitude} LNG={longitude} ZONE={zone_name or 'NONE'}",
+            'state': 'matched',
+        }
+        if device_id:
+            log_vals['device_id'] = device_id
+
+        log_id = sock.execute(
+            config.ODOO_DB, uid, config.ODOO_PASSWORD,
+            'hr.attendance.device.log', 'create',
+            log_vals,
+        )
+
+        logger.info(
+            "Mobile check-in: PIN=%s Employee=%s Lat=%s Lng=%s Zone=%s LogID=%s",
+            employee_pin, employee_name, latitude, longitude, zone_name, log_id,
+        )
+
+        return Response(
+            json.dumps({
+                "success": True,
+                "employee": employee_name,
+                "zone": zone_name or "Outside all zones",
+                "inside_fence": inside_fence,
+                "log_id": log_id,
+                "timestamp": now,
+            }),
+            mimetype='application/json',
+        )
+
+    except Exception as e:
+        logger.error("Error mobile check-in: %s", str(e))
+        return Response(
+            json.dumps({"success": False, "error": str(e)}),
+            status=500, mimetype='application/json',
+        )
+
+
 # ─── Helper Functions ───────────────────────────────────────────────────────
 
 def _process_attlog(sn, req):

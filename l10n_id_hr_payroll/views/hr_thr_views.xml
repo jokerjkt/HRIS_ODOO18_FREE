@@ -220,5 +220,19 @@
             </field>
         </record>
 
+        <!-- Action: THR Saya (for regular employees) -->
+        <record id="action_hr_my_thr" model="ir.actions.act_window">
+            <field name="name">THR Saya</field>
+            <field name="res_model">hr.thr</field>
+            <field name="view_mode">list,form</field>
+            <field name="domain">[('employee_id.user_id', '=', uid)]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Belum ada data THR untuk Anda
+                </p>
+                <p>THR Anda akan muncul di sini setelah dihitung oleh HR.</p>
+            </field>
+        </record>
+
     </data>
 </odoo>

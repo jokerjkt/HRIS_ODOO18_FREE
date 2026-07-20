@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Indonesian HR Payroll (PPh 21 & BPJS)',
-    'version': '18.0.4.0.0',
+    'version': '18.0.5.0.0',
     'category': 'Human Resources/Payroll',
-    'summary': 'Payroll Indonesia: PPh 21, BPJS, Lembur, THR, Shift Scheduling, Dashboard, Attendance Device Integration',
+        'summary': 'Payroll Indonesia: PPh 21, BPJS, Lembur, THR, Shift Scheduling, Dashboard, Attendance Device Integration, Geofence',
     'description': """
 Modul HR Payroll Indonesia untuk Odoo 18
 =========================================
@@ -72,6 +72,8 @@ Fitur utama:
         'views/hr_attendance_device_views.xml',
         'views/hr_attendance_device_log_views.xml',
         'views/hr_attendance_views.xml',
+        # Geo-fence
+        'views/hr_attendance_geo_fence_views.xml',
         # Reports
         'report/hr_payslip_report.xml',
         'report/hr_bukti_potong_report.xml',

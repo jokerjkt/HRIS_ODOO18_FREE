@@ -196,6 +196,7 @@
                                 <field name="last_sync"/>
                             </group>
                             <group>
+                                <field name="assigned_zone_id"/>
                                 <field name="department_ids" widget="many2many_tags"/>
                             </group>
                         </group>

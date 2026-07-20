@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!-- ============================================================ -->
-    <!-- EXTEND hr.attendance FORM — tambahkan info device             -->
+    <!-- EXTEND hr.attendance FORM — tambahkan info device + GPS       -->
     <!-- ============================================================ -->
     <record id="view_hr_attendance_form_inherit_device" model="ir.ui.view">
         <field name="name">hr.attendance.form.device</field>
@@ -15,11 +15,29 @@
                 <field name="verify_mode" readonly="1" invisible="not verify_mode"/>
                 <field name="is_from_device" invisible="1"/>
             </xpath>
+            <xpath expr="//field[@name='worked_hours']" position="after">
+                <field name="check_in_latitude" readonly="1"
+                       invisible="not check_in_latitude"/>
+                <field name="check_in_longitude" readonly="1"
+                       invisible="not check_in_longitude"/>
+                <field name="check_in_zone_id" readonly="1"
+                       invisible="not check_in_zone_id"/>
+                <field name="is_check_in_inside" readonly="1"
+                       invisible="not check_in_latitude"/>
+                <field name="check_out_latitude" readonly="1"
+                       invisible="not check_out_latitude"/>
+                <field name="check_out_longitude" readonly="1"
+                       invisible="not check_out_longitude"/>
+                <field name="check_out_zone_id" readonly="1"
+                       invisible="not check_out_zone_id"/>
+                <field name="is_check_out_inside" readonly="1"
+                       invisible="not check_out_latitude"/>
+            </xpath>
         </field>
     </record>
 
     <!-- ============================================================ -->
-    <!-- EXTEND hr.attendance LIST — tambahkan kolom device            -->
+    <!-- EXTEND hr.attendance LIST — tambahkan kolom device + GPS      -->
     <!-- ============================================================ -->
     <record id="view_hr_attendance_tree_inherit_device" model="ir.ui.view">
         <field name="name">hr.attendance.list.device</field>
@@ -30,12 +48,14 @@
                 <field name="device_id" optional="hide"/>
                 <field name="punch_type" optional="hide"/>
                 <field name="verify_mode" optional="hide"/>
+                <field name="check_in_zone_id" optional="hide"/>
+                <field name="check_out_zone_id" optional="hide"/>
             </xpath>
         </field>
     </record>
 
     <!-- ============================================================ -->
-    <!-- EXTEND hr.attendance SEARCH — tambahkan filter device         -->
+    <!-- EXTEND hr.attendance SEARCH — tambahkan filter device + fence -->
     <!-- ============================================================ -->
     <record id="view_hr_attendance_search_inherit_device" model="ir.ui.view">
         <field name="name">hr.attendance.search.device</field>
@@ -47,6 +67,10 @@
                         domain="[('device_id', '!=', False)]"/>
                 <filter name="filter_manual" string="Manual/Android"
                         domain="[('device_id', '=', False)]"/>
+                <filter name="filter_inside_fence" string="Dalam Zona"
+                        domain="[('check_in_zone_id', '!=', False)]"/>
+                <filter name="filter_outside_fence" string="Luar Zona"
+                        domain="[('check_in_zone_id', '=', False), ('check_in_latitude', '!=', False)]"/>
                 <separator/>
             </xpath>
         </field>
