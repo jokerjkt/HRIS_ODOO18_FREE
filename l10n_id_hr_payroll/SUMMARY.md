@@ -73,10 +73,13 @@ Complete HR payroll system built as a standalone module for Odoo 18 Community (n
 | 21 | **ADMS Cloud Push** | Flask server for ZKTeco push data |
 | 22 | **Device Registry** | Manage multiple attendance machines |
 | 23 | **Attendance Log Viewer** | View and match raw attendance logs |
+| 24 | **Data Isolation** | Record rules for payslip/THR/attendance |
+| 25 | **API Key Auth** | Flask ADMS secured with API key |
+| 26 | **Unit Tests** | 42 tests covering all modules |
 
 ---
 
-## File Structure (72 files)
+## File Structure (80 files)
 
 ```
 l10n_id_hr_payroll/
@@ -127,6 +130,7 @@ l10n_id_hr_payroll/
 │   ├── ir.model.access.csv           # ACL for all models
 │   ├── hr_overtime_security.xml      # Overtime groups + record rules
 │   ├── hr_role_security.xml          # 4-level role groups
+│   ├── hr_attendance_security.xml    # Record rules for data isolation
 │   └── hr_payroll_security.xml       # Dashboard ACL
 ├── views/
 │   ├── hr_employee_views.xml         # Indonesia HR tab on employee form
@@ -159,6 +163,15 @@ l10n_id_hr_payroll/
 │       └── index.html                # Module description page
 ├── SUMMARY.md
 ├── MODULE_DESIGN.md
+├── tests/
+│   ├── __init__.py
+│   ├── test_pph21.py                   # PPh 21 progressive tax tests
+│   ├── test_bpjs.py                    # BPJS computation tests
+│   ├── test_thr.py                     # THR calculation tests
+│   ├── test_payslip.py                 # Payslip workflow tests
+│   ├── test_csv_parser.py              # CSV/Excel parser tests
+│   ├── test_employee.py                # Employee fields tests
+│   └── test_attendance.py              # Attendance device tests
 ├── flask_adms/
 │   ├── __init__.py
 │   ├── app.py                          # Flask ADMS server (ZKTeco push)
@@ -301,4 +314,4 @@ HR App (Employees)
 
 ---
 
-*Last updated: 2026-07-19 (Phase 3a: Attendance Device Integration)*
+*Last updated: 2026-07-20 (Phase 3b: Bug Fixes, Security, Tests)*

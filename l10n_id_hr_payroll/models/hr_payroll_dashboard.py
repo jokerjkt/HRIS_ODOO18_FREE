@@ -149,7 +149,7 @@ class HrPayrollDashboard(models.TransientModel):
                 ('check_in', '>=', month_start),
                 ('check_in', '<=', today),
             ])
-            rec.jam_lembur_bulan_ini = sum(attendances.mapped('overtime_hours'))
+            rec.jam_lembur_bulan_ini = sum(attendances.mapped('validated_overtime_hours'))
 
     @api.depends()
     def _compute_leave(self):

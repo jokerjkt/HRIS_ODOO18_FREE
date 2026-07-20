@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Indonesian HR Payroll (PPh 21 & BPJS)',
-    'version': '18.0.2.0.0',
+    'version': '18.0.3.0.0',
     'category': 'Human Resources/Payroll',
     'summary': 'Payroll Indonesia: PPh 21, BPJS, Lembur, THR, Shift Scheduling, Dashboard, Attendance Device Integration',
     'description': """
@@ -40,13 +40,15 @@ Fitur utama:
         'mail',
     ],
     'external_dependencies': {
-        'python': ['pyzk'],
+        'python': ['pyzk', 'openpyxl'],
     },
     'data': [
         # Security (groups first, then ACLs)
         'security/hr_role_security.xml',
         'security/hr_overtime_security.xml',
         'security/ir.model.access.csv',
+        # Record Rules for data isolation
+        'security/hr_attendance_security.xml',
         # Data
         'data/hr_bpjs_rate_data.xml',
         'data/hr_leave_type_data.xml',

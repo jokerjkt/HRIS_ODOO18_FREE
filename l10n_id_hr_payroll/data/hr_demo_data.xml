@@ -141,5 +141,129 @@
             <field name="state">open</field>
         </record>
 
+        <!-- ── Set PIN for attendance matching ────────────────────────────── -->
+        <record id="demo_employee_1" model="hr.employee">
+            <field name="pin">1001</field>
+        </record>
+        <record id="demo_employee_2" model="hr.employee">
+            <field name="pin">1002</field>
+        </record>
+        <record id="demo_employee_3" model="hr.employee">
+            <field name="pin">1003</field>
+        </record>
+        <record id="demo_employee_4" model="hr.employee">
+            <field name="pin">1004</field>
+        </record>
+        <record id="demo_employee_5" model="hr.employee">
+            <field name="pin">1005</field>
+        </record>
+
+        <!-- ── Demo Attendance Devices ────────────────────────────────────── -->
+
+        <record id="demo_device_zkteco" model="hr.attendance.device">
+            <field name="name">ZKTeco Lobby</field>
+            <field name="brand">zteko</field>
+            <field name="connection_type">csv_import</field>
+            <field name="location">Lobi Utama</field>
+            <field name="employee_mapping">pin</field>
+            <field name="state">offline</field>
+        </record>
+
+        <record id="demo_device_generic" model="hr.attendance.device">
+            <field name="name">ATT2000 Gudang</field>
+            <field name="brand">att2000</brand>
+            <field name="connection_type">csv_import</field>
+            <field name="location">Gudang</field>
+            <field name="employee_mapping">pin</field>
+            <field name="state">offline</field>
+        </record>
+
+        <!-- ── Demo Attendance Logs ───────────────────────────────────────── -->
+
+        <record id="demo_log_1" model="hr.attendance.device.log">
+            <field name="device_id" ref="demo_device_zkteco"/>
+            <field name="employee_id" ref="demo_employee_1"/>
+            <field name="employee_pin">1001</field>
+            <field name="timestamp" eval="(DateTime.today() - relativedelta(days=1)).strftime('%Y-%m-%d') + ' 08:05:00'"/>
+            <field name="punch_type">0</field>
+            <field name="verify_mode">1</field>
+            <field name="state">matched</field>
+        </record>
+
+        <record id="demo_log_2" model="hr.attendance.device.log">
+            <field name="device_id" ref="demo_device_zkteco"/>
+            <field name="employee_id" ref="demo_employee_1"/>
+            <field name="employee_pin">1001</field>
+            <field name="timestamp" eval="(DateTime.today() - relativedelta(days=1)).strftime('%Y-%m-%d') + ' 17:10:00'"/>
+            <field name="punch_type">1</field>
+            <field name="verify_mode">1</field>
+            <field name="state">matched</field>
+        </record>
+
+        <record id="demo_log_3" model="hr.attendance.device.log">
+            <field name="device_id" ref="demo_device_zkteco"/>
+            <field name="employee_id" ref="demo_employee_2"/>
+            <field name="employee_pin">1002</field>
+            <field name="timestamp" eval="(DateTime.today() - relativedelta(days=1)).strftime('%Y-%m-%d') + ' 07:55:00'"/>
+            <field name="punch_type">0</field>
+            <field name="verify_mode">2</field>
+            <field name="state">matched</field>
+        </record>
+
+        <record id="demo_log_4" model="hr.attendance.device.log">
+            <field name="device_id" ref="demo_device_zkteco"/>
+            <field name="employee_id" ref="demo_employee_2"/>
+            <field name="employee_pin">1002</field>
+            <field name="timestamp" eval="(DateTime.today() - relativedelta(days=1)).strftime('%Y-%m-%d') + ' 17:30:00'"/>
+            <field name="punch_type">1</field>
+            <field name="verify_mode">2</field>
+            <field name="state">matched</field>
+        </record>
+
+        <record id="demo_log_5" model="hr.attendance.device.log">
+            <field name="device_id" ref="demo_device_generic"/>
+            <field name="employee_pin">9999</field>
+            <field name="timestamp" eval="(DateTime.today() - relativedelta(days=1)).strftime('%Y-%m-%d') + ' 08:00:00'"/>
+            <field name="punch_type">0</field>
+            <field name="verify_mode">1</field>
+            <field name="state">error"/>
+            <field name="error_message">PIN tidak ditemukan: 9999</field>
+        </record>
+
+        <!-- ── Demo Overtime ──────────────────────────────────────────────── -->
+
+        <record id="demo_overtime_1" model="hr.overtime">
+            <field name="employee_id" ref="demo_employee_1"/>
+            <field name="overtime_date" eval="(DateTime.today() - relativedelta(days=2)).date()"/>
+            <field name="start_time">17.0</field>
+            <field name="end_time">20.0</field>
+            <field name="overtime_type">weekday</field>
+            <field name="reason">Menyelesaikan laporan bulanan</field>
+            <field name="activity_description">&lt;p&gt;Menyiapkan dan menyelesaikan laporan penjualan bulanan untuk presentasi besok.&lt;/p&gt;</field>
+            <field name="state">approved"/>
+            <field name="approved_date" eval="(DateTime.today() - relativedelta(days=1)).strftime('%Y-%m-%d') + ' 09:00:00'"/>
+        </record>
+
+        <record id="demo_overtime_2" model="hr.overtime">
+            <field name="employee_id" ref="demo_employee_3"/>
+            <field name="overtime_date" eval="(DateTime.today() - relativedelta(days=1)).date()"/>
+            <field name="start_time">18.0</field>
+            <field name="end_time">21.5</field>
+            <field name="overtime_type">weekday</field>
+            <field name="reason">Deploy aplikasi ke production</field>
+            <field name="activity_description">&lt;p&gt;Melakukan deploy aplikasi baru ke server production setelah jam kerja.&lt;/p&gt;</field>
+            <field name="state">submitted"/>
+        </record>
+
+        <!-- ── Demo Shift Assignment ──────────────────────────────────────── -->
+
+        <record id="demo_shift_assign_1" model="hr.shift.assign">
+            <field name="employee_id" ref="demo_employee_1"/>
+            <field name="rotation_id" ref="rotation_3shift_weekly"/>
+            <field name="date_from" eval="(DateTime.today() - relativedelta(days=7)).date()"/>
+            <field name="date_to" eval="(DateTime.today() + relativedelta(days=21)).date()"/>
+            <field name="state">confirmed"/>
+        </record>
+
     </data>
 </odoo>

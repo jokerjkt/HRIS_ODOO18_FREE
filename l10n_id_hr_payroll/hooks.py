@@ -19,7 +19,10 @@ def post_init_hook(env):
     # ── 1. Store trial install date + hash ──────────────────────────────────
     today_str = date.today().isoformat()
     # Compute hash using the same logic as trial_mixin
-    secret = 'a]3$x7K!mP2vQ9wR!z#L'
+    # Read secret from config parameter (single source of truth)
+    secret = env['ir.config_parameter'].get_param(
+        'l10n_id_hr_payroll.trial_secret', 'a]3$x7K!mP2vQ9wR!z#L'
+    )
     raw = f"{today_str}:{secret}:{env.cr.dbname}"
     import hashlib
     hash_val = hashlib.sha256(raw.encode()).hexdigest()

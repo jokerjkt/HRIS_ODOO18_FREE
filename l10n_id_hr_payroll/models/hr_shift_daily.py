@@ -39,6 +39,9 @@ class HrShiftDaily(models.Model):
         'hr.work.entry', string='Work Entry', readonly=True,
     )
     note = fields.Text(string='Catatan')
+    day_of_week = fields.Char(
+        string='Hari', compute='_compute_day_of_week', store=True,
+    )
 
     display_name = fields.Char(
         string='Display Name', compute='_compute_display_name', store=True,

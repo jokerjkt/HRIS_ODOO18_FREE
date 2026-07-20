@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ================================================================
+             Record Rules — Data Isolation
+             Users see only their own data; managers/admins see all.
+             ================================================================ -->
+
+        <!-- ── Payslip: Users see own, Managers see all ──────────────────── -->
+        <record id="rule_payslip_user_own" model="ir.rule">
+            <field name="name">Payslip: User sees own only</field>
+            <field name="model_id" ref="model_hr_payslip"/>
+            <field name="domain_force">[('employee_id.user_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_hr_user'))]"/>
+        </record>
+
+        <record id="rule_payslip_manager_all" model="ir.rule">
+            <field name="name">Payslip: Manager sees all</field>
+            <field name="model_id" ref="model_hr_payslip"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_hr_manager'))]"/>
+        </record>
+
+        <!-- ── THR: Users see own, Managers see all ──────────────────────── -->
+        <record id="rule_thr_user_own" model="ir.rule">
+            <field name="name">THR: User sees own only</field>
+            <field name="model_id" ref="model_hr_thr"/>
+            <field name="domain_force">[('employee_id.user_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_hr_user'))]"/>
+        </record>
+
+        <record id="rule_thr_manager_all" model="ir.rule">
+            <field name="name">THR: Manager sees all</field>
+            <field name="model_id" ref="model_hr_thr"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_hr_manager'))]"/>
+        </record>
+
+        <!-- ── PPh 21: Users see own, Managers see all ───────────────────── -->
+        <record id="rule_pph21_user_own" model="ir.rule">
+            <field name="name">PPh 21: User sees own only</field>
+            <field name="model_id" ref="model_hr_pph21"/>
+            <field name="domain_force">[('employee_id.user_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_hr_user'))]"/>
+        </record>
+
+        <record id="rule_pph21_manager_all" model="ir.rule">
+            <field name="name">PPh 21: Manager sees all</field>
+            <field name="model_id" ref="model_hr_pph21"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_hr_manager'))]"/>
+        </record>
+
+        <!-- ── BPJS: Users see own, Managers see all ─────────────────────── -->
+        <record id="rule_bpjs_user_own" model="ir.rule">
+            <field name="name">BPJS: User sees own only</field>
+            <field name="model_id" ref="model_hr_bpjs"/>
+            <field name="domain_force">[('employee_id.user_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_hr_user'))]"/>
+        </record>
+
+        <record id="rule_bpjs_manager_all" model="ir.rule">
+            <field name="name">BPJS: Manager sees all</field>
+            <field name="model_id" ref="model_hr_bpjs"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_hr_manager'))]"/>
+        </record>
+
+        <!-- ── Attendance Device Log: Admin only ──────────────────────────── -->
+        <record id="rule_attendance_log_admin" model="ir.rule">
+            <field name="name">Attendance Log: Admin sees all</field>
+            <field name="model_id" ref="model_hr_attendance_device_log"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_hr_admin'))]"/>
+        </record>
+
+    </data>
+</odoo>

@@ -55,6 +55,35 @@ def get_config():
     return config_map.get(env, config_map['development'])
 
 
+# ─── Authentication ─────────────────────────────────────────────────────────
+
+def verify_api_key():
+    """
+    Verify API key from request header or query parameter.
+    Returns True if valid or if auth is disabled (empty key).
+    Returns False if key is invalid.
+    """
+    config = get_config()
+    api_key = config.ADMS_API_KEY
+
+    # If no API key configured, skip authentication (dev mode)
+    if not api_key:
+        return True
+
+    # Check X-API-Key header first, then ?api_key= query param
+    provided_key = request.headers.get('X-API-Key', '') or request.args.get('api_key', '')
+
+    if provided_key == api_key:
+        return True
+
+    logger.warning(
+        "Authentication failed: IP=%s key_provided=%s",
+        request.remote_addr,
+        bool(provided_key),
+    )
+    return False
+
+
 # ─── Database Helper ────────────────────────────────────────────────────────
 
 def save_attendance_log(serial_number, user_id, timestamp, status, verify_mode=1, work_code=0):
@@ -202,6 +231,9 @@ def iclock_cdata():
       Stamp: Timestamp untuk sync
       options: all, fp, face, card, user
     """
+    if not verify_api_key():
+        return Response("Unauthorized", status=401, mimetype='text/plain')
+
     sn = request.args.get('SN', '')
     table = request.args.get('table', '')
     stamp = request.args.get('Stamp', '')
@@ -257,6 +289,9 @@ def iclock_registry():
     sn = request.args.get('SN', '')
     client_ip = request.remote_addr
 
+    if not verify_api_key():
+        return Response("Unauthorized", status=401, mimetype='text/plain')
+
     logger.info("registry: SN=%s IP=%s method=%s", sn, client_ip, request.method)
 
     if request.method == 'POST':
@@ -282,6 +317,9 @@ def iclock_getrequest():
     sn = request.args.get('SN', '')
     logger.info("getrequest: SN=%s", sn)
 
+    if not verify_api_key():
+        return Response("Unauthorized", status=401, mimetype='text/plain')
+
     # Check for pending commands
     commands = pending_commands.get(sn, [])
 
@@ -299,6 +337,8 @@ def iclock_devicecmd():
     """
     Device reporting command execution results.
     """
+    if not verify_api_key():
+        return Response("Unauthorized", status=401, mimetype='text/plain')
     sn = request.args.get('SN', '')
     body = request.data.decode('utf-8', errors='ignore')
     logger.info("devicecmd: SN=%s result=%s", sn, body[:500])
@@ -311,6 +351,8 @@ def iclock_inspect():
     JSON status of all connected devices.
     Useful for monitoring dashboard.
     """
+    if not verify_api_key():
+        return Response("Unauthorized", status=401, mimetype='text/plain')
     return Response(
         json.dumps(connected_devices, indent=2),
         mimetype='application/json',

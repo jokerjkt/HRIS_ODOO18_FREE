@@ -22,6 +22,11 @@ class Config:
     ADMS_PORT = int(os.environ.get('ADMS_PORT', 8068))
     ADMS_HOST = os.environ.get('ADMS_HOST', '0.0.0.0')
 
+    # Authentication — API key for device/server communication
+    # Set ADMS_API_KEY env var to enable authentication
+    # If empty, authentication is disabled (not recommended for production)
+    ADMS_API_KEY = os.environ.get('ADMS_API_KEY', '')
+
     # Device communication key (must match device settings)
     DEFAULT_COMM_KEY = os.environ.get('ADMS_COMM_KEY', '')
 

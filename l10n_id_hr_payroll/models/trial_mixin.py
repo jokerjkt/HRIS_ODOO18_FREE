@@ -16,7 +16,7 @@ from odoo import models, api
 from odoo.exceptions import UserError
 
 TRIAL_DAYS = 5
-_SECRET = 'a]3$x7K!mP2vQ9wR!z#L'
+_DEFAULT_SECRET = 'a]3$x7K!mP2vQ9wR!z#L'
 
 TRIAL_EXPIRED_MSG = (
     '⚠️ Masa uji coba modul HR Payroll Indonesia sudah berakhir.\n'
@@ -37,7 +37,11 @@ class TrialMixin(models.AbstractModel):
     @api.model
     def _compute_trial_hash(self, date_str):
         """Generate tamper-proof SHA-256 hash."""
-        raw = f"{date_str}:{_SECRET}:{self.env.cr.dbname}"
+        # Read secret from config parameter (single source of truth)
+        secret = self.env['ir.config_parameter'].get_param(
+            'l10n_id_hr_payroll.trial_secret', _DEFAULT_SECRET
+        )
+        raw = f"{date_str}:{secret}:{self.env.cr.dbname}"
         return hashlib.sha256(raw.encode()).hexdigest()
 
     @api.model

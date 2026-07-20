@@ -128,26 +128,23 @@ class HrMyDashboard(models.TransientModel):
             rec.my_last_checkin = attendances[0].check_in if attendances else False
             rec.my_total_work_hours = sum(attendances.mapped('worked_hours'))
 
-            # My shift
-            shift = self.env['hr.employee.shift'].search([
+            # My shift — use hr.shift.daily (our actual shift model)
+            today = fields.Date.today()
+            today_shift = self.env['hr.shift.daily'].search([
                 ('employee_id', '=', employee.id),
-                ('is_current', '=', True),
+                ('date', '=', today),
             ], limit=1)
-            if shift:
-                rec.my_shift_name = shift.calendar_id.name
-                attendances_lines = shift.calendar_id.attendance_ids.filtered(
-                    lambda a: a.dayofweek in ['0', '1', '2', '3', '4']
-                )
-                if attendances_lines:
-                    hours_from = min(attendances_lines.mapped('hour_from'))
-                    hours_to = max(attendances_lines.mapped('hour_to'))
-                    rec.my_shift_hours = f'{int(hours_from):02d}:00 - {int(hours_to):02d}:00'
-                    day_names = {'0': 'Sen', '1': 'Sel', '2': 'Rab', '3': 'Kam', '4': 'Jum'}
-                    days = sorted(set(attendances_lines.mapped('dayofweek')))
-                    rec.my_shift_days = ' - '.join([day_names.get(d, d) for d in days])
+            if today_shift:
+                rec.my_shift_name = today_shift.shift_name or ''
+                if today_shift.hour_from and today_shift.hour_to:
+                    h_from = int(today_shift.hour_from)
+                    m_from = int((today_shift.hour_from - h_from) * 60)
+                    h_to = int(today_shift.hour_to)
+                    m_to = int((today_shift.hour_to - h_to) * 60)
+                    rec.my_shift_hours = f'{h_from:02d}:{m_from:02d} - {h_to:02d}:{m_to:02d}'
                 else:
                     rec.my_shift_hours = ''
-                    rec.my_shift_days = ''
+                rec.my_shift_days = today.strftime('%A')
             elif employee.resource_calendar_id:
                 rec.my_shift_name = employee.resource_calendar_id.name
                 rec.my_shift_hours = ''
