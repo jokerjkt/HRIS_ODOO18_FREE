@@ -13,11 +13,11 @@
                 <form string="Dashboard Payroll Indonesia" create="false" edit="false">
                     <sheet>
                         <div class="l10n_id_dashboard">
-                            <div class="oe_title mb-4 text-center">
-                                <h1>
+                            <div class="sapPageHeader">
+                                <h1 class="sapPageHeader__title">
                                     <span>Dashboard Payroll Indonesia</span>
                                 </h1>
-                                <p class="text-muted">Ringkasan Absensi, Cuti, Payroll, Expense &amp; Skill</p>
+                                <p class="sapPageHeader__subtitle">Ringkasan Absensi, Cuti, Payroll, Expense &amp; Skill</p>
                             </div>
 
                             <!-- Trial Banners -->

@@ -1,10 +1,16 @@
 // ============================================================================
-// Indonesian HR Payroll — SAP Fiori Design System for Odoo 18
+// SAP Fiori Theme for Odoo 18
+// Full backend theme — overrides default Odoo styles + module-specific styles
 // Flat file (no @import/@use) for LibSass compatibility
 // ============================================================================
 
 // ============================================================================
-// DESIGN TOKENS
+// 1. FONT IMPORT
+// ============================================================================
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+// ============================================================================
+// 2. SAP FIORI DESIGN TOKENS
 // ============================================================================
 
 // ── Colors: Semantic ────────────────────────────────────────────────────────
@@ -48,7 +54,7 @@ $sap-border-light:   #e8e8e8;
 $sap-border-focus:   #0a6ed1;
 
 // ── Typography ──────────────────────────────────────────────────────────────
-$sap-font-family:    '72', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+$sap-font-family:    'Inter', 'Helvetica Neue', Arial, Helvetica, sans-serif;
 $sap-font-size-xs:   0.75rem;
 $sap-font-size-s:    0.8125rem;
 $sap-font-size:      0.875rem;
@@ -59,6 +65,7 @@ $sap-font-size-2xl:  2.25rem;
 $sap-font-size-3xl:  3rem;
 
 $sap-font-weight:    400;
+$sap-font-weight-medium: 500;
 $sap-font-weight-bold: 700;
 
 // ── Spacing ─────────────────────────────────────────────────────────────────
@@ -85,15 +92,10 @@ $sap-shadow-lg:      0 0.5rem 2rem rgba(0, 0, 0, 0.15);
 $sap-transition:     0.15s ease;
 $sap-transition-slow: 0.3s ease;
 
-// ── Z-Index ─────────────────────────────────────────────────────────────────
-$sap-z-header:       10;
-$sap-z-dropdown:     100;
-$sap-z-modal:        1000;
-$sap-z-popover:      1100;
+// ============================================================================
+// 3. MIXINS
+// ============================================================================
 
-// ============================================================================
-// KPI TILE
-// ============================================================================
 @mixin sap-kpi-tile($color: $sap-brand) {
   background: $sap-bg-tile;
   border-radius: $sap-radius;
@@ -107,31 +109,8 @@ $sap-z-popover:      1100;
     box-shadow: $sap-shadow-md;
     transform: translateY(-2px);
   }
-
-  .sapKpiTile__title {
-    font-size: $sap-font-size-xs;
-    font-weight: $sap-font-weight-bold;
-    color: $sap-text-light;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: $sap-spacing-xs;
-  }
-
-  .sapKpiTile__value {
-    font-size: $sap-font-size-2xl;
-    font-weight: $sap-font-weight-bold;
-    color: $sap-text;
-    line-height: 1.2;
-  }
-
-  .sapKpiTile__subtitle {
-    font-size: $sap-font-size-xs;
-    color: $sap-text-muted;
-    margin-top: $sap-spacing-xxs;
-  }
 }
 
-// ── Semantic Status Badge ───────────────────────────────────────────────────
 @mixin sap-status-badge($type: 'neutral') {
   display: inline-flex;
   align-items: center;
@@ -160,7 +139,6 @@ $sap-z-popover:      1100;
   }
 }
 
-// ── Form Section ────────────────────────────────────────────────────────────
 @mixin sap-form-section {
   margin-bottom: $sap-spacing-m;
   padding-bottom: $sap-spacing-m;
@@ -172,16 +150,6 @@ $sap-z-popover:      1100;
   }
 }
 
-@mixin sap-form-label {
-  font-size: $sap-font-size-xs;
-  font-weight: $sap-font-weight-bold;
-  color: $sap-text-light;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  margin-bottom: $sap-spacing-xxs;
-}
-
-// ── Card ────────────────────────────────────────────────────────────────────
 @mixin sap-card {
   background: $sap-bg-tile;
   border-radius: $sap-radius;
@@ -212,120 +180,6 @@ $sap-z-popover:      1100;
   padding: $sap-spacing;
 }
 
-// ── Page Header ─────────────────────────────────────────────────────────────
-@mixin sap-page-header {
-  background: $sap-shell;
-  color: $sap-shell-text;
-  padding: $sap-spacing-m $sap-spacing-l;
-  border-radius: $sap-radius;
-  margin-bottom: $sap-spacing-m;
-
-  .sapPageHeader__title {
-    font-size: $sap-font-size-xl;
-    font-weight: $sap-font-weight-bold;
-    margin: 0;
-  }
-
-  .sapPageHeader__subtitle {
-    font-size: $sap-font-size;
-    opacity: 0.85;
-    margin-top: $sap-spacing-xxs;
-  }
-}
-
-// ── Anchor Bar ──────────────────────────────────────────────────────────────
-@mixin sap-anchor-bar {
-  display: flex;
-  gap: 0;
-  border-bottom: 2px solid $sap-border-light;
-  margin-bottom: $sap-spacing-m;
-  padding: 0 $sap-spacing;
-
-  .sapAnchorBarItem {
-    padding: $sap-spacing-xs $sap-spacing;
-    font-size: $sap-font-size;
-    color: $sap-text-light;
-    text-decoration: none;
-    border-bottom: 2px solid transparent;
-    margin-bottom: -2px;
-    transition: color $sap-transition, border-color $sap-transition;
-    cursor: pointer;
-
-    &:hover {
-      color: $sap-brand;
-    }
-
-    &.active {
-      color: $sap-brand;
-      border-bottom-color: $sap-brand;
-      font-weight: $sap-font-weight-bold;
-    }
-  }
-}
-
-// ── Empty State ─────────────────────────────────────────────────────────────
-@mixin sap-empty-state {
-  text-align: center;
-  padding: $sap-spacing-xl $sap-spacing;
-  color: $sap-text-muted;
-
-  .sapEmptyState__icon {
-    font-size: 3rem;
-    margin-bottom: $sap-spacing;
-    opacity: 0.4;
-  }
-
-  .sapEmptyState__title {
-    font-size: $sap-font-size-m;
-    font-weight: $sap-font-weight-bold;
-    color: $sap-text;
-    margin-bottom: $sap-spacing-xs;
-  }
-
-  .sapEmptyState__description {
-    font-size: $sap-font-size;
-    max-width: 24rem;
-    margin: 0 auto $sap-spacing;
-  }
-}
-
-// ── Button Variants ─────────────────────────────────────────────────────────
-@mixin sap-btn-emphasized {
-  background: $sap-brand;
-  color: $sap-text-inverse;
-  border: none;
-  border-radius: $sap-radius-sm;
-  padding: $sap-spacing-xs $sap-spacing-m;
-  font-size: $sap-font-size;
-  font-weight: $sap-font-weight-bold;
-  cursor: pointer;
-  transition: background $sap-transition;
-
-  &:hover {
-    background: $sap-brand-hover;
-  }
-
-  &:active {
-    background: $sap-brand-active;
-  }
-}
-
-@mixin sap-btn-transparent {
-  background: transparent;
-  color: $sap-brand;
-  border: none;
-  border-radius: $sap-radius-sm;
-  padding: $sap-spacing-xs $sap-spacing-m;
-  font-size: $sap-font-size;
-  cursor: pointer;
-  transition: background $sap-transition;
-
-  &:hover {
-    background: $sap-bg-hover;
-  }
-}
-
-// ── Responsive Grid ─────────────────────────────────────────────────────────
 @mixin sap-grid($cols: 4, $gap: $sap-spacing-m) {
   display: grid;
   grid-template-columns: repeat($cols, 1fr);
@@ -341,7 +195,1001 @@ $sap-z-popover:      1100;
 }
 
 // ============================================================================
-// DASHBOARD STYLES
+// 4. ODOO BRAND COLOR OVERRIDES
+//    These cascade to navbar, buttons, links, alerts, badges globally
+// ============================================================================
+
+$o-brand-primary: $sap-brand;
+$o-brand-secondary: $sap-neutral;
+$o-action: $sap-brand;
+$o-success: $sap-positive;
+$o-warning: $sap-critical;
+$o-danger: $sap-negative;
+$o-info: $sap-information;
+
+$o-main-link-color: $sap-brand;
+$o-component-active-color: $sap-text;
+$o-component-active-bg: $sap-information-light;
+$o-component-active-border: $sap-brand;
+
+$o-list-group-header-color: $sap-neutral-light;
+$o-list-footer-bg-color: transparent;
+
+$o-form-separator-color: $sap-border-light;
+
+$o-kanban-color-border-width: 3px;
+
+$o-btn-primary-bg: $sap-brand;
+$o-btn-primary-border: $sap-brand;
+$o-btn-primary-hover-bg: $sap-brand-hover;
+$o-btn-primary-hover-border: $sap-brand-hover;
+$o-btn-primary-active-bg: $sap-brand-active;
+$o-btn-primary-active-border: $sap-brand-active;
+$o-btn-secondary-bg: $sap-bg-tile;
+$o-btn-secondary-border: $sap-border;
+$o-btn-secondary-color: $sap-text;
+$o-btn-secondary-hover-bg: $sap-bg-hover;
+$o-btn-light-bg: $sap-bg-tile;
+$o-btn-light-border: $sap-border;
+$o-btn-light-color: $sap-text;
+$o-btn-link-color: $sap-brand;
+
+// ============================================================================
+// 5. GLOBAL ODOO OVERRIDES — Navbar / Shell Bar
+// ============================================================================
+
+.o_main_navbar {
+  background: $sap-shell !important;
+  border-bottom: 1px solid darken($sap-shell, 5%) !important;
+  height: 48px !important;
+  min-height: 48px;
+
+  .o_menu_brand,
+  .o_menu_sections .o_menu_entry {
+    color: $sap-shell-text !important;
+    border-radius: $sap-radius-sm;
+    transition: background $sap-transition;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+  }
+
+  .o_menu_sections .dropdown-toggle,
+  .o_menu_sections .dropdown-menu {
+    color: $sap-shell-text !important;
+  }
+
+  .o_menu_sections .show > .dropdown-toggle,
+  .o_menu_sections .show > .dropdown-toggle:focus,
+  .o_menu_sections .show > .dropdown-toggle:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .o_menu_toggle {
+    color: $sap-shell-text;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+  }
+
+  .o_navbar_breadcrumbs .breadcrumb-item,
+  .o_navbar_breadcrumbs .breadcrumb-item a {
+    color: rgba(255, 255, 255, 0.8) !important;
+  }
+
+  .o_navbar_breadcrumbs .breadcrumb-item.active {
+    color: $sap-shell-text !important;
+  }
+
+  .o_navbar_breadcrumbs .breadcrumb-item + .breadcrumb-item::before {
+    color: rgba(255, 255, 255, 0.5) !important;
+  }
+
+  .o_menu_systray {
+    .o_navbar_apps_menu,
+    .o_navbar_menus_menu,
+    .o_user_menu,
+    .o_debug {
+      color: $sap-shell-text;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+    }
+  }
+}
+
+// ============================================================================
+// 6. GLOBAL ODOO OVERRIDES — Loading Indicator
+// ============================================================================
+
+.o_loading_indicator {
+  background-color: $sap-brand !important;
+  color: $sap-text-inverse !important;
+}
+
+// ============================================================================
+// 7. GLOBAL ODOO OVERRIDES — Control Panel
+// ============================================================================
+
+.o_control_panel {
+  background: $sap-bg-light !important;
+  border-bottom: 1px solid $sap-border-light !important;
+
+  .o_cp_buttons {
+    .btn {
+      border-radius: $sap-radius-sm !important;
+      font-size: $sap-font-size;
+      font-weight: $sap-font-weight-medium;
+      padding: $sap-spacing-xxs $sap-spacing-s;
+      transition: background $sap-transition, border-color $sap-transition, box-shadow $sap-transition;
+
+      &.btn-primary {
+        background: $sap-brand !important;
+        border-color: $sap-brand !important;
+        color: $sap-text-inverse !important;
+
+        &:hover {
+          background: $sap-brand-hover !important;
+          border-color: $sap-brand-hover !important;
+          box-shadow: 0 0.125rem 0.25rem rgba($sap-brand, 0.3);
+        }
+      }
+
+      &.btn-secondary {
+        background: $sap-bg-tile !important;
+        border-color: $sap-border !important;
+        color: $sap-text !important;
+
+        &:hover {
+          background: $sap-bg-hover !important;
+        }
+      }
+    }
+  }
+
+  .o_cp_switch_buttons {
+    .o_kanban_switch,
+    .o_list_switch,
+    .o_pivot_switch,
+    .o_graph_switch,
+    .o_calendar_switch {
+      color: $sap-text-muted;
+      border-radius: $sap-radius-sm;
+
+      &:hover {
+        color: $sap-brand;
+        background: $sap-information-light;
+      }
+
+      &.active {
+        color: $sap-brand;
+        background: $sap-information-light;
+      }
+    }
+  }
+
+  .o_cp_pager {
+    font-size: $sap-font-size-s;
+    color: $sap-text-muted;
+
+    .o_pager_previous,
+    .o_pager_next,
+    .o_pager_limit {
+      color: $sap-text;
+      border-radius: $sap-radius-sm;
+
+      &:hover {
+        background: $sap-bg-hover;
+      }
+    }
+
+    .o_pager_value {
+      color: $sap-brand;
+      font-weight: $sap-font-weight-bold;
+    }
+  }
+}
+
+// ============================================================================
+// 8. GLOBAL ODOO OVERRIDES — Search View
+// ============================================================================
+
+.o_searchview {
+  .o_searchview_input {
+    background: $sap-bg-tile !important;
+    border-radius: $sap-radius-sm !important;
+    border-color: $sap-border !important;
+
+    &:focus-within {
+      border-color: $sap-brand !important;
+      box-shadow: 0 0 0 2px rgba($sap-brand, 0.15);
+    }
+  }
+
+  .o_searchview_facet {
+    background: $sap-information-light !important;
+    border-radius: $sap-radius-sm !important;
+    border-color: transparent !important;
+    color: $sap-brand !important;
+    font-size: $sap-font-size-xs;
+    font-weight: $sap-font-weight-medium;
+
+    .o_searchview_facet_label {
+      background: $sap-brand !important;
+      color: $sap-text-inverse !important;
+      border-radius: $sap-radius-sm 0 0 $sap-radius-sm !important;
+      padding: $sap-spacing-xxs $sap-spacing-xs !important;
+    }
+
+    .facet_remove {
+      color: $sap-brand;
+
+      &:hover {
+        color: $sap-negative;
+      }
+    }
+  }
+
+  .o_searchview_autocomplete {
+    border-radius: 0 0 $sap-radius-sm $sap-radius-sm !important;
+    border-color: $sap-border !important;
+    box-shadow: $sap-shadow-md !important;
+
+    .o menu_item {
+      &:hover,
+      &.o-focus {
+        background: $sap-information-light !important;
+        color: $sap-brand !important;
+      }
+    }
+  }
+
+  .o_search_panel {
+    background: $sap-bg-tile !important;
+    border-right: 1px solid $sap-border-light !important;
+
+    .o_search_panel_section_header {
+      font-weight: $sap-font-weight-bold;
+      color: $sap-text;
+      text-transform: uppercase;
+      font-size: $sap-font-size-xs;
+      letter-spacing: 0.03em;
+    }
+
+    .o_search_panel_item {
+      border-radius: $sap-radius-sm;
+      margin: 1px $sap-spacing-xxs;
+      font-size: $sap-font-size-s;
+
+      &:hover {
+        background: $sap-bg-hover;
+      }
+
+      &.o_selected {
+        background: $sap-information-light !important;
+        color: $sap-brand !important;
+        font-weight: $sap-font-weight-medium;
+      }
+    }
+
+    .o_search_panel_counter {
+      background: $sap-neutral-light;
+      color: $sap-text-muted;
+      font-size: $sap-font-size-xs;
+      font-weight: $sap-font-weight-bold;
+      border-radius: $sap-radius-sm;
+      padding: 0 $sap-spacing-xxs;
+    }
+  }
+}
+
+// ============================================================================
+// 9. GLOBAL ODOO OVERRIDES — List Views
+// ============================================================================
+
+.o_list_view,
+.o_list_renderer {
+  .o_list_table {
+    thead {
+      th {
+        background: $sap-neutral-light !important;
+        font-weight: $sap-font-weight-bold !important;
+        font-size: $sap-font-size-s !important;
+        color: $sap-text !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.03em !important;
+        border-bottom: 2px solid $sap-border !important;
+        padding: $sap-spacing-s $sap-spacing-xs !important;
+      }
+    }
+
+    tbody {
+      tr {
+        transition: background $sap-transition;
+
+        &:hover {
+          background: $sap-bg-hover !important;
+        }
+
+        &.o_selected_row {
+          background: $sap-information-light !important;
+        }
+
+        td {
+          padding: $sap-spacing-s $sap-spacing-xs !important;
+          font-size: $sap-font-size;
+          border-bottom: 1px solid $sap-border-light !important;
+          vertical-align: middle;
+        }
+      }
+    }
+
+    .o_list_number {
+      text-align: right !important;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .o_list_text {
+      word-wrap: break-word;
+    }
+
+    .o_list_record_selector {
+      width: 40px !important;
+    }
+
+    tfoot {
+      td {
+        background: $sap-neutral-light !important;
+        border-top: 2px solid $sap-border !important;
+        font-weight: $sap-font-weight-bold;
+      }
+    }
+
+    .o_group_header {
+      td {
+        background: $sap-neutral-light !important;
+        font-weight: $sap-font-weight-bold !important;
+      }
+
+      .o_group_name {
+        color: $sap-text;
+        font-size: $sap-font-size-s;
+
+        .o_group_caret {
+          color: $sap-brand;
+        }
+      }
+    }
+  }
+
+  .badge {
+    font-weight: $sap-font-weight-bold !important;
+    font-size: $sap-font-size-xs !important;
+    padding: $sap-spacing-xxs $sap-spacing-xs !important;
+    border-radius: $sap-radius-sm !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+
+    &.bg-success,
+    &.o_badge_success {
+      background: $sap-positive-light !important;
+      color: $sap-positive !important;
+    }
+
+    &.bg-info,
+    &.o_badge_info {
+      background: $sap-information-light !important;
+      color: $sap-information !important;
+    }
+
+    &.bg-warning,
+    &.o_badge_warning {
+      background: $sap-critical-light !important;
+      color: $sap-critical !important;
+    }
+
+    &.bg-danger,
+    &.o_badge_danger {
+      background: $sap-negative-light !important;
+      color: $sap-negative !important;
+    }
+
+    &.bg-secondary,
+    &.o_badge_secondary {
+      background: $sap-neutral-light !important;
+      color: $sap-neutral !important;
+    }
+  }
+
+  tr.o_decoration_success {
+    background: $sap-positive-light !important;
+  }
+
+  tr.o_decoration_warning {
+    background: $sap-critical-light !important;
+  }
+
+  tr.o_decoration_danger {
+    background: $sap-negative-light !important;
+  }
+
+  tr.o_decoration_muted,
+  tr.o_decoration_info {
+    background: transparent !important;
+  }
+}
+
+// ============================================================================
+// 10. GLOBAL ODOO OVERRIDES — Form Views
+// ============================================================================
+
+.o_form_view {
+  .o_form_sheet_bg {
+    background: $sap-bg !important;
+  }
+
+  .o_form_sheet {
+    background: $sap-bg-tile !important;
+    border-radius: $sap-radius-lg !important;
+    border: 1px solid $sap-border-light !important;
+    box-shadow: $sap-shadow !important;
+    max-width: 1534px !important;
+    padding: $sap-spacing-m !important;
+  }
+
+  .o_form_statusbar {
+    .o_arrow_button {
+      color: $sap-text-muted;
+      border-radius: $sap-radius-sm;
+
+      &:hover {
+        background: $sap-bg-hover;
+      }
+
+      &.o_arrow_button_current,
+      &.o_highlight {
+        background: $sap-brand !important;
+        color: $sap-text-inverse !important;
+
+        &::after {
+          border-left-color: $sap-brand !important;
+        }
+      }
+    }
+  }
+
+  .o_form_label {
+    font-weight: $sap-font-weight-medium !important;
+    color: $sap-text !important;
+  }
+
+  .oe_button_box {
+    margin-bottom: $sap-spacing-m;
+
+    .o_stat_button {
+      border-radius: $sap-radius;
+      border: 1px solid $sap-border-light !important;
+      background: $sap-bg-tile !important;
+      padding: $sap-spacing-s $sap-spacing;
+      transition: box-shadow $sap-transition, border-color $sap-transition;
+
+      &:hover {
+        box-shadow: $sap-shadow-md;
+        border-color: $sap-brand !important;
+      }
+
+      .o_stat_info {
+        .o_stat_value {
+          font-weight: $sap-font-weight-bold;
+          color: $sap-brand;
+        }
+
+        .o_stat_text {
+          color: $sap-text-muted;
+          font-size: $sap-font-size-xs;
+        }
+      }
+
+      .o_stat_icon {
+        color: $sap-brand;
+      }
+    }
+  }
+
+  .oe_title {
+    h1, h2, h3 {
+      font-weight: $sap-font-weight-bold;
+      color: $sap-text;
+    }
+  }
+
+  .o_group {
+    .o_inner_group {
+      label {
+        font-weight: $sap-font-weight-medium;
+        color: $sap-text;
+        font-size: $sap-font-size;
+      }
+    }
+  }
+
+  .o_field_widget {
+    .o_input {
+      border-radius: $sap-radius-sm;
+      border-color: $sap-border;
+      transition: border-color $sap-transition, box-shadow $sap-transition;
+
+      &:focus {
+        border-color: $sap-brand !important;
+        box-shadow: 0 0 0 2px rgba($sap-brand, 0.15) !important;
+      }
+    }
+
+    &.o_required_modifier .o_input {
+      border-left: 3px solid $sap-brand;
+    }
+  }
+
+  .o_field_statusbar {
+    .o_statusbar_status {
+      .o_arrow_button {
+        border-radius: $sap-radius-sm;
+        background: $sap-bg-tile;
+        color: $sap-text-muted;
+        border: 1px solid $sap-border;
+        font-size: $sap-font-size-s;
+
+        &:hover {
+          background: $sap-bg-hover;
+        }
+
+        &.o_arrow_button_current,
+        &.o_highlight {
+          background: $sap-brand !important;
+          color: $sap-text-inverse !important;
+          border-color: $sap-brand !important;
+        }
+      }
+    }
+  }
+}
+
+// ============================================================================
+// 11. GLOBAL ODOO OVERRIDES — Kanban Views
+// ============================================================================
+
+.o_kanban_view {
+  background: $sap-bg !important;
+
+  .o_kanban_record {
+    background: $sap-bg-tile !important;
+    border-radius: $sap-radius !important;
+    border: 1px solid $sap-border-light !important;
+    box-shadow: $sap-shadow !important;
+    transition: box-shadow $sap-transition, transform $sap-transition;
+
+    &:hover {
+      box-shadow: $sap-shadow-md !important;
+      transform: translateY(-1px);
+    }
+
+    &.o_kanban_selected {
+      border-color: $sap-brand !important;
+      box-shadow: 0 0 0 2px rgba($sap-brand, 0.2) !important;
+    }
+  }
+
+  .o_kanban_header {
+    .o_kanban_title {
+      font-size: $sap-font-size-s;
+      font-weight: $sap-font-weight-bold;
+      text-transform: uppercase;
+      color: $sap-text-light;
+      letter-spacing: 0.03em;
+    }
+
+    .o_kanban_count {
+      background: $sap-neutral-light;
+      color: $sap-text-muted;
+      font-size: $sap-font-size-xs;
+      font-weight: $sap-font-weight-bold;
+      border-radius: $sap-radius-sm;
+      padding: $sap-spacing-xxs $sap-spacing-xs;
+    }
+  }
+
+  .o_kanban_quick_create {
+    border-radius: $sap-radius;
+    border: 2px solid $sap-brand;
+  }
+}
+
+// ============================================================================
+// 12. GLOBAL ODOO OVERRIDES — Dialogs / Modals
+// ============================================================================
+
+.modal {
+  .modal-content {
+    border-radius: $sap-radius-lg !important;
+    border: none !important;
+    box-shadow: $sap-shadow-lg !important;
+    overflow: hidden;
+  }
+
+  .modal-header {
+    background: $sap-shell !important;
+    color: $sap-shell-text !important;
+    border-radius: $sap-radius-lg $sap-radius-lg 0 0;
+    padding: $sap-spacing-s $sap-spacing !important;
+
+    .modal-title {
+      font-weight: $sap-font-weight-bold;
+      color: $sap-shell-text !important;
+    }
+
+    .btn-close {
+      color: $sap-shell-text !important;
+      opacity: 0.8;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+
+  .modal-body {
+    padding: $sap-spacing !important;
+  }
+
+  .modal-footer {
+    border-top: 1px solid $sap-border-light !important;
+    padding: $sap-spacing-s $sap-spacing !important;
+    background: $sap-bg-light;
+
+    .btn {
+      border-radius: $sap-radius-sm !important;
+      font-weight: $sap-font-weight-medium;
+      padding: $sap-spacing-xxs $sap-spacing-s;
+
+      &.btn-primary {
+        background: $sap-brand !important;
+        border-color: $sap-brand !important;
+        color: $sap-text-inverse !important;
+
+        &:hover {
+          background: $sap-brand-hover !important;
+        }
+      }
+
+      &.btn-secondary {
+        background: $sap-bg-tile !important;
+        border-color: $sap-border !important;
+        color: $sap-text !important;
+      }
+    }
+  }
+}
+
+// ============================================================================
+// 13. GLOBAL ODOO OVERRIDES — Notebook Tabs
+// ============================================================================
+
+.o_notebook {
+  border: none !important;
+
+  .nav-tabs {
+    border-bottom: 2px solid $sap-border-light !important;
+    padding: 0 !important;
+    gap: 0 !important;
+
+    .nav-link {
+      border: none !important;
+      border-bottom: 2px solid transparent !important;
+      border-radius: 0 !important;
+      padding: $sap-spacing-xs $sap-spacing !important;
+      color: $sap-text-light !important;
+      font-size: $sap-font-size;
+      font-weight: $sap-font-weight-medium;
+      transition: color $sap-transition, border-color $sap-transition;
+      margin-bottom: -2px !important;
+      background: transparent !important;
+
+      &:hover {
+        color: $sap-brand !important;
+        border-color: transparent !important;
+      }
+
+      &.active {
+        color: $sap-brand !important;
+        border-bottom-color: $sap-brand !important;
+        font-weight: $sap-font-weight-bold !important;
+        background: transparent !important;
+      }
+    }
+  }
+
+  .tab-content {
+    padding-top: $sap-spacing-m !important;
+  }
+}
+
+// ============================================================================
+// 14. GLOBAL ODOO OVERRIDES — Buttons (Global)
+// ============================================================================
+
+.btn {
+  border-radius: $sap-radius-sm !important;
+  font-weight: $sap-font-weight-medium !important;
+  transition: background $sap-transition, border-color $sap-transition, box-shadow $sap-transition;
+
+  &.btn-primary {
+    background: $sap-brand !important;
+    border-color: $sap-brand !important;
+    color: $sap-text-inverse !important;
+
+    &:hover {
+      background: $sap-brand-hover !important;
+      border-color: $sap-brand-hover !important;
+      box-shadow: 0 0.125rem 0.25rem rgba($sap-brand, 0.3);
+    }
+
+    &:active,
+    &:focus {
+      background: $sap-brand-active !important;
+      border-color: $sap-brand-active !important;
+    }
+  }
+
+  &.btn-secondary {
+    background: $sap-bg-tile !important;
+    border-color: $sap-border !important;
+    color: $sap-text !important;
+
+    &:hover {
+      background: $sap-bg-hover !important;
+    }
+  }
+
+  &.btn-success {
+    background: $sap-positive !important;
+    border-color: $sap-positive !important;
+
+    &:hover {
+      background: darken($sap-positive, 8%) !important;
+    }
+  }
+
+  &.btn-danger {
+    background: $sap-negative !important;
+    border-color: $sap-negative !important;
+
+    &:hover {
+      background: darken($sap-negative, 8%) !important;
+    }
+  }
+
+  &.btn-warning {
+    background: $sap-critical !important;
+    border-color: $sap-critical !important;
+
+    &:hover {
+      background: darken($sap-critical, 8%) !important;
+    }
+  }
+
+  &.btn-outline-primary {
+    color: $sap-brand !important;
+    border-color: $sap-brand !important;
+    background: transparent !important;
+
+    &:hover {
+      background: $sap-information-light !important;
+    }
+  }
+
+  &.btn-outline-secondary {
+    color: $sap-text !important;
+    border-color: $sap-border !important;
+    background: transparent !important;
+
+    &:hover {
+      background: $sap-bg-hover !important;
+    }
+  }
+
+  &.btn-link {
+    color: $sap-brand !important;
+
+    &:hover {
+      color: $sap-brand-hover !important;
+    }
+  }
+}
+
+// ============================================================================
+// 15. GLOBAL ODOO OVERRIDES — Alerts
+// ============================================================================
+
+.alert {
+  border-radius: $sap-radius !important;
+  border-width: 1px !important;
+  font-size: $sap-font-size-s;
+
+  &.alert-success {
+    background: $sap-positive-light !important;
+    border-color: $sap-positive !important;
+    color: darken($sap-positive, 10%) !important;
+  }
+
+  &.alert-info {
+    background: $sap-information-light !important;
+    border-color: $sap-information !important;
+    color: darken($sap-information, 10%) !important;
+  }
+
+  &.alert-warning {
+    background: $sap-critical-light !important;
+    border-color: $sap-critical !important;
+    color: darken($sap-critical, 10%) !important;
+  }
+
+  &.alert-danger {
+    background: $sap-negative-light !important;
+    border-color: $sap-negative !important;
+    color: darken($sap-negative, 10%) !important;
+  }
+}
+
+// ============================================================================
+// 16. GLOBAL ODOO OVERRIDES — Badge (Global)
+// ============================================================================
+
+.badge {
+  border-radius: $sap-radius-sm !important;
+  font-weight: $sap-font-weight-bold !important;
+  font-size: $sap-font-size-xs !important;
+  padding: $sap-spacing-xxs $sap-spacing-xs !important;
+
+  &.bg-success {
+    background: $sap-positive-light !important;
+    color: $sap-positive !important;
+  }
+
+  &.bg-info {
+    background: $sap-information-light !important;
+    color: $sap-information !important;
+  }
+
+  &.bg-warning {
+    background: $sap-critical-light !important;
+    color: $sap-critical !important;
+  }
+
+  &.bg-danger {
+    background: $sap-negative-light !important;
+    color: $sap-negative !important;
+  }
+
+  &.bg-secondary {
+    background: $sap-neutral-light !important;
+    color: $sap-neutral !important;
+  }
+}
+
+// ============================================================================
+// 17. GLOBAL ODOO OVERRIDES — Chatter
+// ============================================================================
+
+.o_chatter {
+  border-top: 1px solid $sap-border-light !important;
+  padding-top: $sap-spacing-m !important;
+  margin-top: $sap-spacing-m !important;
+
+  .o_chatter_topbar {
+    border-bottom: 1px solid $sap-border-light !important;
+    padding-bottom: $sap-spacing-xs !important;
+    margin-bottom: $sap-spacing !important;
+  }
+
+  .o_mail_thread {
+    .o_message {
+      border-radius: $sap-radius;
+      border: 1px solid $sap-border-light;
+      padding: $sap-spacing-s;
+      margin-bottom: $sap-spacing-xs;
+
+      &:hover {
+        background: $sap-bg-hover;
+      }
+    }
+  }
+}
+
+// ============================================================================
+// 18. GLOBAL ODOO OVERRIDES — Dropdowns
+// ============================================================================
+
+.dropdown-menu {
+  border-radius: $sap-radius !important;
+  border: 1px solid $sap-border-light !important;
+  box-shadow: $sap-shadow-md !important;
+  padding: $sap-spacing-xxs !important;
+
+  .dropdown-item {
+    border-radius: $sap-radius-sm;
+    font-size: $sap-font-size-s;
+    padding: $sap-spacing-xxs $sap-spacing-xs;
+    color: $sap-text;
+
+    &:hover {
+      background: $sap-information-light !important;
+      color: $sap-brand !important;
+    }
+
+    &.active {
+      background: $sap-brand !important;
+      color: $sap-text-inverse !important;
+    }
+
+    &.o-selected {
+      background: $sap-information-light !important;
+      color: $sap-brand !important;
+    }
+  }
+
+  .dropdown-divider {
+    border-color: $sap-border-light !important;
+    margin: $sap-spacing-xxs 0 !important;
+  }
+}
+
+// ============================================================================
+// 19. GLOBAL ODOO OVERRIDES — Popover / Tooltip
+// ============================================================================
+
+.popover {
+  border-radius: $sap-radius !important;
+  border: 1px solid $sap-border-light !important;
+  box-shadow: $sap-shadow-md !important;
+
+  .popover-header {
+    background: $sap-neutral-light !important;
+    border-bottom: 1px solid $sap-border-light !important;
+    border-radius: $sap-radius $sap-radius 0 0 !important;
+    font-weight: $sap-font-weight-bold;
+    color: $sap-text;
+  }
+
+  .popover-body {
+    color: $sap-text;
+  }
+}
+
+.tooltip-inner {
+  background: $sap-shell !important;
+  border-radius: $sap-radius-sm !important;
+  font-size: $sap-font-size-xs;
+  padding: $sap-spacing-xxs $sap-spacing-xs;
+}
+
+// ============================================================================
+// 20. GLOBAL ODOO OVERRIDES — Web Client Root
+// ============================================================================
+
+.o_web_client {
+  background-color: $sap-bg !important;
+  font-family: $sap-font-family !important;
+}
+
+body {
+  font-family: $sap-font-family !important;
+}
+
+// ============================================================================
+// 21. MODULE-SPECIFIC — Dashboard Styles
 // ============================================================================
 
 .l10n_id_dashboard {
@@ -371,6 +1219,24 @@ $sap-z-popover:      1100;
     &--up { color: $sap-positive; }
     &--down { color: $sap-negative; }
     &--flat { color: $sap-neutral; }
+  }
+
+  .sapKpiTile__link {
+    display: inline-flex;
+    align-items: center;
+    gap: $sap-spacing-xxs;
+    color: $sap-brand;
+    font-size: $sap-font-size-xs;
+    font-weight: $sap-font-weight-bold;
+    text-decoration: none;
+    padding: $sap-spacing-xxs $sap-spacing-xs;
+    border-radius: $sap-radius-sm;
+    transition: background $sap-transition;
+
+    &:hover {
+      background: $sap-information-light;
+      color: $sap-brand-hover;
+    }
   }
 
   .sapKpiTile__detail {
@@ -482,69 +1348,6 @@ $sap-z-popover:      1100;
   }
 }
 
-.sapActivityStream {
-  @include sap-card;
-
-  &__header {
-    @include sap-card-header;
-  }
-
-  &__list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  &__item {
-    display: flex;
-    align-items: flex-start;
-    gap: $sap-spacing-s;
-    padding: $sap-spacing-s $sap-spacing;
-    border-bottom: 1px solid $sap-border-light;
-    transition: background $sap-transition;
-
-    &:hover {
-      background: $sap-bg-hover;
-    }
-
-    &:last-child {
-      border-bottom: none;
-    }
-  }
-
-  &__icon {
-    width: 2rem;
-    height: 2rem;
-    border-radius: $sap-radius-round;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: $sap-font-size-s;
-    flex-shrink: 0;
-
-    &--payslip { background: $sap-positive-light; color: $sap-positive; }
-    &--overtime { background: $sap-critical-light; color: $sap-critical; }
-    &--leave { background: $sap-information-light; color: $sap-information; }
-    &--thr { background: $sap-neutral-light; color: $sap-neutral; }
-  }
-
-  &__content {
-    flex: 1;
-    min-width: 0;
-  }
-
-  &__title {
-    font-size: $sap-font-size;
-    color: $sap-text;
-    margin-bottom: $sap-spacing-xxs;
-  }
-
-  &__meta {
-    font-size: $sap-font-size-xs;
-    color: $sap-text-muted;
-  }
-}
-
 .sapTrialBanner {
   padding: $sap-spacing-xs $sap-spacing;
   border-radius: $sap-radius;
@@ -570,11 +1373,15 @@ $sap-z-popover:      1100;
 }
 
 // ============================================================================
-// FORM STYLES
+// 22. MODULE-SPECIFIC — Form Styles
 // ============================================================================
 
 .sapFormHeader {
-  @include sap-page-header;
+  background: $sap-shell;
+  color: $sap-shell-text;
+  padding: $sap-spacing-m $sap-spacing-l;
+  border-radius: $sap-radius;
+  margin-bottom: $sap-spacing-m;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -617,6 +1424,51 @@ $sap-z-popover:      1100;
     display: flex;
     gap: $sap-spacing-xs;
     flex-wrap: wrap;
+    align-items: center;
+  }
+
+  &__btn {
+    border-radius: $sap-radius-sm !important;
+    padding: $sap-spacing-xxs $sap-spacing-s !important;
+    font-size: $sap-font-size-s !important;
+    font-weight: $sap-font-weight-bold !important;
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: $sap-shell-text !important;
+    transition: background $sap-transition !important;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.2) !important;
+    }
+
+    &--emphasized {
+      background: $sap-brand !important;
+      border-color: $sap-brand !important;
+      color: $sap-text-inverse !important;
+
+      &:hover {
+        background: $sap-brand-hover !important;
+      }
+    }
+
+    &--positive {
+      background: $sap-positive !important;
+      border-color: $sap-positive !important;
+
+      &:hover {
+        background: darken($sap-positive, 8%) !important;
+      }
+    }
+
+    &--negative {
+      background: $sap-negative !important;
+      border-color: $sap-negative !important;
+
+      &:hover {
+        background: darken($sap-negative, 8%) !important;
+      }
+    }
   }
 }
 
@@ -710,14 +1562,6 @@ $sap-z-popover:      1100;
   }
 }
 
-.sapFormGroup {
-  margin-bottom: $sap-spacing;
-
-  &__label {
-    @include sap-form-label;
-  }
-}
-
 .sapStatButtons {
   display: flex;
   gap: $sap-spacing-xs;
@@ -772,189 +1616,9 @@ $sap-z-popover:      1100;
   }
 }
 
-.o_notebook {
-  border: none !important;
-
-  .nav-tabs {
-    @include sap-anchor-bar;
-    border-bottom: none;
-    padding: 0;
-
-    .nav-link {
-      border: none;
-      border-bottom: 2px solid transparent;
-      border-radius: 0;
-      padding: $sap-spacing-xs $sap-spacing;
-      color: $sap-text-light;
-      font-size: $sap-font-size;
-      transition: color $sap-transition, border-color $sap-transition;
-
-      &:hover {
-        color: $sap-brand;
-        border-color: transparent;
-      }
-
-      &.active {
-        color: $sap-brand;
-        border-bottom-color: $sap-brand;
-        font-weight: $sap-font-weight-bold;
-        background: transparent;
-      }
-    }
-  }
-
-  .tab-content {
-    padding-top: $sap-spacing-m;
-  }
-}
-
-.o_chatter {
-  margin-top: $sap-spacing-m;
-  border-top: 1px solid $sap-border-light;
-  padding-top: $sap-spacing-m;
-}
-
 // ============================================================================
-// LIST & KANBAN STYLES
+// 23. MODULE-SPECIFIC — Kanban Card
 // ============================================================================
-
-.o_list_view {
-  thead {
-    th {
-      background: $sap-neutral-light !important;
-      font-weight: $sap-font-weight-bold;
-      font-size: $sap-font-size-s;
-      color: $sap-text;
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
-      border-bottom: 2px solid $sap-border !important;
-      padding: $sap-spacing-s $sap-spacing-xs !important;
-    }
-  }
-
-  tbody {
-    tr {
-      transition: background $sap-transition;
-
-      &:hover {
-        background: $sap-bg-hover !important;
-      }
-
-      td {
-        padding: $sap-spacing-s $sap-spacing-xs !important;
-        font-size: $sap-font-size;
-        border-bottom: 1px solid $sap-border-light !important;
-        vertical-align: middle;
-      }
-    }
-  }
-
-  .o_list_number {
-    text-align: right !important;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .badge {
-    font-weight: $sap-font-weight-bold;
-    font-size: $sap-font-size-xs;
-    padding: $sap-spacing-xxs $sap-spacing-xs;
-    border-radius: $sap-radius-sm;
-    text-transform: none;
-    letter-spacing: 0;
-
-    &.bg-success {
-      background: $sap-positive-light !important;
-      color: $sap-positive !important;
-    }
-
-    &.bg-info {
-      background: $sap-information-light !important;
-      color: $sap-information !important;
-    }
-
-    &.bg-warning {
-      background: $sap-critical-light !important;
-      color: $sap-critical !important;
-    }
-
-    &.bg-danger {
-      background: $sap-negative-light !important;
-      color: $sap-negative !important;
-    }
-
-    &.bg-secondary {
-      background: $sap-neutral-light !important;
-      color: $sap-neutral !important;
-    }
-  }
-
-  tr.o_decoration_success {
-    background: $sap-positive-light !important;
-  }
-
-  tr.o_decoration_warning {
-    background: $sap-critical-light !important;
-  }
-
-  tr.o_decoration_danger {
-    background: $sap-negative-light !important;
-  }
-
-  tr.o_decoration_muted,
-  tr.o_decoration_info {
-    background: transparent !important;
-  }
-}
-
-.o_kanban_view {
-  .o_kanban_record {
-    @include sap-card;
-    border: none;
-    border-left: 3px solid transparent;
-    transition: box-shadow $sap-transition, border-color $sap-transition;
-
-    &:hover {
-      box-shadow: $sap-shadow-md;
-    }
-
-    .o_kanban_record_head {
-      padding: $sap-spacing-s $sap-spacing-s $sap-spacing-xxs;
-
-      .o_kanban_record_top {
-        margin-bottom: $sap-spacing-xxs;
-      }
-    }
-
-    .o_kanban_record_body {
-      padding: 0 $sap-spacing-s $sap-spacing-s;
-    }
-
-    .o_kanban_record_bottom {
-      padding: $sap-spacing-xxs $sap-spacing-s $sap-spacing-s;
-      border-top: 1px solid $sap-border-light;
-      margin-top: auto;
-    }
-  }
-
-  .o_kanban_header {
-    .o_kanban_title {
-      font-size: $sap-font-size-s;
-      font-weight: $sap-font-weight-bold;
-      text-transform: uppercase;
-      color: $sap-text-light;
-      letter-spacing: 0.03em;
-    }
-
-    .o_kanban_count {
-      background: $sap-neutral-light;
-      color: $sap-text-light;
-      font-size: $sap-font-size-xs;
-      font-weight: $sap-font-weight-bold;
-      padding: $sap-spacing-xxs $sap-spacing-xs;
-      border-radius: $sap-radius-sm;
-    }
-  }
-}
 
 .sapKanbanCard {
   background: $sap-bg-tile;
@@ -1068,6 +1732,8 @@ $sap-z-popover:      1100;
     transition: background $sap-transition, border-color $sap-transition;
     text-align: center;
     white-space: nowrap;
+    background: $sap-bg-tile;
+    color: $sap-text;
 
     &--primary {
       background: $sap-brand;
@@ -1115,62 +1781,75 @@ $sap-z-popover:      1100;
   }
 }
 
-.o_searchview {
-  .o_searchview_input {
-    border-radius: $sap-radius-sm;
+// ============================================================================
+// 24. MODULE-SPECIFIC — Activity Stream
+// ============================================================================
+
+.sapActivityStream {
+  @include sap-card;
+
+  &__header {
+    @include sap-card-header;
   }
 
-  .o_searchview_facet {
-    .o_searchview_facet_label {
-      font-size: $sap-font-size-xs;
+  &__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  &__item {
+    display: flex;
+    align-items: flex-start;
+    gap: $sap-spacing-s;
+    padding: $sap-spacing-s $sap-spacing;
+    border-bottom: 1px solid $sap-border-light;
+    transition: background $sap-transition;
+
+    &:hover {
+      background: $sap-bg-hover;
+    }
+
+    &:last-child {
+      border-bottom: none;
     }
   }
-}
 
-.o_control_panel {
-  .o_cp_buttons {
-    .btn {
-      border-radius: $sap-radius-sm;
-      font-size: $sap-font-size;
-      font-weight: $sap-font-weight-bold;
+  &__icon {
+    width: 2rem;
+    height: 2rem;
+    border-radius: $sap-radius-round;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: $sap-font-size-s;
+    flex-shrink: 0;
 
-      &.btn-primary {
-        background: $sap-brand;
-        border-color: $sap-brand;
-
-        &:hover {
-          background: $sap-brand-hover;
-          border-color: $sap-brand-hover;
-        }
-      }
-
-      &.btn-secondary {
-        background: transparent;
-        border-color: $sap-border;
-        color: $sap-text;
-
-        &:hover {
-          background: $sap-bg-hover;
-        }
-      }
-    }
+    &--payslip { background: $sap-positive-light; color: $sap-positive; }
+    &--overtime { background: $sap-critical-light; color: $sap-critical; }
+    &--leave { background: $sap-information-light; color: $sap-information; }
+    &--thr { background: $sap-neutral-light; color: $sap-neutral; }
   }
-}
 
-.o_view_manager {
-  &.o_selecting {
-    .o_list_view tbody tr {
-      cursor: pointer;
+  &__content {
+    flex: 1;
+    min-width: 0;
+  }
 
-      &:hover {
-        background: $sap-information-light !important;
-      }
-    }
+  &__title {
+    font-size: $sap-font-size;
+    color: $sap-text;
+    margin-bottom: $sap-spacing-xxs;
+  }
+
+  &__meta {
+    font-size: $sap-font-size-xs;
+    color: $sap-text-muted;
   }
 }
 
 // ============================================================================
-// RESPONSIVE
+// 25. RESPONSIVE
 // ============================================================================
 
 @media (max-width: 1024px) {
@@ -1214,7 +1893,8 @@ $sap-z-popover:      1100;
     flex-wrap: wrap;
   }
 
-  .o_list_view {
+  .o_list_view,
+  .o_list_renderer {
     font-size: $sap-font-size-s;
 
     thead th {

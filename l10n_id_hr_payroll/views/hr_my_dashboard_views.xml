@@ -14,24 +14,24 @@
                     <sheet>
                         <div class="l10n_id_dashboard">
 
-                            <!-- Welcome Header -->
-                            <div class="sapFormHeader">
-                                <h1>
-                                    <span>Selamat Datang, <field name="employee_name" readonly="1" nolabel="1"/></span>
+                                <!-- Welcome Header -->
+                            <div class="sapPageHeader">
+                                <h1 class="sapPageHeader__title">
+                                    Selamat Datang, <field name="employee_name" readonly="1" nolabel="1"/>
                                 </h1>
-                                <p>
+                                <p class="sapPageHeader__subtitle">
                                     <field name="employee_department" readonly="1" nolabel="1"/>
                                     <span> • </span>
                                     <field name="employee_job" readonly="1" nolabel="1"/>
                                     <span> • NIK: </span>
                                     <field name="employee_nik" readonly="1" nolabel="1"/>
-                                </p>
-                                <p>
-                                    <span>NPWP: </span>
+                                    <span> • NPWP: </span>
                                     <field name="employee_npwp" readonly="1" nolabel="1"/>
                                     <span> • PTKP: </span>
                                     <field name="employee_ptkp" readonly="1" nolabel="1"/>
-                                    <span> • Bank: </span>
+                                </p>
+                                <p class="sapPageHeader__subtitle">
+                                    <span>Bank: </span>
                                     <field name="employee_bank_name" readonly="1" nolabel="1"/>
                                     <span> • Rekening: </span>
                                     <field name="employee_bank_account" readonly="1" nolabel="1"/>
@@ -64,13 +64,10 @@
                                         </span>
                                     </div>
                                     <div class="sapKpiTile__trend">
-                                        <div class="sapQuickActions">
-                                            <a class="sapQuickAction"
-                                               name="action_open_my_payslips" type="object">
-                                                <span class="sapQuickAction__icon"><i class="fa fa-eye"/></span>
-                                                <span class="sapQuickAction__label">Lihat Slip Gaji</span>
-                                            </a>
-                                        </div>
+                                        <a class="sapKpiTile__link"
+                                           name="action_open_my_payslips" type="object">
+                                            <i class="fa fa-eye"/> Lihat Slip Gaji
+                                        </a>
                                     </div>
                                 </div>
 
@@ -89,13 +86,10 @@
                                         </span>
                                     </div>
                                     <div class="sapKpiTile__trend">
-                                        <div class="sapQuickActions">
-                                            <a class="sapQuickAction"
-                                               name="action_create_overtime" type="object">
-                                                <span class="sapQuickAction__icon"><i class="fa fa-plus"/></span>
-                                                <span class="sapQuickAction__label">Buat Lembur</span>
-                                            </a>
-                                        </div>
+                                        <a class="sapKpiTile__link"
+                                           name="action_create_overtime" type="object">
+                                            <i class="fa fa-plus"/> Buat Lembur
+                                        </a>
                                     </div>
                                 </div>
 
@@ -114,13 +108,10 @@
                                         </span>
                                     </div>
                                     <div class="sapKpiTile__trend">
-                                        <div class="sapQuickActions">
-                                            <a class="sapQuickAction"
-                                               name="action_create_leave" type="object">
-                                                <span class="sapQuickAction__icon"><i class="fa fa-plus"/></span>
-                                                <span class="sapQuickAction__label">Ajukan Cuti</span>
-                                            </a>
-                                        </div>
+                                        <a class="sapKpiTile__link"
+                                           name="action_create_leave" type="object">
+                                            <i class="fa fa-plus"/> Ajukan Cuti
+                                        </a>
                                     </div>
                                 </div>
 
@@ -136,13 +127,10 @@
                                         </span>
                                     </div>
                                     <div class="sapKpiTile__trend">
-                                        <div class="sapQuickActions">
-                                            <a class="sapQuickAction"
-                                               name="action_create_expense" type="object">
-                                                <span class="sapQuickAction__icon"><i class="fa fa-plus"/></span>
-                                                <span class="sapQuickAction__label">Ajukan Expense</span>
-                                            </a>
-                                        </div>
+                                        <a class="sapKpiTile__link"
+                                           name="action_create_expense" type="object">
+                                            <i class="fa fa-plus"/> Ajukan Expense
+                                        </a>
                                     </div>
                                 </div>
 

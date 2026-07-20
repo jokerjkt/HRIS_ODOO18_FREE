@@ -148,7 +148,8 @@
                                 </a>
 
                                 <!-- Expense Pending -->
-                                <div class="sapQuickAction">
+                                <a class="sapQuickAction"
+                                   name="action_open_expense_pending" type="object">
                                     <div class="sapQuickAction__icon">
                                         <i class="fa fa-receipt"/>
                                     </div>
@@ -156,7 +157,7 @@
                                     <div class="sapQuickAction__desc">
                                         <field name="expense_pending" readonly="1" nolabel="1"/> menunggu
                                     </div>
-                                </div>
+                                </a>
 
                             </div>
 

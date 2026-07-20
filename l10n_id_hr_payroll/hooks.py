@@ -57,3 +57,15 @@ def post_init_hook(env):
         if code:
             dept.write({'code': code})
             _logger.info('Set department code: %s -> %s', dept_name, code)
+
+    # ── 3. Assign all custom groups to admin user ─────────────────────────
+    admin = env['res.users'].search([('login', '=', 'admin')], limit=1)
+    if admin:
+        group_ids = []
+        for xmlid in ['group_hr_user', 'group_hr_admin', 'group_hr_supervisor', 'group_hr_full_admin']:
+            grp = env.ref('l10n_id_hr_payroll.%s' % xmlid)
+            if grp:
+                group_ids.append(grp.id)
+        if group_ids:
+            admin.write({'groups_id': [(4, gid) for gid in group_ids]})
+            _logger.info('Assigned all custom HR groups to admin user')

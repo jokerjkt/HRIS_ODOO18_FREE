@@ -30,13 +30,11 @@
                                     <div class="sapFormHeader__subtitle">Slip Gaji</div>
                                 </div>
                             </div>
-                            <div class="sapFormHeader__actions">
-                                <field name="state" widget="badge"
-                                       decoration-info="state == 'draft'"
-                                       decoration-success="state == 'computed'"
-                                       decoration-warning="state == 'done'"
-                                       decoration-muted="state == 'cancel'"
-                                       class="sapFormStatus"/>
+                                <div class="sapFormHeader__actions">
+                                <div class="sapFormStatus sapFormStatus--draft" invisible="state != 'draft'">Draft</div>
+                                <div class="sapFormStatus sapFormStatus--computed" invisible="state != 'computed'">Dihitung</div>
+                                <div class="sapFormStatus sapFormStatus--done" invisible="state != 'done'">Selesai</div>
+                                <div class="sapFormStatus sapFormStatus--cancelled" invisible="state != 'cancel'">Dibatalkan</div>
                                 <button name="action_compute" string="Hitung Gaji"
                                         type="object" class="btn-primary"
                                         invisible="state != 'draft'"/>

@@ -180,3 +180,12 @@ class HrUserDashboard(models.TransientModel):
             'res_model': 'hr.attendance',
             'view_mode': 'list,form',
         }
+
+    def action_open_expense_pending(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Expense — Pending',
+            'res_model': 'hr.expense',
+            'view_mode': 'list,form',
+            'domain': [('state', '=', 'draft')],
+        }
