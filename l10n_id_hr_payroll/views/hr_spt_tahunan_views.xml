@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- ================================================================ -->
+    <!-- SPT Tahunan — Form View                                          -->
+    <!-- ================================================================ -->
+    <record id="view_hr_spt_tahunan_form" model="ir.ui.view">
+        <field name="name">hr.spt.tahunan.form</field>
+        <field name="model">hr.spt.tahunan</field>
+        <field name="arch" type="xml">
+            <form string="SPT Tahunan PPh 21">
+                <header>
+                    <button name="action_compute" string="Hitung SPT"
+                            type="object" class="btn-primary"
+                            invisible="state != 'draft'"/>
+                    <button name="action_confirm" string="Konfirmasi"
+                            type="object" class="btn-primary"
+                            invisible="state != 'draft' or pph21_terutang &lt;= 0"/>
+                    <button name="action_export_ebupot" string="Export e-Bupot"
+                            type="object"
+                            invisible="state != 'confirmed'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,confirmed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="display_name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group string="Identitas">
+                            <field name="employee_id"/>
+                            <field name="year"/>
+                            <field name="ptkp_status"/>
+                            <field name="ptkp_amount" widget="monetary"/>
+                        </group>
+                        <group string="PPh 21">
+                            <field name="pph21_terutang" widget="monetary"/>
+                            <field name="pph21_sudah_dipotong" widget="monetary"/>
+                            <field name="pph21_bonus_thr" widget="monetary"/>
+                            <field name="sisa_kurang_bayar" widget="monetary"/>
+                            <field name="pph21_bulan_desember" widget="monetary"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Detail Penghasilan" name="income">
+                            <group>
+                                <group>
+                                    <field name="total_gaji_pokok" widget="monetary"/>
+                                    <field name="total_tunj_tetap" widget="monetary"/>
+                                    <field name="total_tunj_lain" widget="monetary"/>
+                                    <field name="total_bonus_thr" widget="monetary"/>
+                                </group>
+                                <group>
+                                    <field name="total_bruto_12_bulan" widget="monetary"/>
+                                    <field name="total_bruto" widget="monetary"/>
+                                    <field name="total_pengurang" widget="monetary"/>
+                                    <field name="pkp_annual" widget="monetary"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ================================================================ -->
+    <!-- SPT Tahunan — List View                                          -->
+    <!-- ================================================================ -->
+    <record id="view_hr_spt_tahunan_list" model="ir.ui.view">
+        <field name="name">hr.spt.tahunan.list</field>
+        <field name="model">hr.spt.tahunan</field>
+        <field name="arch" type="xml">
+            <list string="SPT Tahunan PPh 21">
+                <field name="name" string="No. SPT"/>
+                <field name="employee_id" string="Karyawan"/>
+                <field name="year" string="Tahun"/>
+                <field name="pph21_terutang" widget="monetary" string="PPh 21 Terutang"/>
+                <field name="pph21_sudah_dipotong" widget="monetary" string="Sudah Dipotong"/>
+                <field name="sisa_kurang_bayar" widget="monetary" string="Sisa"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'confirmed'"
+                       decoration-info="state == 'submitted'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ================================================================ -->
+    <!-- SPT Tahunan — Action                                             -->
+    <!-- ================================================================ -->
+    <record id="action_hr_spt_tahunan" model="ir.actions.act_window">
+        <field name="name">SPT Tahunan</field>
+        <field name="res_model">hr.spt.tahunan</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

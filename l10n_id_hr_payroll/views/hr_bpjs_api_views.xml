@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- ================================================================ -->
+    <!-- BPJS API Config — Form View                                      -->
+    <!-- ================================================================ -->
+    <record id="view_hr_bpjs_api_config_form" model="ir.ui.view">
+        <field name="name">hr.bpjs.api.config.form</field>
+        <field name="model">hr.bpjs.api.config</field>
+        <field name="arch" type="xml">
+            <form string="Konfigurasi API BPJS">
+                <header>
+                    <button name="action_test_connection" string="Test Koneksi"
+                            type="object" class="btn-secondary"/>
+                    <button name="action_get_token" string="Ambil Token"
+                            type="object" class="btn-primary"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group string="API">
+                            <field name="service_type"/>
+                            <field name="api_url"/>
+                            <field name="environment"/>
+                            <field name="is_active"/>
+                        </group>
+                        <group string="Kredensial">
+                            <field name="client_id"/>
+                            <field name="client_secret" password="True"/>
+                            <field name="user_key"/>
+                            <field name="company_bpjs_no"/>
+                            <field name="npwp" invisible="1"/>
+                        </group>
+                    </group>
+                    <group string="Token">
+                        <field name="token" readonly="1"/>
+                        <field name="token_expiry" readonly="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ================================================================ -->
+    <!-- BPJS API Config — List View                                      -->
+    <!-- ================================================================ -->
+    <record id="view_hr_bpjs_api_config_list" model="ir.ui.view">
+        <field name="name">hr.bpjs.api.config.list</field>
+        <field name="model">hr.bpjs.api.config</field>
+        <field name="arch" type="xml">
+            <list string="Konfigurasi API BPJS">
+                <field name="name"/>
+                <field name="service_type"/>
+                <field name="api_url"/>
+                <field name="environment"/>
+                <field name="is_active"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ================================================================ -->
+    <!-- BPJS API Config — Action                                         -->
+    <!-- ================================================================ -->
+    <record id="action_hr_bpjs_api_config" model="ir.actions.act_window">
+        <field name="name">Konfigurasi API BPJS</field>
+        <field name="res_model">hr.bpjs.api.config</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- ================================================================ -->
+    <!-- DJP API Config — Form View                                       -->
+    <!-- ================================================================ -->
+    <record id="view_hr_djp_api_config_form" model="ir.ui.view">
+        <field name="name">hr.djp.api.config.form</field>
+        <field name="model">hr.djp.api.config</field>
+        <field name="arch" type="xml">
+            <form string="Konfigurasi API DJP">
+                <header>
+                    <button name="action_test_connection" string="Test Koneksi"
+                            type="object" class="btn-secondary"/>
+                    <button name="action_get_token" string="Ambil Token"
+                            type="object" class="btn-primary"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group string="API">
+                            <field name="api_url"/>
+                            <field name="environment"/>
+                            <field name="is_active"/>
+                        </group>
+                        <group string="Kredensial">
+                            <field name="npwp"/>
+                            <field name="efin"/>
+                            <field name="username"/>
+                            <field name="password" password="True"/>
+                        </group>
+                    </group>
+                    <group string="Token">
+                        <field name="token" readonly="1"/>
+                        <field name="token_expiry" readonly="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ================================================================ -->
+    <!-- DJP API Config — Action                                          -->
+    <!-- ================================================================ -->
+    <record id="action_hr_djp_api_config" model="ir.actions.act_window">
+        <field name="name">Konfigurasi API DJP</field>
+        <field name="res_model">hr.djp.api.config</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

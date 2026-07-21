@@ -171,7 +171,7 @@
 
         <record id="demo_device_generic" model="hr.attendance.device">
             <field name="name">ATT2000 Gudang</field>
-            <field name="brand">att2000</brand>
+            <field name="brand">att2000</field>
             <field name="connection_type">csv_import</field>
             <field name="location">Gudang</field>
             <field name="employee_mapping">pin</field>
@@ -226,7 +226,7 @@
             <field name="timestamp" eval="(DateTime.today() - relativedelta(days=1)).strftime('%Y-%m-%d') + ' 08:00:00'"/>
             <field name="punch_type">0</field>
             <field name="verify_mode">1</field>
-            <field name="state">error"/>
+            <field name="state">error</field>
             <field name="error_message">PIN tidak ditemukan: 9999</field>
         </record>
 
@@ -240,7 +240,7 @@
             <field name="overtime_type">weekday</field>
             <field name="reason">Menyelesaikan laporan bulanan</field>
             <field name="activity_description">&lt;p&gt;Menyiapkan dan menyelesaikan laporan penjualan bulanan untuk presentasi besok.&lt;/p&gt;</field>
-            <field name="state">approved"/>
+            <field name="state">approved</field>
             <field name="approved_date" eval="(DateTime.today() - relativedelta(days=1)).strftime('%Y-%m-%d') + ' 09:00:00'"/>
         </record>
 
@@ -252,7 +252,7 @@
             <field name="overtime_type">weekday</field>
             <field name="reason">Deploy aplikasi ke production</field>
             <field name="activity_description">&lt;p&gt;Melakukan deploy aplikasi baru ke server production setelah jam kerja.&lt;/p&gt;</field>
-            <field name="state">submitted"/>
+            <field name="state">submitted</field>
         </record>
 
         <!-- ── Demo Shift Assignment ──────────────────────────────────────── -->
@@ -262,7 +262,7 @@
             <field name="rotation_id" ref="rotation_3shift_weekly"/>
             <field name="date_from" eval="(DateTime.today() - relativedelta(days=7)).date()"/>
             <field name="date_to" eval="(DateTime.today() + relativedelta(days=21)).date()"/>
-            <field name="state">confirmed"/>
+            <field name="state">confirmed</field>
         </record>
 
     </data>

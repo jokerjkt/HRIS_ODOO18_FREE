@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- ================================================================ -->
+    <!-- E-Filing Wizard                                                  -->
+    <!-- ================================================================ -->
+    <record id="action_hr_efiling_wizard" model="ir.actions.act_window">
+        <field name="name">E-Filing DJP</field>
+        <field name="res_model">hr.efiling.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="view_hr_efiling_wizard_form" model="ir.ui.view">
+        <field name="name">hr.efiling.wizard.form</field>
+        <field name="model">hr.efiling.wizard</field>
+        <field name="arch" type="xml">
+            <form string="E-Filing DJP">
+                <group>
+                    <field name="year"/>
+                    <field name="action_type"/>
+                    <field name="employee_ids" widget="many2many_tags"/>
+                </group>
+                <footer>
+                    <button name="action_execute" string="Generate"
+                            type="object" class="oe_highlight"/>
+                    <button string="Batal" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- ================================================================ -->
+    <!-- BPJS Upload Wizard                                               -->
+    <!-- ================================================================ -->
+    <record id="action_hr_bpjs_upload_wizard" model="ir.actions.act_window">
+        <field name="name">Upload BPJS</field>
+        <field name="res_model">hr.bpjs.upload.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="view_hr_bpjs_upload_wizard_form" model="ir.ui.view">
+        <field name="name">hr.bpjs.upload.wizard.form</field>
+        <field name="model">hr.bpjs.upload.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Upload BPJS">
+                <group>
+                    <field name="service_type"/>
+                    <field name="period_month"/>
+                    <field name="period_year"/>
+                    <field name="employee_ids" widget="many2many_tags"/>
+                </group>
+                <group string="Preview" invisible="preview_count == 0">
+                    <field name="preview_count"/>
+                    <field name="preview_total" widget="monetary"/>
+                </group>
+                <footer>
+                    <button name="action_generate_csv" string="Generate CSV"
+                            type="object" class="oe_highlight"/>
+                    <button string="Batal" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- ================================================================ -->
+    <!-- Download CSV Action                                              -->
+    <!-- ================================================================ -->
+    <record id="download_csv" model="ir.actions.act_window">
+        <field name="name">Download CSV</field>
+        <field name="res_model">hr.bpjs.submission</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

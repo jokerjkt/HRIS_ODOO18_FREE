@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- ================================================================ -->
+    <!-- BPJS Submission — Form View                                      -->
+    <!-- ================================================================ -->
+    <record id="view_hr_bpjs_submission_form" model="ir.ui.view">
+        <field name="name">hr.bpjs.submission.form</field>
+        <field name="model">hr.bpjs.submission</field>
+        <field name="arch" type="xml">
+            <form string="Submission BPJS">
+                <header>
+                    <button name="action_generate_from_payslip" string="Generate dari Slip Gaji"
+                            type="object" class="btn-secondary"
+                            invisible="state != 'draft' or line_ids"/>
+                    <button name="action_generate_csv" string="Generate CSV"
+                            type="object" class="btn-primary"
+                            invisible="state != 'draft' or not line_ids"/>
+                    <button name="action_submit_api" string="Submit via API"
+                            type="object" class="btn-primary"
+                            invisible="state != 'draft' or not line_ids"/>
+                    <button name="action_confirm" string="Konfirmasi"
+                            type="object"
+                            invisible="state not in ('draft', 'submitted')"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,submitted,confirmed"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="buttons">
+                        <button name="%(download_csv)d" type="action"
+                                class="oe_stat_button" icon="fa-download"
+                                invisible="not csv_file">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Download CSV</span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="service_type"/>
+                            <field name="period_month"/>
+                            <field name="period_year"/>
+                        </group>
+                        <group>
+                            <field name="total_employee"/>
+                            <field name="total_amount" widget="monetary"/>
+                            <field name="submission_date"/>
+                            <field name="bpjs_reference"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Detail Karyawan" name="lines">
+                            <field name="line_ids" nolabel="1">
+                                <list editable="bottom">
+                                    <field name="employee_id"/>
+                                    <field name="bpjs_no"/>
+                                    <field name="wage_base" widget="monetary"/>
+                                    <field name="jkk" widget="monetary" invisible="parent.service_type == 'kes'"/>
+                                    <field name="jkm" widget="monetary" invisible="parent.service_type == 'kes'"/>
+                                    <field name="jht_emp" widget="monetary" invisible="parent.service_type == 'kes'"/>
+                                    <field name="jht_comp" widget="monetary" invisible="parent.service_type == 'kes'"/>
+                                    <field name="jp_emp" widget="monetary" invisible="parent.service_type == 'kes'"/>
+                                    <field name="jp_comp" widget="monetary" invisible="parent.service_type == 'kes'"/>
+                                    <field name="bpjs_kes_emp" widget="monetary" invisible="parent.service_type == 'tk'"/>
+                                    <field name="bpjs_kes_comp" widget="monetary" invisible="parent.service_type == 'tk'"/>
+                                    <field name="total_iuran" widget="monetary"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Response" name="response">
+                            <field name="response_data" readonly="1" placeholder="Belum ada response..."/>
+                            <field name="error_msg" readonly="1" invisible="not error_msg"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ================================================================ -->
+    <!-- BPJS Submission — List View                                      -->
+    <!-- ================================================================ -->
+    <record id="view_hr_bpjs_submission_list" model="ir.ui.view">
+        <field name="name">hr.bpjs.submission.list</field>
+        <field name="model">hr.bpjs.submission</field>
+        <field name="arch" type="xml">
+            <list string="Submission BPJS">
+                <field name="name" string="No. Submission"/>
+                <field name="service_type" string="Layanan"/>
+                <field name="period_month" string="Bulan"/>
+                <field name="period_year" string="Tahun"/>
+                <field name="total_employee" string="Karyawan"/>
+                <field name="total_amount" widget="monetary" string="Total Iuran"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'confirmed'"
+                       decoration-info="state == 'submitted'"
+                       decoration-danger="state == 'error'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ================================================================ -->
+    <!-- BPJS Submission — Action                                         -->
+    <!-- ================================================================ -->
+    <record id="action_hr_bpjs_submission" model="ir.actions.act_window">
+        <field name="name">Submission BPJS</field>
+        <field name="res_model">hr.bpjs.submission</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

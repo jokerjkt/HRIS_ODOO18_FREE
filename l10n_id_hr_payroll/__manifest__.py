@@ -1,21 +1,26 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Indonesian HR Payroll (PPh 21 & BPJS)',
-    'version': '18.0.5.0.0',
+    'version': '18.0.6.0.0',
     'category': 'Human Resources/Payroll',
-        'summary': 'Payroll Indonesia: PPh 21, BPJS, Lembur, THR, Shift Scheduling, Dashboard, Attendance Device Integration, Geofence',
+    'summary': 'Payroll Indonesia: PPh 21, BPJS, Lembur, THR, e-Bupot, SPT Tahunan, API BPJS & DJP, Shift Scheduling, Dashboard, Attendance Device Integration, Geofence, Mobile PWA',
     'description': """
 Modul HR Payroll Indonesia untuk Odoo 18
 =========================================
 Fitur utama:
 - PPh 21 otomatis (tarif progresif 5%-35%)
+- THR & Bonus dihitung PPh 21 terpisah
+- Rekonsiliasi Desember (akumulasi Jan-Nov)
 - BPJS Ketenagakerjaan (JKK, JKM, JHT, JP)
 - BPJS Kesehatan
 - Manajemen Lembur dengan validasi atasan
 - Perhitungan THR (Tunjangan Hari Raya)
-- Jenis cuti sesuai regulasi Indonesia
-- Slip gaji format Indonesia
 - Bukti Potong 1721-A1/A2
+- e-Bupot XML export untuk DJP
+- SPT Tahunan PPh 21 aggregation
+- E-Filing DJP (API integration)
+- BPJS API integration (TK & Kes)
+- BPJS CSV upload untuk SPT Management
 - Rekap iuran BPJS
 - Dashboard pribadi untuk setiap karyawan
 - Shift Scheduling dengan rotasi (3-shift weekly, 4-shift daily)
@@ -26,6 +31,9 @@ Fitur utama:
   - Solution, Fingerspot, ATT2000 (via CSV/Excel import)
   - ADMS Cloud Push (Flask server)
   - Generic CSV/Excel import untuk semua merek
+- Mobile PWA + GPS + Selfie Attendance
+- SAP Fiori-inspired UI/UX design
+- Masa uji coba 5 hari (trial mode)
     """,
     'author': 'Susilo Raden',
     'website': 'https://www.linkedin.com/in/susilo-raden-68a19049',
@@ -41,7 +49,7 @@ Fitur utama:
         'spreadsheet_dashboard',
     ],
     'external_dependencies': {
-        'python': ['pyzk', 'openpyxl'],
+        'python': ['pyzk', 'openpyxl', 'requests'],
     },
     'data': [
         # Security (groups first, then ACLs)
@@ -97,17 +105,25 @@ Fitur utama:
         'security/hr_payroll_security.xml',
         # PWA
         'views/pwa_views.xml',
+        # Phase 6: E-Filing DJP
+        'views/hr_ebupot_views.xml',
+        'views/hr_spt_tahunan_views.xml',
+        # Phase 7: API BPJS
+        'views/hr_bpjs_api_views.xml',
+        'views/hr_bpjs_submission_views.xml',
+        # Wizards (Phase 6-7)
+        'wizard/hr_efiling_wizard_views.xml',
     ],
     'demo': [
         'data/hr_demo_data.xml',
     ],
     'assets': {
         'web.assets_backend': [
-            'l10n_id_hr_payroll/static/src/css/font-import.css',
-            'l10n_id_hr_payroll/static/src/scss/l10n_id_hr_payroll.scss',
-            'l10n_id_hr_payroll/static/src/js/selfie_checkin.js',
-            'l10n_id_hr_payroll/static/src/xml/selfie_checkin.xml',
-            'l10n_id_hr_payroll/static/src/pwa/service_worker.js',
+            'static/src/css/font-import.css',
+            'static/src/scss/l10n_id_hr_payroll.scss',
+            'static/src/js/selfie_checkin.js',
+            'static/src/xml/selfie_checkin.xml',
+            'static/src/pwa/service_worker.js',
         ],
     },
     'post_init_hook': 'post_init_hook',

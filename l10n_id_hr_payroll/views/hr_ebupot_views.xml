@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- ================================================================ -->
+    <!-- e-Bupot — Form View                                              -->
+    <!-- ================================================================ -->
+    <record id="view_hr_ebupot_form" model="ir.ui.view">
+        <field name="name">hr.ebupot.form</field>
+        <field name="model">hr.ebupot</field>
+        <field name="arch" type="xml">
+            <form string="e-Bupot Bukti Potong Elektronik">
+                <header>
+                    <button name="action_compute_from_payslip" string="Ambil Data PPh 21"
+                            type="object" class="btn-primary"
+                            invisible="state != 'draft'"/>
+                    <button name="action_generate_xml" string="Generate XML"
+                            type="object" class="btn-primary"
+                            invisible="state != 'draft' or pph21_total &lt;= 0"/>
+                    <button name="action_submit_to_djp" string="Kirim ke DJP"
+                            type="object" class="btn-primary"
+                            invisible="state != 'exported'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,exported,submitted"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="buttons">
+                        <button name="action_export" type="object"
+                                class="oe_stat_button" icon="fa-download"
+                                invisible="state == 'draft'">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Download XML</span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group string="Identitas">
+                            <field name="employee_id"/>
+                            <field name="npwp"/>
+                            <field name="nik"/>
+                            <field name="form_type"/>
+                            <field name="year"/>
+                        </group>
+                        <group string="PTKP">
+                            <field name="ptkp_status"/>
+                            <field name="ptkp_amount" widget="monetary"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Penghasilan" name="income">
+                            <group>
+                                <group>
+                                    <field name="gaji_pokok" widget="monetary"/>
+                                    <field name="tunjangan_tetap" widget="monetary"/>
+                                    <field name="tunjangan_lain" widget="monetary"/>
+                                    <field name="bonus_thr" widget="monetary"/>
+                                </group>
+                                <group>
+                                    <field name="penghasilan_bruto" widget="monetary"/>
+                                    <field name="biaya_jabatan" widget="monetary"/>
+                                    <field name="iuran_pensiun" widget="monetary"/>
+                                    <field name="bpjs_tk_jht" widget="monetary"/>
+                                    <field name="bpjs_tk_jp" widget="monetary"/>
+                                    <field name="penghasilan_neto" widget="monetary"/>
+                                    <field name="pkp" widget="monetary"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="PPh 21" name="tax">
+                            <group>
+                                <group>
+                                    <field name="pph21_gaji" widget="monetary"/>
+                                    <field name="pph21_bonus_thr" widget="monetary"/>
+                                    <field name="pph21_total" widget="monetary"/>
+                                    <field name="pph21_dipotong" widget="monetary"/>
+                                    <field name="pph21_kurang_bayar" widget="monetary"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="XML" name="xml">
+                            <field name="xml_content" readonly="1" placeholder="XML akan di-generate..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ================================================================ -->
+    <!-- e-Bupot — List View                                              -->
+    <!-- ================================================================ -->
+    <record id="view_hr_ebupot_list" model="ir.ui.view">
+        <field name="name">hr.ebupot.list</field>
+        <field name="model">hr.ebupot</field>
+        <field name="arch" type="xml">
+            <list string="e-Bupot Bukti Potong Elektronik">
+                <field name="name" string="No. Bukti Potong"/>
+                <field name="employee_id" string="Karyawan"/>
+                <field name="form_type" string="Formulir"/>
+                <field name="year" string="Tahun"/>
+                <field name="pph21_total" widget="monetary" string="PPh 21 Total"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'confirmed'"
+                       decoration-info="state == 'submitted'"
+                       decoration-warning="state == 'exported'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ================================================================ -->
+    <!-- e-Bupot — Search View                                            -->
+    <!-- ================================================================ -->
+    <record id="view_hr_ebupot_search" model="ir.ui.view">
+        <field name="name">hr.ebupot.search</field>
+        <field name="model">hr.ebupot</field>
+        <field name="arch" type="xml">
+            <search string="Cari e-Bupot">
+                <field name="name"/>
+                <field name="employee_id"/>
+                <filter name="this_year" string="Tahun Ini"
+                        domain="[('year', '=', %s)]" help="Tahun berjalan"/>
+                <filter name="draft" string="Draft"
+                        domain="[('state', '=', 'draft')]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_year" string="Tahun" context="{'group_by': 'year'}"/>
+                    <filter name="group_state" string="Status" context="{'group_by': 'state'}"/>
+                    <filter name="group_form_type" string="Formulir" context="{'group_by': 'form_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ================================================================ -->
+    <!-- e-Bupot — Action                                                 -->
+    <!-- ================================================================ -->
+    <record id="action_hr_ebupot" model="ir.actions.act_window">
+        <field name="name">e-Bupot</field>
+        <field name="res_model">hr.ebupot</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_hr_ebupot_search"/>
+        <field name="context">{'search_default_this_year': 1}</field>
+    </record>
+</odoo>
