@@ -142,20 +142,23 @@ class HrAttendance(models.Model):
 
     def write(self, vals):
         result = super().write(vals)
-        if 'check_in_latitude' in vals or 'check_in_longitude' in vals:
-            for rec in self:
-                if rec.check_in_latitude and rec.check_in_longitude:
-                    zone = self.env['hr.attendance.geo.fence'].find_zone_for_point(
-                        rec.check_in_latitude, rec.check_in_longitude, rec.employee_id
-                    )
-                    rec.check_in_zone_id = zone.id if zone else False
-        if 'check_out_latitude' in vals or 'check_out_longitude' in vals:
-            for rec in self:
-                if rec.check_out_latitude and rec.check_out_longitude:
-                    zone = self.env['hr.attendance.geo.fence'].find_zone_for_point(
-                        rec.check_out_latitude, rec.check_out_longitude, rec.employee_id
-                    )
-                    rec.check_out_zone_id = zone.id if zone else False
+        try:
+            if 'check_in_latitude' in vals or 'check_in_longitude' in vals:
+                for rec in self:
+                    if rec.check_in_latitude and rec.check_in_longitude:
+                        zone = self.env['hr.attendance.geo.fence'].sudo().find_zone_for_point(
+                            rec.check_in_latitude, rec.check_in_longitude, rec.employee_id
+                        )
+                        rec.check_in_zone_id = zone.id if zone else False
+            if 'check_out_latitude' in vals or 'check_out_longitude' in vals:
+                for rec in self:
+                    if rec.check_out_latitude and rec.check_out_longitude:
+                        zone = self.env['hr.attendance.geo.fence'].sudo().find_zone_for_point(
+                            rec.check_out_latitude, rec.check_out_longitude, rec.employee_id
+                        )
+                        rec.check_out_zone_id = zone.id if zone else False
+        except Exception:
+            _logger.warning("Failed to compute geo-fence zone during attendance write", exc_info=True)
         return result
 
     def _validate_geo_fence(self):

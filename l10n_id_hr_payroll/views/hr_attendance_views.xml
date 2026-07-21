@@ -8,40 +8,27 @@
         <field name="model">hr.attendance</field>
         <field name="inherit_id" ref="hr_attendance.hr_attendance_view_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='check_in']" position="after">
-                <field name="device_id" readonly="1"/>
-                <field name="device_log_id" readonly="1" invisible="not device_log_id"/>
-                <field name="punch_type" readonly="1" invisible="not punch_type"/>
-                <field name="verify_mode" readonly="1" invisible="not verify_mode"/>
-                <field name="is_from_device" invisible="1"/>
-                <field name="device_type" readonly="1"/>
-            </xpath>
-            <xpath expr="//field[@name='worked_hours']" position="after">
-                <field name="check_in_latitude" readonly="1" optional="hide"/>
-                <field name="check_in_longitude" readonly="1" optional="hide"/>
-                <field name="check_in_accuracy" readonly="1" optional="hide"/>
-                <field name="check_in_zone_id" readonly="1" optional="hide"/>
-                <field name="is_check_in_inside" readonly="1" optional="hide"/>
-                <field name="check_out_latitude" readonly="1" optional="hide"/>
-                <field name="check_out_longitude" readonly="1" optional="hide"/>
-                <field name="check_out_accuracy" readonly="1" optional="hide"/>
-                <field name="check_out_zone_id" readonly="1" optional="hide"/>
-                <field name="is_check_out_inside" readonly="1" optional="hide"/>
-            </xpath>
-            <xpath expr="//field[@name='worked_hours']" position="before">
+            <xpath expr="//sheet" position="inside">
                 <notebook>
-                    <page string="Foto Absensi" name="photos">
+                    <page string="Foto Absensi" name="photos" invisible="not check_in_photo and not check_out_photo">
                         <group>
                             <group string="Check In">
-                                <field name="check_in_photo" widget="image" readonly="1" nolabel="1" class="o attendance_photo"/>
+                                <field name="check_in_photo" widget="image" readonly="1" nolabel="1"/>
                             </group>
                             <group string="Check Out">
-                                <field name="check_out_photo" widget="image" readonly="1" nolabel="1" class="o attendance_photo"/>
+                                <field name="check_out_photo" widget="image" readonly="1" nolabel="1"/>
                             </group>
                         </group>
                     </page>
-                    <page string="Info Device" name="device_info">
+                    <page string="Info Device" name="device_info" invisible="not device_type and not check_in_device_info">
                         <group>
+                            <group string="Device Info">
+                                <field name="device_id" readonly="1" invisible="not device_id"/>
+                                <field name="device_log_id" readonly="1" invisible="not device_log_id"/>
+                                <field name="punch_type" readonly="1" invisible="not punch_type"/>
+                                <field name="verify_mode" readonly="1" invisible="not verify_mode"/>
+                                <field name="device_type" readonly="1"/>
+                            </group>
                             <group string="Check In">
                                 <field name="check_in_device_info" readonly="1" nolabel="1" placeholder="Device info saat check-in..."/>
                             </group>
@@ -50,7 +37,26 @@
                             </group>
                         </group>
                     </page>
+                    <page string="GPS &amp; Zona" name="gps_info" invisible="not check_in_latitude and not check_out_latitude">
+                        <group>
+                            <group string="Check In">
+                                <field name="check_in_latitude" readonly="1"/>
+                                <field name="check_in_longitude" readonly="1"/>
+                                <field name="check_in_accuracy" readonly="1"/>
+                                <field name="check_in_zone_id" readonly="1"/>
+                                <field name="is_check_in_inside" readonly="1"/>
+                            </group>
+                            <group string="Check Out">
+                                <field name="check_out_latitude" readonly="1"/>
+                                <field name="check_out_longitude" readonly="1"/>
+                                <field name="check_out_accuracy" readonly="1"/>
+                                <field name="check_out_zone_id" readonly="1"/>
+                                <field name="is_check_out_inside" readonly="1"/>
+                            </group>
+                        </group>
+                    </page>
                 </notebook>
+                <field name="is_from_device" invisible="1"/>
             </xpath>
         </field>
     </record>
@@ -63,7 +69,7 @@
         <field name="model">hr.attendance</field>
         <field name="inherit_id" ref="hr_attendance.view_attendance_tree"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='check_out']" position="after">
+            <xpath expr="//tree" position="inside">
                 <field name="device_id" optional="hide"/>
                 <field name="device_type" optional="hide"/>
                 <field name="punch_type" optional="hide"/>
@@ -84,7 +90,7 @@
         <field name="model">hr.attendance</field>
         <field name="inherit_id" ref="hr_attendance.hr_attendance_view_filter"/>
         <field name="arch" type="xml">
-            <xpath expr="//filter[1]" position="before">
+            <xpath expr="//search" position="inside">
                 <filter name="filter_from_device" string="Dari Mesin"
                         domain="[('device_id', '!=', False)]"/>
                 <filter name="filter_manual" string="Manual/Android"

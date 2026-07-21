@@ -103,7 +103,7 @@ class HrBpjsSubmission(models.Model):
 
     def action_generate_csv(self):
         """Generate CSV file untuk upload ke BPJS SPT Management."""
-        for rec:
+        for rec in self:
             if not rec.line_ids:
                 raise UserError('Generate data terlebih dahulu.')
 
@@ -145,7 +145,7 @@ class HrBpjsSubmission(models.Model):
 
     def action_submit_api(self):
         """Submit via BPJS API (jika sudah dikonfigurasi)."""
-        for rec:
+        for rec in self:
             if not rec.line_ids:
                 raise UserError('Data kosong.')
 

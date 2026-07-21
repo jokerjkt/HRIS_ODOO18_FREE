@@ -10,6 +10,7 @@ from datetime import datetime
 
 from odoo import http, fields
 from odoo.http import request
+from odoo.exceptions import UserError, AccessError
 
 _logger = logging.getLogger(__name__)
 
@@ -17,13 +18,12 @@ _logger = logging.getLogger(__name__)
 class SelfieCheckInController(http.Controller):
 
     @http.route('/l10n_id_hr_payroll/selfie_checkin', type='json',
-                auth='user', methods=['POST'], csrf=True)
+                auth='user', methods=['POST'])
     def selfie_checkin(self, **kwargs):
         """
         Handle selfie check-in/check-out from the OWL component.
 
         Expected JSON params:
-          - employee_pin: str
           - latitude: float
           - longitude: float
           - accuracy: float (GPS accuracy in meters)
@@ -60,21 +60,43 @@ class SelfieCheckInController(http.Controller):
         if not employee:
             return {'success': False, 'error': 'Akun Anda tidak terkait dengan karyawan manapun'}
 
+        try:
+            return self._process_attendance(
+                employee, latitude, longitude, accuracy,
+                photo_b64, device_type, device_info,
+            )
+        except AccessError as e:
+            _logger.error("Access error during selfie checkin: %s", e)
+            return {'success': False, 'error': 'Tidak memiliki akses untuk operasi ini'}
+        except UserError as e:
+            _logger.warning("User error during selfie checkin: %s", e)
+            return {'success': False, 'error': str(e)}
+        except Exception as e:
+            _logger.exception("Unexpected error during selfie checkin for employee %s", employee.name)
+            return {'success': False, 'error': 'Terjadi kesalahan sistem. Silakan coba lagi.'}
+
+    def _process_attendance(self, employee, latitude, longitude, accuracy,
+                            photo_b64, device_type, device_info):
+        """Core attendance processing logic."""
         # Find geo-fence zone
-        zone = request.env['hr.attendance.geo.fence'].find_zone_for_point(
+        zone = request.env['hr.attendance.geo.fence'].sudo().find_zone_for_point(
             latitude, longitude, employee
         )
         zone_name = zone.name if zone else 'Outside all zones'
         inside_fence = bool(zone)
 
-        # Process photo
-        photo_b64_encoded = False
+        # Process photo — store base64 directly (no unnecessary re-encode)
+        photo_data = False
         if photo_b64:
             try:
-                photo_bytes = base64.b64decode(photo_b64)
-                photo_b64_encoded = base64.b64encode(photo_bytes).decode('utf-8')
+                # Validate that it's valid base64
+                photo_bytes = base64.b64decode(photo_b64, validate=True)
+                if len(photo_bytes) > 5 * 1024 * 1024:  # 5MB limit
+                    return {'success': False, 'error': 'Ukuran foto maksimal 5MB'}
+                photo_data = base64.b64encode(photo_bytes).decode('utf-8')
             except Exception:
-                photo_b64_encoded = False
+                _logger.warning("Invalid photo data received from employee %s", employee.name)
+                photo_data = False
 
         # Determine check-in or check-out (toggle based on today's attendance)
         today = fields.Date.context_today(request.env.user)
@@ -107,11 +129,11 @@ class SelfieCheckInController(http.Controller):
                 'device_type': device_type,
                 'check_in_device_info': device_info,
             }
-            if photo_b64_encoded:
-                att_vals['check_in_photo'] = photo_b64_encoded
+            if photo_data:
+                att_vals['check_in_photo'] = photo_data
 
             if attendance:
-                attendance.write(att_vals)
+                attendance.sudo().write(att_vals)
             else:
                 attendance = request.env['hr.attendance'].sudo().create(att_vals)
         else:
@@ -122,8 +144,8 @@ class SelfieCheckInController(http.Controller):
                 'check_out_accuracy': accuracy,
                 'check_out_device_info': device_info,
             }
-            if photo_b64_encoded:
-                att_vals['check_out_photo'] = photo_b64_encoded
+            if photo_data:
+                att_vals['check_out_photo'] = photo_data
 
             attendance.sudo().write(att_vals)
 
