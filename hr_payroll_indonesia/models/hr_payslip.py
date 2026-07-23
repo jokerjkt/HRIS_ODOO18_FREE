@@ -160,6 +160,16 @@ class HrPayslip(models.Model):
         string='Jumlah THR (Rp)',
     )
 
+    # ── Loan (Pinjaman) ──────────────────────────────────────────────────────
+    loan_id = fields.Many2one(
+        'hr.loan',
+        string='Pinjaman',
+        readonly=True,
+    )
+    loan_amount = fields.Float(
+        string='Cicilan Pinjaman (Rp)',
+    )
+
     # ── Net Wage ──────────────────────────────────────────────────────────────
     net_wage = fields.Float(
         string='Gaji Bersih (Rp)',
@@ -239,7 +249,7 @@ class HrPayslip(models.Model):
 
     @api.depends('gaji_pokok', 'tunjangan_tetap', 'tunjangan_tidak_tetap',
                  'overtime_total', 'pph21_amount', 'bpjs_potongan_karyawan',
-                 'include_thr', 'thr_amount')
+                 'include_thr', 'thr_amount', 'loan_amount')
     def _compute_net_wage(self):
         for slip in self:
             earnings = (
@@ -250,7 +260,7 @@ class HrPayslip(models.Model):
             )
             if slip.include_thr:
                 earnings += slip.thr_amount
-            deductions = slip.pph21_amount + slip.bpjs_potongan_karyawan
+            deductions = slip.pph21_amount + slip.bpjs_potongan_karyawan + slip.loan_amount
             slip.net_wage = earnings - deductions
 
     # ────────────────────────────────────────────────────────────────────────
@@ -317,7 +327,22 @@ class HrPayslip(models.Model):
             slip._compute_overtime_total()
             slip._compute_net_wage()
 
-            # 6. Update state
+            # 6. Handle loan installment
+            loan = self.env['hr.loan'].search([
+                ('employee_id', '=', emp.id),
+                ('state', '=', 'running'),
+                ('loan_type', '=', 'installment'),
+            ], limit=1)
+            if loan:
+                installment = loan.get_installment_for_payslip(slip.date_from, slip.date_to)
+                if installment:
+                    slip.loan_id = loan.id
+                    slip.loan_amount = installment.amount
+                else:
+                    slip.loan_id = False
+                    slip.loan_amount = 0.0
+
+            # 7. Update state
             slip.state = 'computed'
 
     # ────────────────────────────────────────────────────────────────────────

@@ -153,6 +153,20 @@
                   action="action_hr_my_thr"
                   sequence="62"/>
 
+        <!-- ── Pinjaman ───────────────────────────────────────────────── -->
+
+        <menuitem id="menu_indonesia_hr_loan"
+                  name="Pinjaman"
+                  parent="hr.menu_hr_root"
+                  sequence="65"
+                  groups="hr_payroll_indonesia.group_hr_admin"/>
+
+        <menuitem id="menu_hr_loan_list"
+                  name="Daftar Pinjaman"
+                  parent="menu_indonesia_hr_loan"
+                  action="action_hr_loan"
+                  sequence="10"/>
+
         <!-- ── Attendance Device Integration — Under Attendances ──────── -->
 
         <menuitem id="menu_indonesia_hr_attendance_device"

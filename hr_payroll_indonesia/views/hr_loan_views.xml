@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ================================================================
+             Loan — Form View (SAP Fiori Object Page)
+             ================================================================ -->
+
+        <record id="view_hr_loan_form" model="ir.ui.view">
+            <field name="name">hr.loan.form</field>
+            <field name="model">hr.loan</field>
+            <field name="arch" type="xml">
+                <form string="Pinjaman Karyawan">
+                    <header>
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,approved,running,done"/>
+                        <div class="sapTrialBanner sapTrialBanner--danger"
+                             invisible="not trial_expired">
+                            <i class="fa fa-warning"/> Masa uji coba sudah berakhir. Fitur pinjaman terkunci.
+                        </div>
+                    </header>
+                    <sheet>
+                        <div class="sapFormHeader">
+                            <div class="sapFormHeader__left">
+                                <div class="sapFormHeader__avatar">
+                                    <field name="employee_id" widget="many2one_avatar_employee" readonly="1"/>
+                                </div>
+                                <div>
+                                    <h1 class="sapFormHeader__title">
+                                        <field name="employee_id" readonly="1" placeholder="Nama Karyawan"/>
+                                    </h1>
+                                    <div class="sapFormHeader__subtitle">Pinjaman</div>
+                                </div>
+                            </div>
+                            <div class="sapFormHeader__actions">
+                                <div class="sapFormStatus sapFormStatus--draft" invisible="state != 'draft'">Draft</div>
+                                <div class="sapFormStatus sapFormStatus--approved" invisible="state != 'approved'">Disetujui</div>
+                                <div class="sapFormStatus sapFormStatus--running" invisible="state != 'running'">Berjalan</div>
+                                <div class="sapFormStatus sapFormStatus--done" invisible="state != 'done'">Selesai</div>
+                                <div class="sapFormStatus sapFormStatus--cancelled" invisible="state != 'cancelled'">Dibatalkan</div>
+                                <button name="action_approve"
+                                        string="Setujui"
+                                        type="object"
+                                        class="sapFormHeader__btn sapFormHeader__btn--positive"
+                                        invisible="state != 'draft' or trial_expired"/>
+                                <button name="action_start"
+                                        string="Mulai Cicilan"
+                                        type="object"
+                                        class="sapFormHeader__btn sapFormHeader__btn--emphasized"
+                                        invisible="state != 'approved'"/>
+                                <button name="action_done"
+                                        string="Selesai"
+                                        type="object"
+                                        class="sapFormHeader__btn sapFormHeader__btn--positive"
+                                        invisible="state != 'running'"/>
+                                <button name="action_cancel"
+                                        string="Batalkan"
+                                        type="object"
+                                        class="sapFormHeader__btn sapFormHeader__btn--negative"
+                                        invisible="state in ('done', 'cancelled')"/>
+                                <button name="action_reset_draft"
+                                        string="Reset ke Draft"
+                                        type="object"
+                                        class="sapFormHeader__btn"
+                                        invisible="state != 'cancelled'"/>
+                            </div>
+                        </div>
+
+                        <div class="sapFormSummary">
+                            <div class="sapFormSummary__item">
+                                <div class="sapFormSummary__icon sapFormSummary__icon--brand">
+                                    <i class="fa fa-money"/>
+                                </div>
+                                <div>
+                                    <div class="sapFormSummary__label">Jumlah Pinjaman</div>
+                                    <div class="sapFormSummary__value">
+                                        <field name="loan_amount" widget="monetary" readonly="1"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sapFormSummary__item">
+                                <div class="sapFormSummary__icon sapFormSummary__icon--positive">
+                                    <i class="fa fa-check-circle"/>
+                                </div>
+                                <div>
+                                    <div class="sapFormSummary__label">Sudah Terbayar</div>
+                                    <div class="sapFormSummary__value">
+                                        <field name="total_paid" widget="monetary" readonly="1"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sapFormSummary__item">
+                                <div class="sapFormSummary__icon sapFormSummary__icon--critical">
+                                    <i class="fa fa-exclamation-circle"/>
+                                </div>
+                                <div>
+                                    <div class="sapFormSummary__label">Sisa Hutang</div>
+                                    <div class="sapFormSummary__value">
+                                        <field name="remaining" widget="monetary" readonly="1"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <notebook>
+                            <page string="Detail Pinjaman" name="detail">
+                                <group>
+                                    <group string="Informasi Pinjaman">
+                                        <field name="name"/>
+                                        <field name="loan_date"/>
+                                        <field name="loan_type"/>
+                                        <field name="state" invisible="1"/>
+                                    </group>
+                                    <group string="Informasi Karyawan">
+                                        <field name="employee_id"/>
+                                        <field name="department_id"/>
+                                        <field name="company_id" groups="base.group_multi_company"/>
+                                    </group>
+                                </group>
+                                <group invisible="loan_type != 'installment'">
+                                    <group string="Cicilan">
+                                        <field name="loan_amount"/>
+                                        <field name="installment_amount"/>
+                                        <field name="installment_months"/>
+                                    </group>
+                                </group>
+                                <group invisible="loan_type != 'full'">
+                                    <group string="Bayar Langsung">
+                                        <field name="loan_amount"/>
+                                    </group>
+                                </group>
+                                <group>
+                                    <group>
+                                        <field name="approved_date"/>
+                                        <field name="note" placeholder="Keterangan..."/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Detail Cicilan" name="lines"
+                                  invisible="loan_type != 'installment'">
+                                <field name="loan_line_ids" readonly="state != 'draft'">
+                                    <list editable="bottom">
+                                        <field name="sequence" widget="handle" readonly="1"/>
+                                        <field name="due_date"/>
+                                        <field name="amount" widget="monetary"/>
+                                        <field name="paid"/>
+                                        <field name="paid_date"/>
+                                        <field name="payslip_id" readonly="1"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Slip Gaji Terkait" name="payslips">
+                                <field name="payslip_ids" readonly="1"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <!-- ================================================================
+             Loan — List View (SAP Fiori Table)
+             ================================================================ -->
+
+        <record id="view_hr_loan_list" model="ir.ui.view">
+            <field name="name">hr.loan.list</field>
+            <field name="model">hr.loan</field>
+            <field name="arch" type="xml">
+                <list string="Daftar Pinjaman" decoration-info="state == 'draft'"
+                      decoration-warning="state == 'approved'"
+                      decoration-success="state == 'running'"
+                      decoration-muted="state == 'done'"
+                      decoration-danger="state == 'cancelled'">
+                    <field name="name"/>
+                    <field name="employee_id"/>
+                    <field name="department_id"/>
+                    <field name="loan_type"/>
+                    <field name="loan_amount" widget="monetary"/>
+                    <field name="installment_amount" widget="monetary"
+                           invisible="loan_type != 'installment'"/>
+                    <field name="total_paid" widget="monetary"/>
+                    <field name="remaining" widget="monetary"/>
+                    <field name="state" widget="badge"
+                           decoration-info="state == 'draft'"
+                           decoration-warning="state == 'approved'"
+                           decoration-success="state == 'running'"
+                           decoration-muted="state == 'done'"
+                           decoration-danger="state == 'cancelled'"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- ================================================================
+             Loan — Search View
+             ================================================================ -->
+
+        <record id="view_hr_loan_search" model="ir.ui.view">
+            <field name="name">hr.loan.search</field>
+            <field name="model">hr.loan</field>
+            <field name="arch" type="xml">
+                <search string="Cari Pinjaman">
+                    <field name="name"/>
+                    <field name="employee_id"/>
+                    <field name="department_id"/>
+                    <separator/>
+                    <filter string="Draft" name="draft" domain="[('state','=','draft')]"/>
+                    <filter string="Disetujui" name="approved" domain="[('state','=','approved')]"/>
+                    <filter string="Berjalan" name="running" domain="[('state','=','running')]"/>
+                    <filter string="Selesai" name="done" domain="[('state','=','done')]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Karyawan" name="group_employee" context="{'group_by':'employee_id'}"/>
+                        <filter string="Departemen" name="group_department" context="{'group_by':'department_id'}"/>
+                        <filter string="Status" name="group_state" context="{'group_by':'state'}"/>
+                        <filter string="Tipe" name="group_type" context="{'group_by':'loan_type'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- ================================================================
+             Loan — Action
+             ================================================================ -->
+
+        <record id="action_hr_loan" model="ir.actions.act_window">
+            <field name="name">Pinjaman Karyawan</field>
+            <field name="res_model">hr.loan</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="view_hr_loan_search"/>
+            <field name="context">{'search_default_running': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Belum ada pinjaman karyawan.
+                </p>
+                <p>Klik tombol <strong>Buat</strong> untuk membuat pinjaman baru.</p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

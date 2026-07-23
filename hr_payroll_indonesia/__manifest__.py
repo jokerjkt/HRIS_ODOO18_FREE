@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Indonesian HR Payroll (PPh 21 & BPJS)',
-    'version': '18.0.6.0.0',
+    'version': '18.0.7.0.0',
     'category': 'Human Resources/Payroll',
-    'summary': 'Payroll Indonesia: PPh 21, BPJS, Lembur, THR, e-Bupot, SPT Tahunan, API BPJS & DJP, Shift Scheduling, Dashboard, Attendance Device Integration, Geofence, Mobile PWA',
+    'summary': 'Payroll Indonesia: PPh 21, BPJS, Lembur, THR, Pinjaman, e-Bupot, SPT Tahunan, API BPJS & DJP, Shift Scheduling, Dashboard, Attendance Device Integration, Geofence, Mobile PWA',
     'description': """
 Modul HR Payroll Indonesia untuk Odoo 18
 =========================================
@@ -15,6 +15,7 @@ Fitur utama:
 - BPJS Kesehatan
 - Manajemen Lembur dengan validasi atasan
 - Perhitungan THR (Tunjangan Hari Raya)
+- Pinjaman Karyawan dengan cicilan otomatis dari slip gaji
 - Bukti Potong 1721-A1/A2
 - e-Bupot XML export untuk DJP
 - SPT Tahunan PPh 21 aggregation
@@ -99,6 +100,7 @@ Fitur utama:
         'views/hr_user_dashboard_views.xml',
         # Dashboard Admin
         'views/dashboard_views.xml',
+        'views/hr_loan_views.xml',
         # Menu (references all actions above)
         'views/menu_views.xml',
         # Security (ACL for TransientModel — loaded after Python models)

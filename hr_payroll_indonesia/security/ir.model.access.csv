@@ -45,3 +45,7 @@ access_hr_attendance_connector_zkteco,hr.attendance.connector.zkteco,model_hr_at
 access_hr_bpjs_tk_connector,hr.bpjs.tk.connector,model_hr_bpjs_tk_connector,hr_payroll_indonesia.group_hr_admin,1,1,1,1
 access_hr_bpjs_kes_connector,hr.bpjs.kes.connector,model_hr_bpjs_kes_connector,hr_payroll_indonesia.group_hr_admin,1,1,1,1
 access_hr_payroll_dashboard,hr.payroll.dashboard,model_hr_payroll_dashboard,hr_payroll_indonesia.group_hr_admin,1,1,1,1
+access_hr_loan_user,hr.loan User,model_hr_loan,hr_payroll_indonesia.group_hr_user,1,1,1,0
+access_hr_loan_manager,hr.loan Manager,model_hr_loan,hr_payroll_indonesia.group_hr_admin,1,1,1,1
+access_hr_loan_line_user,hr.loan.line User,model_hr_loan_line,hr_payroll_indonesia.group_hr_user,1,1,1,0
+access_hr_loan_line_manager,hr.loan.line Manager,model_hr_loan_line,hr_payroll_indonesia.group_hr_admin,1,1,1,1
