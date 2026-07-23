@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ================================================================
+             Indonesian HR Payroll — Menu Structure
+             ================================================================ -->
+
+        <!-- ── Dashboard Admin — Root Level App ────────────────────────── -->
+
+        <menuitem id="menu_dashboard_admin_root"
+                  name="HR Dashboard"
+                  sequence="180"
+                  web_icon="hr_payroll_indonesia,static/description/icon.png"
+                  groups="hr_payroll_indonesia.group_hr_full_admin"/>
+
+        <menuitem id="menu_indonesia_hr_dashboard"
+                  name="Dashboard Admin"
+                  parent="menu_dashboard_admin_root"
+                  action="action_indonesia_hr_dashboard"
+                  sequence="10"
+                  groups="hr_payroll_indonesia.group_hr_full_admin"/>
+
+        <!-- ── Dashboard HR — Under Odoo Dashboards ───────────────────── -->
+
+        <menuitem id="menu_hr_user_dashboard"
+                  name="Dashboard HR"
+                  parent="spreadsheet_dashboard.spreadsheet_dashboard_menu_root"
+                  action="action_hr_user_dashboard"
+                  sequence="15"
+                  groups="hr_payroll_indonesia.group_hr_admin"/>
+
+        <!-- ── Dashboard Saya — Under Employees ───────────────────────── -->
+
+        <menuitem id="menu_hr_my_dashboard"
+                  name="Dashboard Saya"
+                  parent="hr.menu_hr_root"
+                  action="action_hr_my_dashboard"
+                  sequence="2"/>
+
+        <!-- ── My Payslip — Under Employees ────────────────────────────── -->
+
+        <menuitem id="menu_hr_my_payslip"
+                  name="Slip Gaji Saya"
+                  parent="hr.menu_hr_root"
+                  action="action_hr_my_payslip"
+                  sequence="45"/>
+
+        <!-- ── Payroll (admin only) ────────────────────────────────────── -->
+
+        <menuitem id="menu_indonesia_hr_payslip"
+                  name="Payroll"
+                  parent="hr.menu_hr_root"
+                  sequence="50"
+                  groups="hr_payroll_indonesia.group_hr_admin"/>
+
+        <menuitem id="menu_hr_payslip_list"
+                  name="Daftar Slip Gaji"
+                  parent="menu_indonesia_hr_payslip"
+                  action="action_hr_payslip"
+                  sequence="10"/>
+
+        <menuitem id="menu_hr_payslip_payment"
+                  name="Daftar Pembayaran Gaji"
+                  parent="menu_indonesia_hr_payslip"
+                  action="action_hr_payslip_payment"
+                  sequence="20"/>
+
+        <menuitem id="menu_hr_payslip_generate"
+                  name="Buat Slip Gaji Massal"
+                  parent="menu_indonesia_hr_payslip"
+                  action="action_hr_payslip_generate_wizard"
+                  sequence="30"/>
+
+        <!-- ── Lembur ─────────────────────────────────────────────────── -->
+
+        <menuitem id="menu_indonesia_hr_overtime"
+                  name="Lembur"
+                  parent="hr.menu_hr_root"
+                  sequence="55"/>
+
+        <menuitem id="menu_hr_overtime_my"
+                  name="Pengajuan Lembur Saya"
+                  parent="menu_indonesia_hr_overtime"
+                  action="action_hr_overtime"
+                  sequence="10"/>
+
+        <menuitem id="menu_hr_overtime_approval"
+                  name="Perlu Persetujuan"
+                  parent="menu_indonesia_hr_overtime"
+                  action="action_hr_overtime_to_approve"
+                  sequence="20"
+                  groups="hr_payroll_indonesia.group_hr_admin"/>
+
+        <menuitem id="menu_hr_overtime_all"
+                  name="Semua Lembur"
+                  parent="menu_indonesia_hr_overtime"
+                  action="action_hr_overtime"
+                  sequence="30"
+                  groups="hr_payroll_indonesia.group_hr_admin"/>
+
+        <!-- ── Shift Scheduling ────────────────────────────────────────── -->
+
+        <menuitem id="menu_indonesia_hr_shift_scheduling"
+                  name="Shift Scheduling"
+                  parent="hr.menu_hr_root"
+                  sequence="58"
+                  groups="hr_payroll_indonesia.group_hr_admin"/>
+
+        <menuitem id="menu_hr_shift_daily"
+                  name="Jadwal Harian"
+                  parent="menu_indonesia_hr_shift_scheduling"
+                  action="action_hr_shift_daily"
+                  sequence="10"/>
+
+        <menuitem id="menu_hr_shift_assign"
+                  name="Assign Shift"
+                  parent="menu_indonesia_hr_shift_scheduling"
+                  action="action_hr_shift_assign"
+                  sequence="20"/>
+
+        <menuitem id="menu_hr_shift_bulk_assign"
+                  name="Generate Bulk Assign"
+                  parent="menu_indonesia_hr_shift_scheduling"
+                  action="action_hr_shift_bulk_assign"
+                  sequence="30"/>
+
+        <!-- ── THR (admin only) ────────────────────────────────────────── -->
+
+        <menuitem id="menu_indonesia_hr_thr"
+                  name="THR"
+                  parent="hr.menu_hr_root"
+                  sequence="60"
+                  groups="hr_payroll_indonesia.group_hr_admin"/>
+
+        <menuitem id="menu_hr_thr_list"
+                  name="Daftar THR"
+                  parent="menu_indonesia_hr_thr"
+                  action="action_hr_thr"
+                  sequence="10"/>
+
+        <menuitem id="menu_hr_thr_generate"
+                  name="Generate THR Massal"
+                  parent="menu_indonesia_hr_thr"
+                  action="action_hr_thr_wizard"
+                  sequence="20"/>
+
+        <!-- ── My THR — visible to all employees ──────────────────────── -->
+
+        <menuitem id="menu_hr_my_thr"
+                  name="THR Saya"
+                  parent="hr.menu_hr_root"
+                  action="action_hr_my_thr"
+                  sequence="62"/>
+
+        <!-- ── Attendance Device Integration — Under Attendances ──────── -->
+
+        <menuitem id="menu_indonesia_hr_attendance_device"
+                  name="Mesin Absensi"
+                  parent="hr_attendance.menu_hr_attendance_root"
+                  sequence="20"
+                  groups="hr_payroll_indonesia.group_hr_admin"/>
+
+        <menuitem id="menu_hr_attendance_device_list"
+                  name="Daftar Mesin"
+                  parent="menu_indonesia_hr_attendance_device"
+                  action="action_hr_attendance_device"
+                  sequence="10"/>
+
+        <menuitem id="menu_hr_attendance_device_log"
+                  name="Log dari Mesin"
+                  parent="menu_indonesia_hr_attendance_device"
+                  action="action_hr_attendance_device_log"
+                  sequence="20"/>
+
+        <menuitem id="menu_hr_attendance_import"
+                  name="Import Absensi"
+                  parent="menu_indonesia_hr_attendance_device"
+                  action="action_hr_attendance_import_wizard"
+                  sequence="30"/>
+
+        <menuitem id="menu_hr_attendance_geo_fence"
+                  name="Zona Geofence"
+                  parent="menu_indonesia_hr_attendance_device"
+                  action="action_hr_attendance_geo_fence"
+                  sequence="40"/>
+
+        <!-- ── Selfie Check-In (Mobile PWA) ───────────────────────────── -->
+
+        <record id="action_hr_selfie_checkin" model="ir.actions.client">
+            <field name="name">Absensi Mobile</field>
+            <field name="tag">hr_payroll_indonesia.selfie_checkin</field>
+        </record>
+
+        <menuitem id="menu_hr_selfie_checkin"
+                  name="Absensi Mobile"
+                  parent="hr_attendance.menu_hr_attendance_root"
+                  action="action_hr_selfie_checkin"
+                  sequence="5"/>
+
+        <!-- ── Reporting (under existing HR Reporting) ─────────────────── -->
+
+        <menuitem id="menu_hr_report_bpjs"
+                  name="Rekap Iuran BPJS"
+                  parent="hr.hr_menu_hr_reports"
+                  action="action_report_bpjs_rekap"
+                  sequence="15"
+                  groups="hr_payroll_indonesia.group_hr_supervisor"/>
+
+        <menuitem id="menu_hr_ebupot"
+                  name="e-Bupot"
+                  parent="hr.hr_menu_hr_reports"
+                  action="action_hr_ebupot"
+                  sequence="20"/>
+
+        <menuitem id="menu_hr_spt_tahunan"
+                  name="SPT Tahunan"
+                  parent="hr.hr_menu_hr_reports"
+                  action="action_hr_spt_tahunan"
+                  sequence="21"/>
+
+        <!-- ── Configuration (under existing HR Configuration) ─────────── -->
+
+        <menuitem id="menu_hr_bpjs_rate"
+                  name="Tarif BPJS"
+                  parent="hr.menu_human_resources_configuration"
+                  action="action_hr_bpjs_rate"
+                  sequence="26"
+                  groups="hr_payroll_indonesia.group_hr_full_admin"/>
+
+        <menuitem id="menu_hr_shift_type"
+                  name="Tipe Shift"
+                  parent="hr.menu_human_resources_configuration"
+                  action="action_hr_shift_type"
+                  sequence="27"
+                  groups="hr_payroll_indonesia.group_hr_admin"/>
+
+        <menuitem id="menu_hr_shift_rotation"
+                  name="Pola Rotasi Shift"
+                  parent="hr.menu_human_resources_configuration"
+                  action="action_hr_shift_rotation"
+                  sequence="28"
+                  groups="hr_payroll_indonesia.group_hr_admin"/>
+
+        <!-- ── Help & Panduan ─────────────────────────────────────────── -->
+
+        <record id="action_hr_help" model="ir.actions.client">
+            <field name="name">Panduan Penggunaan</field>
+            <field name="tag">hr_payroll_indonesia.help_guide</field>
+        </record>
+
+        <menuitem id="menu_hr_help"
+                  name="Panduan Penggunaan"
+                  parent="hr.menu_hr_root"
+                  action="action_hr_help"
+                  sequence="99"/>
+
+    </data>
+</odoo>
