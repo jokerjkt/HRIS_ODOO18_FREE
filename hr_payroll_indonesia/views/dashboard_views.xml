@@ -289,13 +289,13 @@
 
                                 <!-- Rekap BPJS -->
                                 <a class="sapQuickAction"
-                                   name="%(hr_payroll_indonesia.action_report_bpjs_rekap)d"
+                                   name="%(hr_payroll_indonesia.action_hr_bpjs_submission)d"
                                    type="action">
                                     <div class="sapQuickAction__icon">
                                         <i class="fa fa-print"/>
                                     </div>
-                                    <div class="sapQuickAction__label">Cetak Laporan</div>
-                                    <div class="sapQuickAction__desc">Bukti Potong &amp; Rekap BPJS</div>
+                                    <div class="sapQuickAction__label">Rekap BPJS</div>
+                                    <div class="sapQuickAction__desc">Submission &amp; cetak rekap</div>
                                 </a>
                             </div>
 
