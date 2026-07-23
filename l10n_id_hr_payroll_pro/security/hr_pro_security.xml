@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Pro License Group -->
+        <record id="group_hr_pro" model="res.groups">
+            <field name="name">HR Payroll PRO</field>
+            <field name="category_id" ref="base.module_category_human_resources"/>
+        </record>
+    </data>
+</odoo>
