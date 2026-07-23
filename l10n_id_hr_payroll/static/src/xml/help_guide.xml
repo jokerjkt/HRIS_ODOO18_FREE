@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="l10n_id_hr_payroll.HelpGuide">
+        <div class="o_help_guide container-fluid" style="padding: 20px;">
+            <div class="row">
+                <!-- Sidebar -->
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-header" style="background: #0a6ed1; color: white;">
+                            <h5 class="mb-0"><i class="fa fa-question-circle"/> Panduan Penggunaan</h5>
+                        </div>
+                        <div class="list-group list-group-flush">
+                            <t t-foreach="sections" t-as="section">
+                                <button class="list-group-item list-group-item-action d-flex align-items-center"
+                                        t-att-class="{'active': state.activeSection === section.id}"
+                                        t-on-click="() => this.selectSection(section.id)">
+                                    <i t-attf-class="fa #{section.icon} mr-2" style="width: 20px;"/>
+                                    <span t-esc="section.title"/>
+                                </button>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content -->
+                <div class="col-md-9">
+                    <div class="card">
+                        <div class="card-header" style="background: #f8f9fa;">
+                            <h4 class="mb-0" t-esc="currentGuide.title"/>
+                        </div>
+                        <div class="card-body">
+                            <!-- Setup, Karyawan, Payroll, dll (steps) -->
+                            <t t-if="currentGuide.steps">
+                                <ol style="font-size: 14px; line-height: 2;">
+                                    <t t-foreach="currentGuide.steps" t-as="step">
+                                        <li t-esc="step"/>
+                                    </t>
+                                </ol>
+                            </t>
+
+                            <!-- Role table -->
+                            <t t-if="currentGuide.items">
+                                <table class="table table-bordered table-sm">
+                                    <thead style="background: #0a6ed1; color: white;">
+                                        <tr>
+                                            <th>Role</th>
+                                            <th>Hak Akses</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="currentGuide.items" t-as="item">
+                                            <tr>
+                                                <td><strong t-esc="item.role"/></td>
+                                                <td t-esc="item.akses"/>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </t>
+
+                            <!-- Info box -->
+                            <div class="alert alert-info mt-3" style="border-left: 4px solid #0a6ed1;">
+                                <strong><i class="fa fa-info-circle"/> Info:</strong>
+                                Untuk bantuan lebih lanjut, hubungi:
+                                <br/>📧 susilo.cdv@gmail.com
+                                <br/>🔗 linkedin.com/in/susilo-raden-68a19049
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+</templates>

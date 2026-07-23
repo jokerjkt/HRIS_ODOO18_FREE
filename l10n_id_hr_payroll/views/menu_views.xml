@@ -242,5 +242,18 @@
                   sequence="28"
                   groups="l10n_id_hr_payroll.group_hr_admin"/>
 
+        <!-- ── Help & Panduan ─────────────────────────────────────────── -->
+
+        <record id="action_hr_help" model="ir.actions.client">
+            <field name="name">Panduan Penggunaan</field>
+            <field name="tag">l10n_id_hr_payroll.help_guide</field>
+        </record>
+
+        <menuitem id="menu_hr_help"
+                  name="Panduan Penggunaan"
+                  parent="hr.menu_hr_root"
+                  action="action_hr_help"
+                  sequence="99"/>
+
     </data>
 </odoo>
