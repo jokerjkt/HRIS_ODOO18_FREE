@@ -7,6 +7,20 @@
              Only loaded when module is installed in demo mode
              ================================================================ -->
 
+        <!-- ── Demo Departments ────────────────────────────────────────────── -->
+        <record id="dep_sales" model="hr.department">
+            <field name="name">Sales</field>
+        </record>
+        <record id="dep_management" model="hr.department">
+            <field name="name">Management</field>
+        </record>
+        <record id="dep_rd" model="hr.department">
+            <field name="name">Research &amp; Development</field>
+        </record>
+        <record id="dep_ps" model="hr.department">
+            <field name="name">Professional Services</field>
+        </record>
+
         <!-- ── Demo Employees ─────────────────────────────────────────────── -->
 
         <record id="demo_employee_1" model="hr.employee">

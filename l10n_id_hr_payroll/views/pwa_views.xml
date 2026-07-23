@@ -4,6 +4,9 @@
     <template id="pwa_head" name="PWA Head Assets"
               inherit_id="web.layout">
         <xpath expr="//head" position="inside">
+            <link rel="preconnect" href="https://fonts.googleapis.com"/>
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"/>
             <link rel="manifest" href="/l10n_id_hr_payroll/static/src/pwa/manifest.json"/>
             <meta name="theme-color" content="#0a6ed1"/>
             <meta name="apple-mobile-web-app-capable" content="yes"/>

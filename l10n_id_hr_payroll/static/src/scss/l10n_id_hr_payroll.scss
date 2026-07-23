@@ -439,7 +439,7 @@ $o-btn-link-color: $sap-brand;
     border-color: $sap-border !important;
     box-shadow: $sap-shadow-md !important;
 
-    .o menu_item {
+    .o_menu_item {
       &:hover,
       &.o-focus {
         background: $sap-information-light !important;
@@ -1488,6 +1488,8 @@ body {
   &--rejected { @include sap-status-badge('negative'); }
   &--cancelled { @include sap-status-badge('neutral'); }
   &--error { @include sap-status-badge('negative'); }
+  &--online { @include sap-status-badge('positive'); }
+  &--offline { @include sap-status-badge('neutral'); }
 }
 
 .sapFormSummary {

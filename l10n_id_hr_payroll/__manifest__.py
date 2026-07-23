@@ -110,20 +110,18 @@ Fitur utama:
         'views/hr_spt_tahunan_views.xml',
         # Phase 7: API BPJS
         'views/hr_bpjs_api_views.xml',
-        'views/hr_bpjs_submission_views.xml',
-        # Wizards (Phase 6-7)
+        # Wizards (Phase 6-7) — loaded before bpjs_submission which references download_csv
         'wizard/hr_efiling_wizard_views.xml',
+        'views/hr_bpjs_submission_views.xml',
     ],
     'demo': [
         'data/hr_demo_data.xml',
     ],
     'assets': {
         'web.assets_backend': [
-            'static/src/css/font-import.css',
-            'static/src/scss/l10n_id_hr_payroll.scss',
-            'static/src/js/selfie_checkin.js',
-            'static/src/xml/selfie_checkin.xml',
-            'static/src/pwa/service_worker.js',
+            'l10n_id_hr_payroll/static/src/scss/l10n_id_hr_payroll.scss',
+            'l10n_id_hr_payroll/static/src/js/selfie_checkin.js',
+            'l10n_id_hr_payroll/static/src/xml/selfie_checkin.xml',
         ],
     },
     'post_init_hook': 'post_init_hook',

@@ -85,7 +85,7 @@ class SelfieCheckIn extends Component {
 
             if (this.videoRef.el) {
                 this.videoRef.el.srcObject = this.stream;
-                this.videoRef.el.play();
+                await this.videoRef.el.play();
             }
         } catch (err) {
             this.state.mode = "idle";
@@ -136,11 +136,11 @@ class SelfieCheckIn extends Component {
         await this._startCamera();
     }
 
-    onSwitchCamera() {
+    async onSwitchCamera() {
         this.state.facingMode =
             this.state.facingMode === "user" ? "environment" : "user";
         this._stopCamera();
-        this._startCamera();
+        await this._startCamera();
     }
 
     onCapture() {
@@ -152,10 +152,10 @@ class SelfieCheckIn extends Component {
         }
     }
 
-    onRetake() {
+    async onRetake() {
         this.state.photoData = null;
         this.state.mode = "camera";
-        this._startCamera();
+        await this._startCamera();
     }
 
     async onSubmit() {

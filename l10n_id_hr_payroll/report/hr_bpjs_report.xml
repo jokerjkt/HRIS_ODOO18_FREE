@@ -8,7 +8,7 @@
 
         <record id="action_report_bpjs_rekap" model="ir.actions.report">
             <field name="name">Rekap Iuran BPJS</field>
-            <field name="model">hr.payslip.run</field>
+            <field name="model">hr.bpjs.submission</field>
             <field name="report_type">qweb-pdf</field>
             <field name="report_name">l10n_id_hr_payroll.report_bpjs_rekap</field>
             <field name="report_file">l10n_id_hr_payroll.report_bpjs_rekap</field>

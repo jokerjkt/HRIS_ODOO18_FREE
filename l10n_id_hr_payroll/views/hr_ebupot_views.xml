@@ -118,8 +118,6 @@
             <search string="Cari e-Bupot">
                 <field name="name"/>
                 <field name="employee_id"/>
-                <filter name="this_year" string="Tahun Ini"
-                        domain="[('year', '=', %s)]" help="Tahun berjalan"/>
                 <filter name="draft" string="Draft"
                         domain="[('state', '=', 'draft')]"/>
                 <group expand="0" string="Group By">

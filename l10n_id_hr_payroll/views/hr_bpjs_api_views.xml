@@ -30,7 +30,6 @@
                             <field name="client_secret" password="True"/>
                             <field name="user_key"/>
                             <field name="company_bpjs_no"/>
-                            <field name="npwp" invisible="1"/>
                         </group>
                     </group>
                     <group string="Token">
