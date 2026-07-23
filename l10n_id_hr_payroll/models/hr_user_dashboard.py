@@ -182,6 +182,12 @@ class HrUserDashboard(models.TransientModel):
         }
 
     def action_open_expense_pending(self):
+        has_expense = self.env['ir.module.module'].search_count([
+            ('name', '=', 'hr_expense'), ('state', '=', 'installed')
+        ])
+        if not has_expense:
+            return {'type': 'ir.actions.client', 'tag': 'display_notification',
+                    'params': {'title': 'Info', 'message': 'Modul HR Expense belum terinstall', 'type': 'warning'}}
         return {
             'type': 'ir.actions.act_window',
             'name': 'Expense — Pending',
