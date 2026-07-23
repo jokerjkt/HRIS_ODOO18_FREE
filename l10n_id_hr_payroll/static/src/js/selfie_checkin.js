@@ -3,6 +3,7 @@
 import { registry } from "@web/core/registry";
 import { Component, useState, useRef, onMounted, onWillUnmount } from "@odoo/owl";
 import { useService } from "@web/core/utils/hooks";
+import { rpc } from "@web/core/network/rpc";
 
 class SelfieCheckIn extends Component {
     setup() {
@@ -26,7 +27,6 @@ class SelfieCheckIn extends Component {
         this.stream = null;
         this.countdownTimer = null;
 
-        this.rpc = useService("rpc");
         this.notification = useService("notification");
 
         onMounted(() => {
@@ -177,7 +177,7 @@ class SelfieCheckIn extends Component {
                 photoB64 = this.state.photoData.split(",")[1] || "";
             }
 
-            const result = await this.rpc("/l10n_id_hr_payroll/selfie_checkin", {
+            const result = await rpc("/l10n_id_hr_payroll/selfie_checkin", {
                 latitude: this.state.latitude,
                 longitude: this.state.longitude,
                 accuracy: this.state.accuracy,
