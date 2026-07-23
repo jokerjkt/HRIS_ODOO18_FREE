@@ -11,7 +11,7 @@
                             <h5 class="mb-0"><i class="fa fa-question-circle"/> Panduan Penggunaan</h5>
                         </div>
                         <div class="list-group list-group-flush">
-                            <t t-foreach="sections" t-as="section">
+                            <t t-foreach="sections" t-as="section" t-key="section.id">
                                 <button class="list-group-item list-group-item-action d-flex align-items-center"
                                         t-att-class="{'active': state.activeSection === section.id}"
                                         t-on-click="() => this.selectSection(section.id)">
@@ -33,7 +33,7 @@
                             <!-- Setup, Karyawan, Payroll, dll (steps) -->
                             <t t-if="currentGuide.steps">
                                 <ol style="font-size: 14px; line-height: 2;">
-                                    <t t-foreach="currentGuide.steps" t-as="step">
+                                    <t t-foreach="currentGuide.steps" t-as="step" t-key="step">
                                         <li t-esc="step"/>
                                     </t>
                                 </ol>
@@ -49,7 +49,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <t t-foreach="currentGuide.items" t-as="item">
+                                        <t t-foreach="currentGuide.items" t-as="item" t-key="item.role">
                                             <tr>
                                                 <td><strong t-esc="item.role"/></td>
                                                 <td t-esc="item.akses"/>
