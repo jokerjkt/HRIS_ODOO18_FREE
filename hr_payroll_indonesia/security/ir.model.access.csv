@@ -1,47 +1,47 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_hr_pph21_user,hr.pph21 User,model_hr_pph21,l10n_id_hr_payroll.group_hr_user,1,1,1,0
-access_hr_pph21_manager,hr.pph21 Manager,model_hr_pph21,l10n_id_hr_payroll.group_hr_admin,1,1,1,1
-access_hr_bpjs_user,hr.bpjs User,model_hr_bpjs,l10n_id_hr_payroll.group_hr_user,1,1,1,0
-access_hr_bpjs_manager,hr.bpjs Manager,model_hr_bpjs,l10n_id_hr_payroll.group_hr_admin,1,1,1,1
-access_hr_bpjs_rate_user,hr.bpjs.rate User,model_hr_bpjs_rate,l10n_id_hr_payroll.group_hr_user,1,0,0,0
-access_hr_bpjs_rate_manager,hr.bpjs.rate Manager,model_hr_bpjs_rate,l10n_id_hr_payroll.group_hr_admin,1,1,1,1
-access_hr_overtime_user,hr.overtime User,model_hr_overtime,l10n_id_hr_payroll.group_hr_overtime_user,1,1,1,0
-access_hr_overtime_manager,hr.overtime Manager,model_hr_overtime,l10n_id_hr_payroll.group_hr_overtime_manager,1,1,1,1
-access_hr_overtime_reject_wizard,hr.overtime.reject.wizard,model_hr_overtime_reject_wizard,l10n_id_hr_payroll.group_hr_overtime_manager,1,1,1,1
-access_hr_thr_user,hr.thr User,model_hr_thr,l10n_id_hr_payroll.group_hr_user,1,0,0,0
-access_hr_thr_manager,hr.thr Manager,model_hr_thr,l10n_id_hr_payroll.group_hr_admin,1,1,1,1
-access_hr_thr_wizard_manager,hr.thr.wizard Manager,model_hr_thr_wizard,l10n_id_hr_payroll.group_hr_admin,1,1,1,1
-access_hr_payslip_user,hr.payslip User,model_hr_payslip,l10n_id_hr_payroll.group_hr_user,1,1,1,0
-access_hr_payslip_manager,hr.payslip Manager,model_hr_payslip,l10n_id_hr_payroll.group_hr_admin,1,1,1,1
-access_hr_payslip_generate_wizard,hr.payslip.generate.wizard,model_hr_payslip_generate_wizard,l10n_id_hr_payroll.group_hr_admin,1,1,1,1
-access_hr_user_dashboard,hr.user.dashboard,model_hr_user_dashboard,l10n_id_hr_payroll.group_hr_user,1,1,1,1
-access_hr_my_dashboard,hr.my.dashboard,model_hr_my_dashboard,l10n_id_hr_payroll.group_hr_user,1,1,1,1
-access_hr_shift_type,hr.shift.type,model_hr_shift_type,l10n_id_hr_payroll.group_hr_admin,1,1,1,1
-access_hr_shift_rotation,hr.shift.rotation,model_hr_shift_rotation,l10n_id_hr_payroll.group_hr_admin,1,1,1,1
-access_hr_shift_rotation_line,hr.shift.rotation.line,model_hr_shift_rotation_line,l10n_id_hr_payroll.group_hr_admin,1,1,1,1
-access_hr_shift_assign,hr.shift.assign,model_hr_shift_assign,l10n_id_hr_payroll.group_hr_admin,1,1,1,1
-access_hr_shift_daily,hr.shift.daily,model_hr_shift_daily,l10n_id_hr_payroll.group_hr_admin,1,1,1,1
-access_hr_attendance_device,hr.attendance.device,model_hr_attendance_device,l10n_id_hr_payroll.group_hr_admin,1,1,1,1
-access_hr_attendance_device_log,hr.attendance.device.log,model_hr_attendance_device_log,l10n_id_hr_payroll.group_hr_admin,1,1,1,1
-access_hr_attendance_import_wizard,hr.attendance.import.wizard,model_hr_attendance_import_wizard,l10n_id_hr_payroll.group_hr_admin,1,1,1,1
-access_hr_attendance_geo_fence,hr.attendance.geo.fence User,model_hr_attendance_geo_fence,l10n_id_hr_payroll.group_hr_user,1,0,0,0
-access_hr_attendance_geo_fence_admin,hr.attendance.geo.fence Admin,model_hr_attendance_geo_fence,l10n_id_hr_payroll.group_hr_admin,1,1,1,1
-access_hr_ebupot_user,hr.ebupot User,model_hr_ebupot,l10n_id_hr_payroll.group_hr_user,1,1,1,0
-access_hr_ebupot_admin,hr.ebupot Admin,model_hr_ebupot,l10n_id_hr_payroll.group_hr_admin,1,1,1,1
-access_hr_spt_tahunan_user,hr.spt.tahunan User,model_hr_spt_tahunan,l10n_id_hr_payroll.group_hr_user,1,1,1,0
-access_hr_spt_tahunan_admin,hr.spt.tahunan Admin,model_hr_spt_tahunan,l10n_id_hr_payroll.group_hr_admin,1,1,1,1
-access_hr_djp_api_config_admin,hr.djp.api.config Admin,model_hr_djp_api_config,l10n_id_hr_payroll.group_hr_admin,1,1,1,1
-access_hr_bpjs_api_config_admin,hr.bpjs.api.config Admin,model_hr_bpjs_api_config,l10n_id_hr_payroll.group_hr_admin,1,1,1,1
-access_hr_bpjs_submission_user,hr.bpjs.submission User,model_hr_bpjs_submission,l10n_id_hr_payroll.group_hr_user,1,1,1,0
-access_hr_bpjs_submission_admin,hr.bpjs.submission Admin,model_hr_bpjs_submission,l10n_id_hr_payroll.group_hr_admin,1,1,1,1
-access_hr_bpjs_submission_line_user,hr.bpjs.submission.line User,model_hr_bpjs_submission_line,l10n_id_hr_payroll.group_hr_user,1,1,1,0
-access_hr_bpjs_submission_line_admin,hr.bpjs.submission.line Admin,model_hr_bpjs_submission_line,l10n_id_hr_payroll.group_hr_admin,1,1,1,1
-access_hr_efiling_wizard,hr.efiling.wizard,model_hr_efiling_wizard,l10n_id_hr_payroll.group_hr_admin,1,1,1,1
-access_hr_bpjs_upload_wizard,hr.bpjs.upload.wizard,model_hr_bpjs_upload_wizard,l10n_id_hr_payroll.group_hr_admin,1,1,1,1
-access_hr_attendance_import_wizard_line,hr.attendance.import.wizard.line,model_hr_attendance_import_wizard_line,l10n_id_hr_payroll.group_hr_admin,1,1,1,1
-access_hr_shift_bulk_assign,hr.shift.bulk.assign,model_hr_shift_bulk_assign,l10n_id_hr_payroll.group_hr_admin,1,1,1,1
-access_hr_attendance_connector_csv,hr.attendance.connector.csv,model_hr_attendance_connector_csv,l10n_id_hr_payroll.group_hr_admin,1,1,1,1
-access_hr_attendance_connector_zkteco,hr.attendance.connector.zkteco,model_hr_attendance_connector_zkteco,l10n_id_hr_payroll.group_hr_admin,1,1,1,1
-access_hr_bpjs_tk_connector,hr.bpjs.tk.connector,model_hr_bpjs_tk_connector,l10n_id_hr_payroll.group_hr_admin,1,1,1,1
-access_hr_bpjs_kes_connector,hr.bpjs.kes.connector,model_hr_bpjs_kes_connector,l10n_id_hr_payroll.group_hr_admin,1,1,1,1
-access_hr_payroll_dashboard,hr.payroll.dashboard,model_hr_payroll_dashboard,l10n_id_hr_payroll.group_hr_admin,1,1,1,1
+access_hr_pph21_user,hr.pph21 User,model_hr_pph21,hr_payroll_indonesia.group_hr_user,1,1,1,0
+access_hr_pph21_manager,hr.pph21 Manager,model_hr_pph21,hr_payroll_indonesia.group_hr_admin,1,1,1,1
+access_hr_bpjs_user,hr.bpjs User,model_hr_bpjs,hr_payroll_indonesia.group_hr_user,1,1,1,0
+access_hr_bpjs_manager,hr.bpjs Manager,model_hr_bpjs,hr_payroll_indonesia.group_hr_admin,1,1,1,1
+access_hr_bpjs_rate_user,hr.bpjs.rate User,model_hr_bpjs_rate,hr_payroll_indonesia.group_hr_user,1,0,0,0
+access_hr_bpjs_rate_manager,hr.bpjs.rate Manager,model_hr_bpjs_rate,hr_payroll_indonesia.group_hr_admin,1,1,1,1
+access_hr_overtime_user,hr.overtime User,model_hr_overtime,hr_payroll_indonesia.group_hr_overtime_user,1,1,1,0
+access_hr_overtime_manager,hr.overtime Manager,model_hr_overtime,hr_payroll_indonesia.group_hr_overtime_manager,1,1,1,1
+access_hr_overtime_reject_wizard,hr.overtime.reject.wizard,model_hr_overtime_reject_wizard,hr_payroll_indonesia.group_hr_overtime_manager,1,1,1,1
+access_hr_thr_user,hr.thr User,model_hr_thr,hr_payroll_indonesia.group_hr_user,1,0,0,0
+access_hr_thr_manager,hr.thr Manager,model_hr_thr,hr_payroll_indonesia.group_hr_admin,1,1,1,1
+access_hr_thr_wizard_manager,hr.thr.wizard Manager,model_hr_thr_wizard,hr_payroll_indonesia.group_hr_admin,1,1,1,1
+access_hr_payslip_user,hr.payslip User,model_hr_payslip,hr_payroll_indonesia.group_hr_user,1,1,1,0
+access_hr_payslip_manager,hr.payslip Manager,model_hr_payslip,hr_payroll_indonesia.group_hr_admin,1,1,1,1
+access_hr_payslip_generate_wizard,hr.payslip.generate.wizard,model_hr_payslip_generate_wizard,hr_payroll_indonesia.group_hr_admin,1,1,1,1
+access_hr_user_dashboard,hr.user.dashboard,model_hr_user_dashboard,hr_payroll_indonesia.group_hr_user,1,1,1,1
+access_hr_my_dashboard,hr.my.dashboard,model_hr_my_dashboard,hr_payroll_indonesia.group_hr_user,1,1,1,1
+access_hr_shift_type,hr.shift.type,model_hr_shift_type,hr_payroll_indonesia.group_hr_admin,1,1,1,1
+access_hr_shift_rotation,hr.shift.rotation,model_hr_shift_rotation,hr_payroll_indonesia.group_hr_admin,1,1,1,1
+access_hr_shift_rotation_line,hr.shift.rotation.line,model_hr_shift_rotation_line,hr_payroll_indonesia.group_hr_admin,1,1,1,1
+access_hr_shift_assign,hr.shift.assign,model_hr_shift_assign,hr_payroll_indonesia.group_hr_admin,1,1,1,1
+access_hr_shift_daily,hr.shift.daily,model_hr_shift_daily,hr_payroll_indonesia.group_hr_admin,1,1,1,1
+access_hr_attendance_device,hr.attendance.device,model_hr_attendance_device,hr_payroll_indonesia.group_hr_admin,1,1,1,1
+access_hr_attendance_device_log,hr.attendance.device.log,model_hr_attendance_device_log,hr_payroll_indonesia.group_hr_admin,1,1,1,1
+access_hr_attendance_import_wizard,hr.attendance.import.wizard,model_hr_attendance_import_wizard,hr_payroll_indonesia.group_hr_admin,1,1,1,1
+access_hr_attendance_geo_fence,hr.attendance.geo.fence User,model_hr_attendance_geo_fence,hr_payroll_indonesia.group_hr_user,1,0,0,0
+access_hr_attendance_geo_fence_admin,hr.attendance.geo.fence Admin,model_hr_attendance_geo_fence,hr_payroll_indonesia.group_hr_admin,1,1,1,1
+access_hr_ebupot_user,hr.ebupot User,model_hr_ebupot,hr_payroll_indonesia.group_hr_user,1,1,1,0
+access_hr_ebupot_admin,hr.ebupot Admin,model_hr_ebupot,hr_payroll_indonesia.group_hr_admin,1,1,1,1
+access_hr_spt_tahunan_user,hr.spt.tahunan User,model_hr_spt_tahunan,hr_payroll_indonesia.group_hr_user,1,1,1,0
+access_hr_spt_tahunan_admin,hr.spt.tahunan Admin,model_hr_spt_tahunan,hr_payroll_indonesia.group_hr_admin,1,1,1,1
+access_hr_djp_api_config_admin,hr.djp.api.config Admin,model_hr_djp_api_config,hr_payroll_indonesia.group_hr_admin,1,1,1,1
+access_hr_bpjs_api_config_admin,hr.bpjs.api.config Admin,model_hr_bpjs_api_config,hr_payroll_indonesia.group_hr_admin,1,1,1,1
+access_hr_bpjs_submission_user,hr.bpjs.submission User,model_hr_bpjs_submission,hr_payroll_indonesia.group_hr_user,1,1,1,0
+access_hr_bpjs_submission_admin,hr.bpjs.submission Admin,model_hr_bpjs_submission,hr_payroll_indonesia.group_hr_admin,1,1,1,1
+access_hr_bpjs_submission_line_user,hr.bpjs.submission.line User,model_hr_bpjs_submission_line,hr_payroll_indonesia.group_hr_user,1,1,1,0
+access_hr_bpjs_submission_line_admin,hr.bpjs.submission.line Admin,model_hr_bpjs_submission_line,hr_payroll_indonesia.group_hr_admin,1,1,1,1
+access_hr_efiling_wizard,hr.efiling.wizard,model_hr_efiling_wizard,hr_payroll_indonesia.group_hr_admin,1,1,1,1
+access_hr_bpjs_upload_wizard,hr.bpjs.upload.wizard,model_hr_bpjs_upload_wizard,hr_payroll_indonesia.group_hr_admin,1,1,1,1
+access_hr_attendance_import_wizard_line,hr.attendance.import.wizard.line,model_hr_attendance_import_wizard_line,hr_payroll_indonesia.group_hr_admin,1,1,1,1
+access_hr_shift_bulk_assign,hr.shift.bulk.assign,model_hr_shift_bulk_assign,hr_payroll_indonesia.group_hr_admin,1,1,1,1
+access_hr_attendance_connector_csv,hr.attendance.connector.csv,model_hr_attendance_connector_csv,hr_payroll_indonesia.group_hr_admin,1,1,1,1
+access_hr_attendance_connector_zkteco,hr.attendance.connector.zkteco,model_hr_attendance_connector_zkteco,hr_payroll_indonesia.group_hr_admin,1,1,1,1
+access_hr_bpjs_tk_connector,hr.bpjs.tk.connector,model_hr_bpjs_tk_connector,hr_payroll_indonesia.group_hr_admin,1,1,1,1
+access_hr_bpjs_kes_connector,hr.bpjs.kes.connector,model_hr_bpjs_kes_connector,hr_payroll_indonesia.group_hr_admin,1,1,1,1
+access_hr_payroll_dashboard,hr.payroll.dashboard,model_hr_payroll_dashboard,hr_payroll_indonesia.group_hr_admin,1,1,1,1
