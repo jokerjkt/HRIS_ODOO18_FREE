@@ -15,6 +15,8 @@ class HrBpjsSubmission(models.Model):
     _order = 'period_year desc, period_month desc'
 
     name = fields.Char(string='No. Submission', readonly=True, copy=False)
+    company_id = fields.Many2one('res.company', string='Perusahaan',
+                                  default=lambda self: self.env.company, required=True)
     service_type = fields.Selection([
         ('tk', 'BPJS Ketenagakerjaan'),
         ('kes', 'BPJS Kesehatan'),

@@ -255,7 +255,9 @@
                             </div>
                             <div class="sapQuickActions">
                                 <!-- Buat Slip Gaji -->
-                                <a class="sapQuickAction" name="action_hr_payslip" type="action">
+                                <a class="sapQuickAction"
+                                   name="%(l10n_id_hr_payroll.action_hr_payslip)d"
+                                   type="action">
                                     <div class="sapQuickAction__icon">
                                         <i class="fa fa-plus-circle"/>
                                     </div>
