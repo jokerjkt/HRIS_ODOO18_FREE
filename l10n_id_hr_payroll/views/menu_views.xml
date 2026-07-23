@@ -198,6 +198,20 @@
                   action="action_hr_selfie_checkin"
                   sequence="5"/>
 
+        <!-- ── e-Bupot & SPT Tahunan ─────────────────────────────────────── -->
+
+        <menuitem id="menu_hr_ebupot"
+                  name="e-Bupot"
+                  parent="hr.menu_hr_root"
+                  action="action_hr_ebupot"
+                  sequence="12"/>
+
+        <menuitem id="menu_hr_spt_tahunan"
+                  name="SPT Tahunan"
+                  parent="hr.menu_hr_root"
+                  action="action_hr_spt_tahunan"
+                  sequence="13"/>
+
         <!-- ── Reporting (under existing HR Reporting) ─────────────────── -->
 
         <menuitem id="menu_hr_report_bpjs"
