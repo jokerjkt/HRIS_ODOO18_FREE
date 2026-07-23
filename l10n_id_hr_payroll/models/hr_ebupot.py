@@ -4,8 +4,12 @@ e-Bupot — Electronic Withholding Receipt (Bukti Potong Elektronik)
 =================================================================
 Generates XML for DJP e-Bupot Unifikasi from PPh 21 data.
 Formulir 1721-A1 (karyawan tetap) / 1721-A2 (karyawan tidak tetap/ahli).
+Sesuai spesifikasi Coretax DJP: https://coretaxdjp.pajak.go.id
 """
-import json
+import base64
+import xml.etree.ElementTree as ET
+from xml.dom import minidom
+
 from odoo import models, fields, api
 from odoo.exceptions import UserError
 
@@ -60,6 +64,36 @@ class HrEbupot(models.Model):
     djp_reference = fields.Char(string='Referensi DJP')
     error_msg = fields.Text(string='Error')
 
+    # ── XML Fields (sesuai spesifikasi Coretax DJP) ──────────────────────────
+    nitku_pemotong = fields.Char(string='NITKU Pemotong')
+    nitku_penerima = fields.Char(string='NITKU Penerima')
+    sifat_pph = fields.Selection([
+        ('Tanpa Fasilitas', 'Tanpa Fasilitas'),
+        ('PPh Ditanggung Pemerintah', 'PPh Ditanggung Pemerintah'),
+        ('Surat Keterangan Bebas', 'Surat Keterangan Bebas'),
+        ('Fasilitas Lainnya', 'Fasilitas Lainnya'),
+    ], string='Sifat PPh', default='Tanpa Fasilitas')
+    status_bupot = fields.Selection([
+        ('Normal', 'Normal'),
+        ('Pembetulan', 'Pembetulan'),
+        ('Pembatalan', 'Pembatalan'),
+    ], string='Status Bupot', default='Normal')
+    kode_dok_referensi = fields.Selection([
+        ('01', 'Faktur Pajak'),
+        ('02', 'Invoice'),
+        ('03', 'Surat Perjanjian'),
+        ('04', 'Bukti Pembayaran'),
+        ('05', 'Akta Perikatan'),
+        ('06', 'Surat Pernyataan'),
+    ], string='Kode Dok. Referensi', default='01')
+    nomor_dok_referensi = fields.Char(string='Nomor Dokumen Referensi')
+    tanggal_dok_referensi = fields.Date(string='Tanggal Dokumen Referensi')
+    tanggal_pemotongan = fields.Date(string='Tanggal Pemotongan',
+                                      default=fields.Date.context_today)
+    nama_penandatangan = fields.Char(string='Nama Penandatangan')
+    tanggal_ttd = fields.Date(string='Tanggal Tanda Tangan',
+                               default=fields.Date.context_today)
+
     sequence_id = fields.Many2one('ir.sequence', string='Sequence')
 
     @api.model
@@ -100,41 +134,69 @@ class HrEbupot(models.Model):
                 'pph21_bonus_thr': pph_agg.pph21_bonus_thr,
                 'pph21_total': pph_agg.pph21_tahunan + pph_agg.pph21_bonus_thr,
                 'pph21_dipotong': sum(pph21.mapped('pph21_final')),
+                'nama_penandatangan': rec.employee_id.company_id.name or '',
             })
 
     def action_generate_xml(self):
-        """Generate XML untuk e-Bupot DJP."""
+        """Generate XML untuk e-Bupot DJP sesuai spesifikasi Coretax."""
         for rec in self:
             if rec.pph21_total <= 0:
                 raise UserError('PPh 21 total harus lebih dari 0.')
+            if not rec.tanggal_pemotongan:
+                raise UserError('Tanggal pemotongan harus diisi.')
 
-            xml_data = self._build_xml_dict(rec)
-            rec.xml_content = json.dumps(xml_data, indent=2, ensure_ascii=False)
-            rec.state = 'exported'
+            xml_content = self._build_bppu_xml(rec)
+            rec.write({
+                'xml_content': xml_content,
+                'state': 'exported',
+            })
 
-    def _build_xml_dict(self, rec):
-        """Build dict sesuai format e-Bupot Unifikasi DJP."""
-        emp = rec.employee_id
-        return {
-            'NPWP_PEMOTONG': emp.company_id.npwp or '',
-            'NAMA_PEMOTONG': emp.company_id.name or '',
-            'NPWP_PENERIMA': rec.npwp or '',
-            'NAMA_PENERIMA': emp.name or '',
-            'NIK_PENERIMA': rec.nik or '',
-            'ALAMAT_PENERIMA': emp.address_home_id.name if emp.address_home_id else '',
-            'STATUS_PTKP': rec.ptkp_status or '',
-            'JUMLAH_ORG_TANGGUNG': int(rec.ptkp_status.split('/')[-1]) if rec.ptkp_status and '/' in rec.ptkp_status else 0,
-            'MASA_PAJAK': f'{rec.year}-01 s.d. {rec.year}-12',
-            'TAHUN_PAJAK': str(rec.year),
-            'KODE_PAJAK': '411128',
-            'JENIS_BUKTI_POTONG': '1721-A1' if rec.form_type == '1721A1' else '1721-A2',
-            'JUMLAH_BRUTO': rec.penghasilan_bruto,
-            'JUMLAH_PENGURANG': rec.biaya_jabatan + rec.iuran_pensiun + rec.bpjs_tk_jht + rec.bpjs_tk_jp,
-            'PKP': rec.pkp,
-            'PPh_21_TERUTANG': rec.pph21_total,
-            'PPh_21_DIPOTONG': rec.pph21_dipotong,
-            'PPh_21_KURANG_BAYAR': rec.pph21_total - rec.pph21_dipotong,
-        }
+    def _build_bppu_xml(self, rec):
+        """Build XML BPPU sesuai format Coretax DJP."""
+        root = ET.Element('Root')
+        root.set('xmlns', 'http://www.pajak.go.id/coretax')
+
+        bppu = ET.SubElement(root, 'BPPU')
+
+        def add(parent, tag, value):
+            el = ET.SubElement(parent, tag)
+            el.text = str(value) if value is not None else ''
+
+        npwp_pemotong = self._format_npwp(rec.employee_id.company_id.npwp or '')
+        npwp_penerima = self._format_npwp(rec.npwp or '')
+
+        add(bppu, 'NPWP_PEMOTONG', npwp_pemotong)
+        add(bppu, 'NAMA_PEMOTONG', rec.employee_id.company_id.name or '')
+        add(bppu, 'NITKU_PEMOTONG', rec.nitku_pemotong or '')
+        add(bppu, 'MPWP', npwp_penerima)
+        add(bppu, 'NAMA_PENERIMA', rec.employee_id.name or '')
+        add(bppu, 'NITKU_PENERIMA', rec.nitku_penerima or '')
+        add(bppu, 'MASA_PAJAK', f'{rec.tanggal_pemotongan.month:02d}')
+        add(bppu, 'TAHUN_PAJAK', str(rec.year))
+        add(bppu, 'KODE_PAJAK', '411128')
+        add(bppu, 'SIFAT_PPH', rec.sifat_pph or 'Tanpa Fasilitas')
+        add(bppu, 'STATUS_BUPOT', rec.status_bupot or 'Normal')
+        add(bppu, 'DPP', rec.pkp)
+        add(bppu, 'TARIF', 5)
+        add(bppu, 'PPH_DIPOTONG', rec.pph21_total)
+        add(bppu, 'KODE_DOK_REFERENSI', rec.kode_dok_referensi or '01')
+        add(bppu, 'NOMOR_DOK_REFERENSI', rec.nomor_dok_referensi or '')
+        add(bppu, 'TANGGAL_DOK_REFERENSI',
+            rec.tanggal_dok_referensi.isoformat() if rec.tanggal_dok_referensi else '')
+        add(bppu, 'TANGGAL_PEMOTONGAN', rec.tanggal_pemotongan.isoformat())
+        add(bppu, 'NAMA_PENANDATANGAN', rec.nama_penandatangan or '')
+        add(bppu, 'TANGGAL_TTD', rec.tanggal_ttd.isoformat() if rec.tanggal_ttd else '')
+
+        xml_str = ET.tostring(root, encoding='unicode', xml_declaration=False)
+        dom = minidom.parseString(xml_str)
+        return dom.toprettyxml(indent='  ', encoding=None)
+
+    def _format_npwp(self, npwp):
+        """Format NPWP ke 16 digit tanpa titik."""
+        if not npwp:
+            return ''
+        cleaned = npwp.replace('.', '').replace('-', '').replace(' ', '')
+        return cleaned.zfill(16)[:16]
 
     def action_export(self):
         """Download XML file."""
@@ -148,6 +210,74 @@ class HrEbupot(models.Model):
             'res_id': self.id,
             'view_mode': 'form',
             'target': 'new',
+        }
+
+    def action_download_xml(self):
+        """Download XML sebagai file."""
+        self.ensure_one()
+        if not self.xml_content:
+            self.action_generate_xml()
+
+        attachment = self.env['ir.attachment'].create({
+            'name': f'eBupot_{self.name}.xml',
+            'type': 'binary',
+            'datas': base64.b64encode(self.xml_content.encode('utf-8')),
+            'res_model': 'hr.ebupot',
+            'res_id': self.id,
+        })
+
+        return {
+            'type': 'ir.actions.act_url',
+            'url': f'/web/content/{attachment.id}?download=true',
+            'target': 'self',
+        }
+
+    def action_download_template(self):
+        """Download template XML kosong untuk referensi."""
+        template = '''<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Template e-Bupot Unifikasi (BPPU)
+  Sesuai PER-24/PJ/2021 dan PER-11/PJ/2025
+
+  Isi field sesuai data PPh 21 karyawan.
+  Upload ke Coretax DJP Online: https://coretaxdjp.pajak.go.id
+-->
+<Root xmlns="http://www.pajak.go.id/coretax">
+  <BPPU>
+    <NPWP_PEMOTONG>1234567890123456</NPWP_PEMOTONG>
+    <NAMA_PEMOTONG>Nama Perusahaan</NAMA_PEMOTONG>
+    <NITKU_PEMOTONG></NITKU_PEMOTONG>
+    <MPWP>1234567890123456</MPWP>
+    <NAMA_PENERIMA>Nama Karyawan</NAMA_PENERIMA>
+    <NITKU_PENERIMA></NITKU_PENERIMA>
+    <MASA_PAJAK>12</MASA_PAJAK>
+    <TAHUN_PAJAK>2026</TAHUN_PAJAK>
+    <KODE_PAJAK>411128</KODE_PAJAK>
+    <SIFAT_PPH>Tanpa Fasilitas</SIFAT_PPH>
+    <STATUS_BUPOT>Normal</STATUS_BUPOT>
+    <DPP>50000000</DPP>
+    <TARIF>5</TARIF>
+    <PPH_DIPOTONG>2500000</PPH_DIPOTONG>
+    <KODE_DOK_REFERENSI>01</KODE_DOK_REFERENSI>
+    <NOMOR_DOK_REFERENSI>INV-001</NOMOR_DOK_REFERENSI>
+    <TANGGAL_DOK_REFERENSI>2026-12-31</TANGGAL_DOK_REFERENSI>
+    <TANGGAL_PEMOTONGAN>2026-12-31</TANGGAL_PEMOTONGAN>
+    <NAMA_PENANDATANGAN>Direktur</NAMA_PENANDATANGAN>
+    <TANGGAL_TTD>2026-12-31</TANGGAL_TTD>
+  </BPPU>
+</Root>'''
+
+        attachment = self.env['ir.attachment'].create({
+            'name': 'Template_eBupot_BPPU.xml',
+            'type': 'binary',
+            'datas': base64.b64encode(template.encode('utf-8')),
+            'res_model': 'hr.ebupot',
+        })
+
+        return {
+            'type': 'ir.actions.act_url',
+            'url': f'/web/content/{attachment.id}?download=true',
+            'target': 'self',
         }
 
     def action_submit_to_djp(self):
@@ -164,3 +294,66 @@ class HrEbupot(models.Model):
                 )
             rec.submission_date = fields.Datetime.now()
             rec.state = 'submitted'
+
+    def action_export_batch_xml(self):
+        """Export multiple e-Bupot ke satu file XML (batch)."""
+        ebupots = self.search([('state', 'in', ('draft', 'exported'))])
+        if not ebupots:
+            raise UserError('Tidak ada e-Bupot untuk di-export.')
+
+        root = ET.Element('Root')
+        root.set('xmlns', 'http://www.pajak.go.id/coretax')
+
+        for rec in ebupots:
+            if rec.pph21_total <= 0:
+                continue
+            if not rec.tanggal_pemotongan:
+                continue
+
+            bppu = ET.SubElement(root, 'BPPU')
+
+            def add(parent, tag, value):
+                el = ET.SubElement(parent, tag)
+                el.text = str(value) if value is not None else ''
+
+            npwp_pemotong = self._format_npwp(rec.employee_id.company_id.npwp or '')
+            npwp_penerima = self._format_npwp(rec.npwp or '')
+
+            add(bppu, 'NPWP_PEMOTONG', npwp_pemotong)
+            add(bppu, 'NAMA_PEMOTONG', rec.employee_id.company_id.name or '')
+            add(bppu, 'NITKU_PEMOTONG', rec.nitku_pemotong or '')
+            add(bppu, 'MPWP', npwp_penerima)
+            add(bppu, 'NAMA_PENERIMA', rec.employee_id.name or '')
+            add(bppu, 'NITKU_PENERIMA', rec.nitku_penerima or '')
+            add(bppu, 'MASA_PAJAK', f'{rec.tanggal_pemotongan.month:02d}')
+            add(bppu, 'TAHUN_PAJAK', str(rec.year))
+            add(bppu, 'KODE_PAJAK', '411128')
+            add(bppu, 'SIFAT_PPH', rec.sifat_pph or 'Tanpa Fasilitas')
+            add(bppu, 'STATUS_BUPOT', rec.status_bupot or 'Normal')
+            add(bppu, 'DPP', rec.pkp)
+            add(bppu, 'TARIF', 5)
+            add(bppu, 'PPH_DIPOTONG', rec.pph21_total)
+            add(bppu, 'KODE_DOK_REFERENSI', rec.kode_dok_referensi or '01')
+            add(bppu, 'NOMOR_DOK_REFERENSI', rec.nomor_dok_referensi or '')
+            add(bppu, 'TANGGAL_DOK_REFERENSI',
+                rec.tanggal_dok_referensi.isoformat() if rec.tanggal_dok_referensi else '')
+            add(bppu, 'TANGGAL_PEMOTONGAN', rec.tanggal_pemotongan.isoformat())
+            add(bppu, 'NAMA_PENANDATANGAN', rec.nama_penandatangan or '')
+            add(bppu, 'TANGGAL_TTD', rec.tanggal_ttd.isoformat() if rec.tanggal_ttd else '')
+
+        xml_str = ET.tostring(root, encoding='unicode', xml_declaration=False)
+        dom = minidom.parseString(xml_str)
+        xml_content = dom.toprettyxml(indent='  ', encoding=None)
+
+        attachment = self.env['ir.attachment'].create({
+            'name': f'eBupot_BPPU_Batch_{ebupots[0].year}_{fields.Date.today().strftime("%Y%m%d")}.xml',
+            'type': 'binary',
+            'datas': base64.b64encode(xml_content.encode('utf-8')),
+            'res_model': 'hr.ebupot',
+        })
+
+        return {
+            'type': 'ir.actions.act_url',
+            'url': f'/web/content/{attachment.id}?download=true',
+            'target': 'self',
+        }

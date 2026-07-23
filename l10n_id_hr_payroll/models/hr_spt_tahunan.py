@@ -3,7 +3,12 @@
 SPT Tahunan — Annual Tax Return Aggregator
 ==========================================
 Aggregates 12 months of PPh 21 data per employee per year.
+Generates XML for SPT Masa PPh Unifikasi.
 """
+import base64
+import xml.etree.ElementTree as ET
+from xml.dom import minidom
+
 from odoo import models, fields, api
 from odoo.exceptions import UserError
 
@@ -51,6 +56,15 @@ class HrSptTahunan(models.Model):
         ('confirmed', 'Dikonfirmasi'),
         ('submitted', 'Terkirim'),
     ], string='Status', default='draft', tracking=True)
+
+    # ── XML Fields (SPT Masa PPh Unifikasi) ─────────────────────────────────
+    period_month = fields.Selection([
+        ('01', 'Januari'), ('02', 'Februari'), ('03', 'Maret'),
+        ('04', 'April'), ('05', 'Mei'), ('06', 'Juni'),
+        ('07', 'Juli'), ('08', 'Agustus'), ('09', 'September'),
+        ('10', 'Oktober'), ('11', 'November'), ('12', 'Desember'),
+    ], string='Masa Pajak', default='12')
+    xml_content = fields.Text(string='XML Content')
 
     @api.depends('employee_id', 'year')
     def _compute_display_name(self):
@@ -128,6 +142,87 @@ class HrSptTahunan(models.Model):
             if rec.pph21_terutang <= 0:
                 raise UserError('Hitung SPT terlebih dahulu.')
             rec.state = 'confirmed'
+
+    def action_generate_xml(self):
+        """Generate XML SPT Masa PPh Unifikasi."""
+        for rec in self:
+            if rec.state != 'confirmed':
+                raise UserError('SPT harus dikonfirmasi terlebih dahulu.')
+
+            xml_content = self._build_spt_xml(rec)
+            rec.xml_content = xml_content
+
+    def _build_spt_xml(self, rec):
+        """Build XML SPT Masa PPh Unifikasi."""
+        root = ET.Element('Root')
+        root.set('xmlns', 'http://www.pajak.go.id/coretax')
+
+        # Induk SPT
+        induk = ET.SubElement(root, 'IndukSPT')
+
+        def add(parent, tag, value):
+            el = ET.SubElement(parent, tag)
+            el.text = str(value) if value is not None else ''
+
+        npwp = self._format_npwp(rec.employee_id.company_id.npwp or '')
+
+        add(induk, 'NPWP', npwp)
+        add(induk, 'NAMA_WP', rec.employee_id.company_id.name or '')
+        add(induk, 'MASA_PAJAK', rec.period_month or '12')
+        add(induk, 'TAHUN_PAJAK', str(rec.year))
+        add(induk, 'JENIS_PAJAK', 'PPh Unifikasi')
+        add(induk, 'KJS', '411128')
+        add(induk, 'JUMLAH_PPH_DIPOTONG', rec.pph21_sudah_dipotong)
+        add(induk, 'JUMLAH_PPH_DIBAYAR', rec.pph21_sudah_dipotong)
+        add(induk, 'JUMLAH_PPH_DIPERBETULKAN', 0)
+        add(induk, 'STATUS_SPT', 'Normal')
+        add(induk, 'TANGGAL_SPT', fields.Date.today().isoformat())
+
+        # Daftar I (Bukti Potong)
+        daftar1 = ET.SubElement(root, 'DaftarI')
+        add(daftar1, 'JUMLAH_BUPOT', 1)
+        add(daftar1, 'JUMLAH_PPH', rec.pph21_sudah_dipotong)
+
+        # Daftar II (PPh Disetor Sendiri)
+        daftar2 = ET.SubElement(root, 'DaftarII')
+        add(daftar2, 'JUMLAH_PPH_DIBAYAR', 0)
+
+        # Lampiran I (Dokumen yang dipersamakan dengan Bupot)
+        lampiran1 = ET.SubElement(root, 'LampiranI')
+        add(lampiran1, 'JUMLAH_DOK', 0)
+
+        xml_str = ET.tostring(root, encoding='unicode', xml_declaration=False)
+        dom = minidom.parseString(xml_str)
+        return dom.toprettyxml(indent='  ', encoding=None)
+
+    def _format_npwp(self, npwp):
+        """Format NPWP ke 16 digit tanpa titik."""
+        if not npwp:
+            return ''
+        cleaned = npwp.replace('.', '').replace('-', '').replace(' ', '')
+        return cleaned.zfill(16)[:16]
+
+    def action_download_xml(self):
+        """Download XML SPT Masa."""
+        self.ensure_one()
+        if not self.xml_content:
+            if self.state != 'confirmed':
+                raise UserError('SPT harus dikonfirmasi terlebih dahulu.')
+            self.action_generate_xml()
+
+        attachment = self.env['ir.attachment'].create({
+            'name': f'SPT_Masa_{self.name}.xml',
+            'type': 'binary',
+            'datas': base64.b64encode(self.xml_content.encode('utf-8')),
+            'res_model': 'hr.spt.tahunan',
+            'res_id': self.id,
+        })
+
+        return {
+            'type': 'ir.actions.act_url',
+            'url': f'/web/content/{attachment.id}?download=true',
+            'target': 'self',
+        }
 
     def action_export_ebupot(self):
         """Export ke e-Bupot."""

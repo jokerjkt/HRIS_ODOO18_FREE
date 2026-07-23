@@ -23,11 +23,23 @@
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="buttons">
-                        <button name="action_export" type="object"
+                        <button name="action_download_xml" type="object"
                                 class="oe_stat_button" icon="fa-download"
                                 invisible="state == 'draft'">
                             <div class="o_stat_info">
                                 <span class="o_stat_text">Download XML</span>
+                            </div>
+                        </button>
+                        <button name="action_download_template" type="object"
+                                class="oe_stat_button" icon="fa-file-code-o">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Template XML</span>
+                            </div>
+                        </button>
+                        <button name="action_export_batch_xml" type="object"
+                                class="oe_stat_button" icon="fa-files-o">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Batch Export</span>
                             </div>
                         </button>
                     </div>
@@ -78,8 +90,32 @@
                                 </group>
                             </group>
                         </page>
-                        <page string="XML" name="xml">
-                            <field name="xml_content" readonly="1" placeholder="XML akan di-generate..."/>
+                        <page string="Data XML" name="xml_data">
+                            <group>
+                                <group string="Dokumen Referensi">
+                                    <field name="kode_dok_referensi"/>
+                                    <field name="nomor_dok_referensi"/>
+                                    <field name="tanggal_dok_referensi"/>
+                                </group>
+                                <group string="Penandatangan">
+                                    <field name="nama_penandatangan"/>
+                                    <field name="tanggal_ttd"/>
+                                    <field name="tanggal_pemotongan"/>
+                                </group>
+                            </group>
+                            <group>
+                                <group string="NITKU">
+                                    <field name="nitku_pemotong"/>
+                                    <field name="nitku_penerima"/>
+                                </group>
+                                <group string="Sifat &amp; Status">
+                                    <field name="sifat_pph"/>
+                                    <field name="status_bupot"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="XML Output" name="xml">
+                            <field name="xml_content" readonly="1" placeholder="XML akan di-generate setelah klik 'Generate XML'..."/>
                         </page>
                     </notebook>
                 </sheet>

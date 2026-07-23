@@ -15,6 +15,9 @@
                     <button name="action_confirm" string="Konfirmasi"
                             type="object" class="btn-primary"
                             invisible="state != 'draft' or pph21_terutang &lt;= 0"/>
+                    <button name="action_generate_xml" string="Generate XML SPT"
+                            type="object" class="btn-primary"
+                            invisible="state != 'confirmed'"/>
                     <button name="action_export_ebupot" string="Export e-Bupot"
                             type="object"
                             invisible="state != 'confirmed'"/>
@@ -22,6 +25,15 @@
                            statusbar_visible="draft,confirmed"/>
                 </header>
                 <sheet>
+                    <div class="oe_button_box" name="buttons">
+                        <button name="action_download_xml" type="object"
+                                class="oe_stat_button" icon="fa-download"
+                                invisible="state == 'draft' or not xml_content">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Download XML SPT</span>
+                            </div>
+                        </button>
+                    </div>
                     <div class="oe_title">
                         <h1><field name="display_name" readonly="1"/></h1>
                     </div>
@@ -29,6 +41,7 @@
                         <group string="Identitas">
                             <field name="employee_id"/>
                             <field name="year"/>
+                            <field name="period_month"/>
                             <field name="ptkp_status"/>
                             <field name="ptkp_amount" widget="monetary"/>
                         </group>
@@ -57,6 +70,9 @@
                                 </group>
                             </group>
                         </page>
+                        <page string="XML Output" name="xml">
+                            <field name="xml_content" readonly="1" placeholder="XML akan di-generate setelah klik 'Generate XML SPT'..."/>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
@@ -74,6 +90,7 @@
                 <field name="name" string="No. SPT"/>
                 <field name="employee_id" string="Karyawan"/>
                 <field name="year" string="Tahun"/>
+                <field name="period_month" string="Masa Pajak"/>
                 <field name="pph21_terutang" widget="monetary" string="PPh 21 Terutang"/>
                 <field name="pph21_sudah_dipotong" widget="monetary" string="Sudah Dipotong"/>
                 <field name="sisa_kurang_bayar" widget="monetary" string="Sisa"/>
