@@ -122,6 +122,8 @@ Fitur utama:
             'hr_payroll_indonesia/static/src/scss/hr_payroll_indonesia.scss',
             'hr_payroll_indonesia/static/src/js/selfie_checkin.js',
             'hr_payroll_indonesia/static/src/xml/selfie_checkin.xml',
+            'hr_payroll_indonesia/static/src/js/help_guide.js',
+            'hr_payroll_indonesia/static/src/xml/help_guide.xml',
         ],
     },
     'post_init_hook': 'post_init_hook',
